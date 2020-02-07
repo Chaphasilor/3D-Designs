@@ -2,7 +2,7 @@ $fn = 50;
 
 wallThickness = 2;
 holderLength = 160;
-holderOuterDiameter = 52;
+holderOuterDiameter = 48;
 holderInnerDiameter = 5.5;
 maxSpoolWidth = 77;
 printLips = true;
@@ -10,7 +10,7 @@ printLips = true;
 union() {
   tube(holderOuterDiameter, holderLength, wallThickness);
   tube(holderInnerDiameter, holderLength, wallThickness, relevantRadius = "inner");
-  spine(holderInnerDiameter/2, holderOuterDiameter/2, holderLength, wallThickness);
+  !spine(holderInnerDiameter/2, holderOuterDiameter/2, holderLength, wallThickness, revolutions = 3, double = true);
   if (printLips) {
     lip(holderOuterDiameter/2, 2, 1);
     translate([0, 0, 1*maxSpoolWidth+1*wallThickness])
@@ -34,11 +34,20 @@ module tube(diameter, length, thickness, relevantRadius = "outer") {
   }
 }
 
-module spine(innerRadius, outerRadius, length, thickness) {
-  linear_extrude(height = length, center = false, convexity = 10, twist = -360*3)
+module spine(innerRadius, outerRadius, length, thickness, revolutions = 3, double = false) {
+  // linear_extrude(height = length, center = false, convexity = 10, twist = -360*3)
+  //   translate([innerRadius+thickness, 0, 0])
+  //     square([outerRadius-thickness-(innerRadius+thickness), thickness]);
+  linear_extrude(height = length, center = false, convexity = 10, twist = -360*revolutions)
     translate([innerRadius+thickness, 0, 0])
       square([outerRadius-thickness-(innerRadius+thickness), thickness]);
 
+  if (double) {
+    linear_extrude(height = length, center = false, convexity = 10, twist = -360*revolutions)
+      rotate([0, 0, 180])
+        translate([innerRadius+thickness, 0, 0])
+          square([outerRadius-thickness-(innerRadius+thickness), thickness]);
+  }
 }
 
 module lip(radius, height, thickness) {
