@@ -18,7 +18,7 @@ handleLength = 23;
 handleThickness = 1.5;
 
 print = true;
-printBottom = true;
+printBottom = false;
 $fn = 75;
 
 debug = false; // toggles stacked view/debugging
@@ -125,10 +125,10 @@ module maleHinge() {
         }
 
         // connector
-        #translate([-2*handleLength-3, hingeOffset-maleHingeSpacing-handleThickness, -handleThickness]) cube([2*handleLength-(femaleHingeOuterRadius+1), hingeLength+2*handleThickness+2*maleHingeSpacing, 2*handleThickness+0.5]);
+        translate([-handleLength-3, hingeOffset-maleHingeSpacing-handleThickness, -handleThickness]) cube([handleLength-(femaleHingeOuterRadius+1), hingeLength+2*handleThickness+2*maleHingeSpacing, 2*handleThickness+0.5]);
       }
 
-      translate([0, 0, -(maleHingeRadius*0.8+5)]) rotate([0, -acos((maleHingeRadius*0.8 + (maleHingeRadius*0.8-handleThickness*0.4))/(handleLength-2*maleHingeSpacing)), 0]) cube([5, hingeLength+hingeOffset*2, 100]);
+      translate([0, 0, -(maleHingeRadius*0.8+5)]) rotate([0, -acos((maleHingeRadius*0.8 + (maleHingeRadius*0.8-handleThickness*0.4))/(handleLength-2*maleHingeSpacing)), 0]) cube([5, hingeLength+hingeOffset*2, 30]);
     }
     // support bar
     // translate([-(femaleHingeOuterRadius+1), (hingeLength/2)+hingeOffset, 0]) cube([handleThickness, hingeLength, handleThickness], center=true);
