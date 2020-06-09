@@ -27,7 +27,7 @@ widthBridge = widthMount; // the width of the bridge connecting mount and protec
 heightBridge = 8; // the height of the bridge connecting mount and protector
 lengthBridge = diameterYellowThick * 1.5; // the length of the bridge connecting mount and protector
 widthSuspends = widthBridge; // the width of the supports suspending the protector below the mount
-lengthSuspends = 30; // the length of the supports suspending the protector below the mount
+lengthSuspends = diameterRedLip * 1.1; // the length of the supports suspending the protector below the mount
 
 // ------------ Print Settings --------------
 
@@ -101,24 +101,44 @@ module mount() {
   
 }
 
+module roundedCorner() {
+  translate([-(lengthBridge/2 - heightBridge/2), innerDiameterMount/2+widthMount-heightBridge/2, 0,])
+    difference() {
+      cylinder(d=heightBridge*2, h=widthBridge*2, center=true);
+      cylinder(d=heightBridge, h=widthBridge*2, center=true);
+      translate([heightBridge, 0, 0])
+        cube([heightBridge*2, heightBridge*2, heightBridge*2], center=true);
+      translate([0, -heightBridge, 0])
+        cube([heightBridge*2, heightBridge*2, heightBridge*2], center=true);
+    }
+};
+
 module protector() {
 
   // bridge
-  //TODO rounded corners?
-  color("#3D3D3D") {
+  color("#1D1D1D") {
     translate([0, 0, 0.5+thicknessMountLip])
-    union() {
-      translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
-        cube([lengthBridge, heightBridge, widthBridge], center=false);
-        
-      translate([lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
-        rotate([180, 180, 0])
-          cube([widthSuspends, lengthSuspends, widthBridge], center=false);
-      translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
-        rotate([180, 270, 0])
-          cube([widthSuspends, lengthSuspends, widthBridge], center=false);
-    }
+      union() {
+        difference() {
+          translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
+            cube([lengthBridge, heightBridge, widthBridge], center=false);
 
+          // cylinder(d=(innerDiameterMount+widthMount+heightBridge)*1.25, h=widthBridge*2, center=true);
+          translate([0, 1, 0])
+            roundedCorner();
+
+          translate([0, 1, 0])
+            rotate([0, 0, -90])
+              roundedCorner();
+        }
+          
+        translate([lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
+          rotate([180, 180, 0])
+            cube([widthSuspends, lengthSuspends, widthBridge], center=false);
+        translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
+          rotate([180, 270, 0])
+            cube([widthSuspends, lengthSuspends, widthBridge], center=false);
+      }
   }
   
 }
