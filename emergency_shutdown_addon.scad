@@ -17,10 +17,17 @@ lengthRedThin = lengthRed - lengthRedLip;
 
 // ----------- Measurements Addon --------------
 
-innerDiameterMount = diameterYellowThick + 0.5;
-lengthMount = lengthYellowThick;
-thicknessMount = 5;
-angleMount = 180;
+innerDiameterMount = diameterYellowThick + 0.5; // the mount ring diameter
+widthMount = lengthYellowThick; // the width of the mount ring
+lengthMountLip = 5; // how far the lip reaches into the gap
+thicknessMountLip = 1.5; // how thick the lip should be (depends on size of gap)
+angleMount = 200; // how far the mount should reach around the button
+
+widthBridge = widthMount; // the width of the bridge connecting mount and protector
+heightBridge = 8; // the height of the bridge connecting mount and protector
+lengthBridge = diameterYellowThick * 1.5; // the length of the bridge connecting mount and protector
+widthSuspends = widthBridge; // the width of the supports suspending the protector below the mount
+lengthSuspends = 30; // the length of the supports suspending the protector below the mount
 
 // ------------ Print Settings --------------
 
@@ -65,31 +72,54 @@ module buttonWithWall() {
 
 module addon() {
 
-  color("#3D3D3D") {
+  
 
     mount();
+    protector();
     
-  }
+  
   
 }
 
 module mount() {
 
-  // difference() {
+  color("#70B0FF") {
+    rotate([0, 0, -(angleMount-180)/2]) rotate_extrude(angle=angleMount) // enable variable angle compared to cylinder difference
+      translate([innerDiameterMount/2, 0, 0]) // move the shape to get the correct inner diameter
+        difference() { // make the inside of the mount flat to improve stability
+          union() {
+            circle(d=widthMount);
+            translate([-widthMount/2, 0, 0])
+              rotate([180, 0, 0])
+                square(widthMount/2, center=false);
+          }
 
-  //   cylinder(r=innerDiameterMount/2 + thicknessMount, h=lengthMount, center=false);
-  //   cylinder(r=innerDiameterMount/2, h=lengthMount, center=false);
+          translate([-widthMount, -widthMount/2 + thicknessMountLip, 0]) // position the flat part on the inside
+            square(size=widthMount, center=false);
+        }
+  }
+  
+}
 
-  // }
+module protector() {
 
-  rotate_extrude(angle=180) // enable variable angle compared to cylinder difference
-    translate([innerDiameterMount/2, 0, 0]) // move the shape to get the correct inner diameter
-      difference() { // make the inside of the mount flat to improve stability
-        circle(d=thicknessMount);
+  // bridge
+  //TODO rounded corners?
+  color("#3D3D3D") {
+    translate([0, 0, 0.5+thicknessMountLip])
+    union() {
+      translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
+        cube([lengthBridge, heightBridge, widthBridge], center=false);
+        
+      translate([lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
+        rotate([180, 180, 0])
+          cube([widthSuspends, lengthSuspends, widthBridge], center=false);
+      translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
+        rotate([180, 270, 0])
+          cube([widthSuspends, lengthSuspends, widthBridge], center=false);
+    }
 
-        translate([-thicknessMount, -thicknessMount/2, 0]) // position the flat part on the inside
-          square(size=thicknessMount, center=false);
-      }
+  }
   
 }
 
@@ -110,8 +140,8 @@ if (print) {
 
   } else {
 
-    // emergencyButton();
-    addon();
+    emergencyButton();
+    translate([0, 0, widthMount/2-thicknessMountLip]) addon();
     
   }
   
