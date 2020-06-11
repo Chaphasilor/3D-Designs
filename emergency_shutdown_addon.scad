@@ -19,21 +19,25 @@ lengthRedThin = lengthRed - lengthRedLip;
 
 innerDiameterMount = diameterYellowThick + 0.5; // the mount ring diameter
 widthMount = lengthYellowThick; // the width of the mount ring
-lengthMountLip = 5; // how far the lip reaches into the gap
+lengthMountLip = 2; // how far the lip reaches into the gap
 thicknessMountLip = 1.5; // how thick the lip should be (depends on size of gap)
-angleMount = 200; // how far the mount should reach around the button
+angleMount = 180; // how far the mount should reach around the button
 
 widthBridge = widthMount; // the width of the bridge connecting mount and protector
 heightBridge = 8; // the height of the bridge connecting mount and protector
-lengthBridge = diameterYellowThick * 1.5; // the length of the bridge connecting mount and protector
+lengthBridge = diameterYellowThick * 2; // the length of the bridge connecting mount and protector
 widthSuspends = widthBridge; // the width of the supports suspending the protector below the mount
 lengthSuspends = diameterRedLip * 1.1; // the length of the supports suspending the protector below the mount
 
+protectorPertrudeLength = 3;
+lengthProtector = lengthTotal - lengthYellowThick + protectorPertrudeLength;
+caveInProtector = 10;
+sideWidthProtector = 5;
+
 // ------------ Print Settings --------------
 
-print = false;
-printButton = true;
-printAddon = false;
+print = true;
+printButton = false;
 preview = false;
 
 $fn = 100;
@@ -72,12 +76,8 @@ module buttonWithWall() {
 
 module addon() {
 
-  
-
-    mount();
+  mount();
     protector();
-    
-  
   
 }
 
@@ -89,13 +89,16 @@ module mount() {
         difference() { // make the inside of the mount flat to improve stability
           union() {
             circle(d=widthMount);
-            translate([-widthMount/2, 0, 0])
+            translate([-lengthMountLip, -(widthMount/2 - thicknessMountLip), 0])
               rotate([180, 0, 0])
-                square(widthMount/2, center=false);
+                square([lengthMountLip, thicknessMountLip], center=false);
           }
 
           translate([-widthMount, -widthMount/2 + thicknessMountLip, 0]) // position the flat part on the inside
-            square(size=widthMount, center=false);
+            square([widthMount, widthMount-thicknessMountLip], center=false);
+          translate([-lengthMountLip, widthMount/2, 0]) // position the flat part on the inside
+            rotate([180, 180])
+              square([innerDiameterMount/2, widthMount], center=false);
         }
   }
   
@@ -113,11 +116,14 @@ module roundedCorner() {
     }
 };
 
+function getCaveInCylinderHeight () = (lengthBridge/2 - sideWidthProtector);
+
 module protector() {
 
-  // bridge
-  color("#1D1D1D") {
-    translate([0, 0, 0.5+thicknessMountLip])
+  translate([0, 0, 0.5+thicknessMountLip]) {
+
+    // bridge & suspends
+    color("#1D1D1D") {
       union() {
         difference() {
           translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
@@ -138,10 +144,47 @@ module protector() {
         translate([-lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
           rotate([180, 270, 0])
             cube([widthSuspends, lengthSuspends, widthBridge], center=false);
+
+        translate([lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2])
+          rotate([270, 180, 0])
+          cube([lengthBridge, widthBridge, heightBridge], center=false);
       }
+    }
+
+    color("#50D050") {
+
+      difference() {
+
+        hull() {
+
+          translate([lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge])
+            rotate([270, 180, 0])
+              cube([widthBridge, lengthProtector, heightBridge], center=false);
+              
+          // translate([0, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge + lengthProtector - caveInProtector - 1])
+          //   rotate([90, 0, 180])
+          //     cylinder(d=1, h=widthBridge, center=false);
+          
+          translate([widthBridge-lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge])
+            rotate([270, 180, 0])
+              cube([widthBridge, lengthProtector, heightBridge], center=false);
+
+        }
+
+        // cave in
+        translate([0, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge + lengthProtector + 0])
+          rotate([90, 0, 180])
+            cylinder(r=(lengthBridge/2 - sideWidthProtector), h=heightBridge, center=false);
+          
+      }
+
+    }
+    
   }
   
 }
+
+function calcHyp(a, b) = sqrt(pow(a, 2) + pow(b, 2));
 
 if (print) {
 
@@ -149,6 +192,10 @@ if (print) {
     translate([0, 0, lengthTotal]) // move the rotated button up so that it rests on the x-y-plane 
       rotate([180, 0, 0]) // rotate the button so the tickest part is at the bottom
         emergencyButton();
+  } else {
+
+    addon();
+    
   }
 
 } else {
