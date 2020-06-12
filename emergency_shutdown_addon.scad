@@ -19,8 +19,8 @@ lengthRedThin = lengthRed - lengthRedLip;
 
 innerDiameterMount = diameterYellowThick + 0.5; // the mount ring diameter
 widthMount = lengthYellowThick; // the width of the mount ring
-lengthMountLip = 2; // how far the lip reaches into the gap
-thicknessMountLip = 1.5; // how thick the lip should be (depends on size of gap)
+lengthMountLip = .7; // how far the lip reaches into the gap
+thicknessMountLip = .9; // how thick the lip should be (depends on size of gap)
 angleMount = 180; // how far the mount should reach around the button
 
 widthBridge = widthMount; // the width of the bridge connecting mount and protector
@@ -77,7 +77,7 @@ module buttonWithWall() {
 module addon() {
 
   mount();
-    protector();
+    // protector();
   
 }
 
