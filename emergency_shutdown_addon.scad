@@ -29,18 +29,25 @@ lengthBridge = diameterYellowThick * 2; // the length of the bridge connecting m
 widthSuspends = widthBridge; // the width of the supports suspending the protector below the mount
 lengthSuspends = diameterRedLip * 1.1; // the length of the supports suspending the protector below the mount
 
-protectorPertrudeLength = 3;
-lengthProtector = lengthTotal - lengthYellowThick + protectorPertrudeLength;
+protectorProtrudeLength = 3;
+lengthProtector = lengthTotal - lengthYellowThick + protectorProtrudeLength;
 caveInProtector = 10;
-sideWidthProtector = 5;
+sideWidthProtector = 6;
+
+// ----------------- Misc -------------------
+
+minkowskiHeight = 1;
+borderRadius = 1; 
 
 // ------------ Print Settings --------------
 
-print = true;
+print = false;
 printButton = false;
 preview = false;
 
 $fn = 100;
+// $fn = 50;
+// $fn = 15;
 
 // ------------ Modules ---------------
 
@@ -105,7 +112,7 @@ module mount() {
 }
 
 module roundedCorner() {
-  translate([-(lengthBridge/2 - heightBridge/2), innerDiameterMount/2+widthMount-heightBridge/2, 0,])
+  // translate([-(lengthBridge/2 - heightBridge/2), innerDiameterMount/2+widthMount-heightBridge/2, 0,])
     difference() {
       cylinder(d=heightBridge*2, h=widthBridge*2, center=true);
       cylinder(d=heightBridge, h=widthBridge*2, center=true);
@@ -117,6 +124,17 @@ module roundedCorner() {
 };
 
 function getCaveInCylinderHeight () = (lengthBridge/2 - sideWidthProtector);
+
+module protectorPillar() {
+  
+  hull() {
+    cube([widthBridge, lengthProtector - widthBridge/2, heightBridge], center=false);
+
+    translate([widthBridge/2, lengthProtector - widthBridge/2, 0])
+      cylinder(r=widthBridge/2, h=heightBridge);
+  }
+  
+}
 
 module protector() {
 
@@ -131,12 +149,12 @@ module protector() {
             cube([lengthBridge, heightBridge, widthBridge], center=false);
 
           // cylinder(d=(innerDiameterMount+widthMount+heightBridge)*1.25, h=widthBridge*2, center=true);
-          translate([0, 1, 0])
-            roundedCorner();
+          translate([-(lengthBridge/2 - heightBridge/2), innerDiameterMount/2 + widthMount - 3, 0])
+                roundedCorner();
 
-          translate([0, 1, 0])
-            rotate([0, 0, -90])
-              roundedCorner();
+            translate([lengthBridge/2 - heightBridge/2, innerDiameterMount/2 + widthMount - 3, 0])
+              rotate([0, 0, -90])
+                roundedCorner();
         }
           
         translate([lengthBridge/2, innerDiameterMount/2, -heightBridge/2])
@@ -154,24 +172,24 @@ module protector() {
 
     color("#50D050") {
 
+      // right pillar
+      translate([lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge])
+        rotate([270, 180, 0])
+          protectorPillar();
+
+      // left pillar
+      translate([widthBridge-lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge])
+        rotate([270, 180, 0])
+          protectorPillar();
+      
       difference() {
 
         union() {
 
-          // right pillar
-          translate([lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge])
-            rotate([270, 180, 0])
-              cube([widthBridge, lengthProtector, heightBridge], center=false);
-
-          // left pillar
-          translate([widthBridge-lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge])
-            rotate([270, 180, 0])
-              cube([widthBridge, lengthProtector, heightBridge], center=false);
-
           // outer cylinder
           translate([0, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge + lengthProtector + 0])
             rotate([90, 0, 180])
-              scale([1.2, 1.2, 1])
+              scale([1.1, 1.1, 1])
                 cylinder(r=(lengthBridge/2 - sideWidthProtector), h=heightBridge, center=false);
 
         }
@@ -182,9 +200,9 @@ module protector() {
             cylinder(r=(lengthBridge/2 - sideWidthProtector), h=heightBridge, center=false);
 
         // upper bound
-        translate([-lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge + lengthProtector + 0])
+        translate([-lengthBridge/2, innerDiameterMount/2-lengthSuspends, -heightBridge/2 + widthBridge + lengthProtector - sideWidthProtector])
             // cylinder(r=(lengthBridge/2 - sideWidthProtector), h=heightBridge, center=false);
-            cube([lengthBridge, heightBridge, lengthBridge/2], center=false);
+            cube([lengthBridge, heightBridge, lengthBridge], center=false);
           
       }
 
