@@ -77,7 +77,7 @@ module buttonWithWall() {
 module addon() {
 
   mount();
-    // protector();
+  protector();
   
 }
 
@@ -120,7 +120,8 @@ function getCaveInCylinderHeight () = (lengthBridge/2 - sideWidthProtector);
 
 module protector() {
 
-  translate([0, 0, 0.5+thicknessMountLip]) {
+  translate([0, 0, 0.5]) 
+  {
 
     // bridge & suspends
     color("#1D1D1D") {
