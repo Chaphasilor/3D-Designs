@@ -25,15 +25,35 @@ powerConnectorSmallDistanceRight = 25;
 powerConnectorLargeDistanceBottom = 10;
 sixteenPinConnectorDistanceRight = 50;
 
+// ------------------ Case --------------------- 
+
+caseDistanceBoard = 2;
+caseDistanceConnectors = 3;
+caseThickness = 3;
+caseWidth = boardWidth + 2 * caseDistanceBoard + 2 * caseThickness;
+caseDepth = boardDepth + 2 * caseDistanceBoard + 2 * caseThickness;
+caseHeight = 40;
+caseSpacersHeight = groundClearance * 1.5;
+caseSpacersThickness = 1.5;
+
+caseMountingHoleDistanceLeftRight = caseDistanceBoard + mountingHoleDistanceLeftRight;
+caseMountingHoleDistanceTopBottom = caseDistanceBoard + mountingHoleDistanceTopBottom;
+// countersunkBoltHoleDiameterMin = 2;
+countersunkBoltHoleDiameterMin = mountingHoleDiameter;
+countersunkBoltHoleDiameterMax = 5;
+countersunkBoltHoleHeight = 2;
+
 // ------------- Print Settings ----------------
 
-
+preview = true;
+$fn = 40;
 
 // ---------------- Modules --------------------
 
+// Board
 module board() {
 
-  translate([0, 0, groundClearance]) {
+  translate([0, 0, 0]) {
     
     difference() {
 
@@ -63,11 +83,13 @@ module board() {
     }
 
     // ground clearance
-    translate([(boardWidth * 0.2)/2, (boardDepth * 0.2)/2, -groundClearance])
-      cube([boardWidth * .80, boardDepth * .80, groundClearance], center=false);
+    color("lightblue") {
+      translate([(boardWidth * 0.2)/2, (boardDepth * 0.2)/2, -groundClearance])
+        cube([boardWidth * .80, boardDepth * .80, groundClearance], center=false);
+    }
 
     // lemo rows
-    color("lightgray") {
+    color("gray") {
 
       // row 1 (bottom)
       translate([lemoRow1DistanceLeft, 0, 0])
@@ -126,4 +148,88 @@ module sixteenPinConnector() {
     cube([sixteenPinConnectorWidth, 17, sixteenPinConnectorHeight]);
 }
 
-board();
+// Case - Bottom
+
+module caseBottom() {
+
+  translate([caseThickness, caseThickness, 0]) {
+
+    difference() {
+      // bottom pane 
+      cube([caseWidth - 2 * caseThickness, caseDepth - 2 * caseThickness, caseThickness]);
+
+      // countersunken bolt holes
+      translate([caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, 0])
+        countersunkBoltHole();
+      translate([caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, 0])
+        countersunkBoltHole();
+      translate([boardWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, 0])
+        countersunkBoltHole();
+      translate([boardWidth - caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, 0])
+        countersunkBoltHole();
+
+    }
+    
+    // spacers
+    color("#A02020") {
+
+      translate([caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      translate([caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      translate([boardWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      translate([boardWidth - caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+        
+    }
+
+  }
+  
+
+  // sides
+  color("yellow") {
+
+    // front
+    cube([caseWidth, caseThickness, caseHeight], center=false);
+    //back
+    translate([0, caseDepth - caseThickness, 0])
+      cube([caseWidth, caseThickness, caseHeight], center=false);
+    // left  
+    cube([caseThickness, caseDepth, caseHeight], center=false);
+    // right
+    translate([caseWidth - caseThickness, 0, 0])
+      cube([caseThickness, caseDepth, caseHeight], center=false);
+      
+  }
+  
+}
+
+module spacer(innerDiameter, thickness, height) {
+
+  difference() {
+    cylinder(r=(innerDiameter/2 + thickness), h=height, center = false);
+    cylinder(d=innerDiameter, h=height, center = false);
+  }
+  
+}
+
+module countersunkBoltHole() {
+  union() {
+    cylinder(d1=countersunkBoltHoleDiameterMax, d2=countersunkBoltHoleDiameterMin, h=countersunkBoltHoleHeight, center = false);
+    cylinder(d=countersunkBoltHoleDiameterMin, h=caseThickness, center = false);
+
+  }
+}
+
+
+
+if (preview) {
+
+  caseBottom();
+  translate([caseDistanceBoard + caseThickness, caseDistanceBoard + caseThickness, caseThickness + caseSpacersHeight])
+    board();
+  
+} else {
+  board();
+}
