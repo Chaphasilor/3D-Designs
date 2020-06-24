@@ -32,9 +32,10 @@ caseDistanceConnectors = 3;
 caseThickness = 3;
 caseWidth = boardWidth + 2 * caseDistanceBoard + 2 * caseThickness;
 caseDepth = boardDepth + 2 * caseDistanceBoard + 2 * caseThickness;
-caseHeight = 40;
+//TODO height should be upper edge of the highest conenctor + caseDistanceConnectors
 caseSpacersHeight = groundClearance * 1.5;
 caseSpacersThickness = 1.5;
+caseBottomHeight = max([lemoHeight, powerConnectorHeight, sixteenPinConnectorHeight]) + caseThickness + caseSpacersHeight + caseDistanceConnectors;
 
 caseMountingHoleDistanceLeftRight = caseDistanceBoard + mountingHoleDistanceLeftRight;
 caseMountingHoleDistanceTopBottom = caseDistanceBoard + mountingHoleDistanceTopBottom;
@@ -134,18 +135,33 @@ module holePuncher(diameter, height) {
   cylinder(d=diameter, h=height, center=false, $fn=20);
 }
 
-module lemoRow(width) {
-  translate([0, -12, 0])
-    cube([width, 20, lemoHeight]);
+module lemoRow(width, distance=false) {
+  if (distance) {
+    translate([-caseDistanceConnectors, -25, -caseDistanceConnectors])
+      cube([width + 2 * caseDistanceConnectors, 50, caseBottomHeight - caseSpacersHeight]);
+  } else {
+    translate([0, -12, 0])
+      cube([width, 20, lemoHeight]);
+  }
 }
 
-module powerConnector(width) {
-  cube([width, 15, powerConnectorHeight]);
+module powerConnector(width, distance=false) {
+  if (distance) {
+    translate([-caseDistanceConnectors, -25, -caseDistanceConnectors])
+      cube([width + 2 * caseDistanceConnectors, 50, caseBottomHeight - caseSpacersHeight]);
+  } else {
+    cube([width, 15, powerConnectorHeight]);
+  }
 }
 
-module sixteenPinConnector() {
-  translate([0, -9, 0])
-    cube([sixteenPinConnectorWidth, 17, sixteenPinConnectorHeight]);
+module sixteenPinConnector(distance=false) {
+  if (distance) {
+    translate([-caseDistanceConnectors, -25, -caseDistanceConnectors])
+      cube([sixteenPinConnectorWidth + 2 * caseDistanceConnectors, 50, caseBottomHeight - caseSpacersHeight]);
+  } else {
+    translate([0, -9, 0])
+      cube([sixteenPinConnectorWidth, 17, sixteenPinConnectorHeight]);
+  }
 }
 
 // Case - Bottom
@@ -190,16 +206,25 @@ module caseBottom() {
   // sides
   color("yellow") {
 
-    // front
-    cube([caseWidth, caseThickness, caseHeight], center=false);
-    //back
-    translate([0, caseDepth - caseThickness, 0])
-      cube([caseWidth, caseThickness, caseHeight], center=false);
-    // left  
-    cube([caseThickness, caseDepth, caseHeight], center=false);
-    // right
-    translate([caseWidth - caseThickness, 0, 0])
-      cube([caseThickness, caseDepth, caseHeight], center=false);
+    difference() {
+
+      union() {
+        // front
+        cube([caseWidth, caseThickness, caseBottomHeight], center=false);
+        //back
+        translate([0, caseDepth - caseThickness, 0])
+          cube([caseWidth, caseThickness, caseBottomHeight], center=false);
+        // left  
+        cube([caseThickness, caseDepth, caseBottomHeight], center=false);
+        // right
+        translate([caseWidth - caseThickness, 0, 0])
+          cube([caseThickness, caseDepth, caseBottomHeight], center=false);
+      }
+
+      translate([caseDistanceBoard + caseThickness, caseDistanceBoard + caseThickness, caseThickness + caseSpacersHeight])
+        #connectorSlots();
+        
+    }
       
   }
   
@@ -220,6 +245,48 @@ module countersunkBoltHole() {
     cylinder(d=countersunkBoltHoleDiameterMin, h=caseThickness, center = false);
 
   }
+}
+
+module connectorSlots() {
+
+  // lemo rows
+  color("gray") {
+
+    // row 1 (bottom)
+    translate([lemoRow1DistanceLeft, 0, 0])
+      lemoRow(lemoRow1Width, distance=true);
+
+    // row 2 (left)
+    translate([0, lemoRow2Width + lemoRow2DistanceBottom, 0])
+      rotate([0, 0, -90])
+        lemoRow(lemoRow2Width, distance=true);
+
+    // row 3 (top)
+    translate([boardWidth - lemoRow3DistanceRight, boardDepth, 0])
+      rotate([0, 0, 180])
+        lemoRow(lemoRow3Width, distance=true);
+    
+  }
+
+  // 16-pin & power connectors
+  color("#202020") {
+
+    // power connector (small)
+    translate([boardWidth - powerConnectorSmallDistanceRight, boardDepth, 0])
+      rotate([0, 0, 180])
+        powerConnector(powerConnectorWidthSmall, distance=true);
+    
+    // power connector (large)
+    translate([boardWidth, powerConnectorLargeDistanceBottom, 0])
+      rotate([0, 0, 90])
+        powerConnector(powerConnectorWidthLarge, distance=true);
+
+    // 16-pin connector
+    translate([boardWidth - sixteenPinConnectorWidth - sixteenPinConnectorDistanceRight, 0, 0])
+      sixteenPinConnector(distance=true);
+    
+  }
+  
 }
 
 
