@@ -32,7 +32,6 @@ caseDistanceConnectors = 3;
 caseThickness = 3;
 caseWidth = boardWidth + 2 * caseDistanceBoard + 2 * caseThickness;
 caseDepth = boardDepth + 2 * caseDistanceBoard + 2 * caseThickness;
-//TODO height should be upper edge of the highest conenctor + caseDistanceConnectors
 caseSpacersHeight = groundClearance * 1.5;
 caseSpacersThickness = 1.5;
 caseBottomHeight = max([lemoHeight, powerConnectorHeight, sixteenPinConnectorHeight]) + caseThickness + caseSpacersHeight + caseDistanceConnectors;
@@ -46,7 +45,8 @@ countersunkBoltHoleHeight = 2;
 
 // ------------- Print Settings ----------------
 
-preview = true;
+print = false;
+previewBoard = true;
 $fn = 40;
 
 // ---------------- Modules --------------------
@@ -222,7 +222,7 @@ module caseBottom() {
       }
 
       translate([caseDistanceBoard + caseThickness, caseDistanceBoard + caseThickness, caseThickness + caseSpacersHeight])
-        #connectorSlots();
+        connectorSlots();
         
     }
       
@@ -290,13 +290,20 @@ module connectorSlots() {
 }
 
 
-
-if (preview) {
+if (print) {
 
   caseBottom();
-  translate([caseDistanceBoard + caseThickness, caseDistanceBoard + caseThickness, caseThickness + caseSpacersHeight])
-    board();
-  
+
 } else {
-  board();
+
+  if (previewBoard) {
+
+    caseBottom();
+    translate([caseDistanceBoard + caseThickness, caseDistanceBoard + caseThickness, caseThickness + caseSpacersHeight])
+      board();
+    
+  } else {
+    caseBottom();
+  }
+
 }
