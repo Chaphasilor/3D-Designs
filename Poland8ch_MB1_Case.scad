@@ -15,15 +15,14 @@ boardThickness = 1.7;
 maxHeight = 17.4;
 boardDepth = 100;
 boardWidth = 200;
-
-mountingHoleDistanceLeftRight = mountingHoleDiameter/2 + 5;
+mountingHoleDistanceLeftRight = mountingHoleDiameter/2 + 3.5;
 mountingHoleDistanceTopBottom = mountingHoleDistanceLeftRight;
-lemoRow1DistanceLeft = 20;
-lemoRow2DistanceBottom = 10;
-lemoRow3DistanceRight = 45;
-powerConnectorSmallDistanceRight = 25;
+lemoRow1DistanceLeft = 16.5;
+lemoRow2DistanceBottom = 11.5;
+lemoRow3DistanceRight = 40.5;
+powerConnectorSmallDistanceRight = 22;
 powerConnectorLargeDistanceBottom = 10;
-sixteenPinConnectorDistanceRight = 50;
+sixteenPinConnectorDistanceRight = 57.5;
 
 // ------------------ Case --------------------- 
 
@@ -38,15 +37,14 @@ caseBottomHeight = max([lemoHeight, powerConnectorHeight, sixteenPinConnectorHei
 
 caseMountingHoleDistanceLeftRight = caseDistanceBoard + mountingHoleDistanceLeftRight;
 caseMountingHoleDistanceTopBottom = caseDistanceBoard + mountingHoleDistanceTopBottom;
-// countersunkBoltHoleDiameterMin = 2;
-countersunkBoltHoleDiameterMin = mountingHoleDiameter;
-countersunkBoltHoleDiameterMax = 5;
-countersunkBoltHoleHeight = 2;
+countersunkBoltHoleDiameterMin = 2.7;
+countersunkBoltHoleDiameterMax = 5.4;
+countersunkBoltHoleHeight = 1.6;
 
 // ------------- Print Settings ----------------
 
 print = false;
-previewBoard = true;
+previewBoard = false;
 $fn = 40;
 
 // ---------------- Modules --------------------
