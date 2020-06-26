@@ -51,11 +51,12 @@ module cage() {
 
 module cageFrame() {
 
-  difference() {
-    cube([sideLengthCage, sideLengthCage, wallThicknessCage]);
-    translate([wallThicknessCage, wallThicknessCage, 0])
-      cube([sideLengthCage - 2*wallThicknessCage, sideLengthCage - 2*wallThicknessCage, wallThicknessCage]);
-  }
+  cube([sideLengthCage, sideLengthCage, wallThicknessCage]);
+  // difference() {
+  //   cube([sideLengthCage, sideLengthCage, wallThicknessCage]);
+  //   translate([wallThicknessCage, wallThicknessCage, 0])
+  //     cube([sideLengthCage - 2*wallThicknessCage, sideLengthCage - 2*wallThicknessCage, wallThicknessCage]);
+  // }
   
 }
 
@@ -65,4 +66,12 @@ module cagePillar() {
   
 }
 
+module innerCube() {
+
+  translate([sideLengthCage/2 - sideLengthCube/2, sideLengthCage/2 - sideLengthCube/2, sideLengthCage/2 - sideLengthCube/2])
+    cube([sideLengthCube, sideLengthCube, sideLengthCube]);
+  
+}
+
 cage();
+innerCube();
