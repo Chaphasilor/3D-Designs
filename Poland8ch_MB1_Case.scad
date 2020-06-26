@@ -15,7 +15,7 @@ boardThickness = 1.7;
 maxHeight = 17.4;
 boardDepth = 100;
 boardWidth = 200;
-mountingHoleDistanceLeftRight = mountingHoleDiameter/2 + 3.5;
+mountingHoleDistanceLeftRight = mountingHoleDiameter/2 + 3.2;
 mountingHoleDistanceTopBottom = mountingHoleDistanceLeftRight;
 lemoRow1DistanceLeft = 16.5;
 lemoRow2DistanceBottom = 11.5;
@@ -34,16 +34,19 @@ caseDepth = boardDepth + 2 * caseDistanceBoard + 2 * caseThickness;
 caseSpacersHeight = groundClearance * 1.5;
 caseSpacersThickness = 1.5;
 caseBottomHeight = max([lemoHeight, powerConnectorHeight, sixteenPinConnectorHeight]) + caseThickness + caseSpacersHeight + caseDistanceConnectors;
+connectorSupportSpacerDistanceLeft = 110 + caseThickness + caseDistanceBoard;
+piggySupportSpacerDistanceLeft = 50 + caseThickness + caseDistanceBoard;
+nanoSupportSpacerDistanceLeft = 144 + caseThickness + caseDistanceBoard;
 
-caseMountingHoleDistanceLeftRight = caseDistanceBoard + mountingHoleDistanceLeftRight;
-caseMountingHoleDistanceTopBottom = caseDistanceBoard + mountingHoleDistanceTopBottom;
+caseMountingHoleDistanceLeftRight = caseThickness + caseDistanceBoard + mountingHoleDistanceLeftRight;
+caseMountingHoleDistanceTopBottom = caseThickness + caseDistanceBoard + mountingHoleDistanceTopBottom;
 countersunkBoltHoleDiameterMin = 2.7;
 countersunkBoltHoleDiameterMax = 5.4;
 countersunkBoltHoleHeight = 1.6;
 
 // ------------- Print Settings ----------------
 
-print = false;
+print = true;
 previewBoard = false;
 $fn = 40;
 
@@ -173,33 +176,44 @@ module caseBottom() {
       cube([caseWidth - 2 * caseThickness, caseDepth - 2 * caseThickness, caseThickness]);
 
       // countersunken bolt holes
-      translate([caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, 0])
+      translate([caseMountingHoleDistanceLeftRight - caseThickness, caseMountingHoleDistanceTopBottom - caseThickness, 0])
         countersunkBoltHole();
-      translate([caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, 0])
+      translate([caseMountingHoleDistanceLeftRight - caseThickness, caseDepth - caseThickness - caseMountingHoleDistanceTopBottom, 0])
         countersunkBoltHole();
-      translate([boardWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, 0])
+      translate([caseWidth - caseThickness - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom - caseThickness, 0])
         countersunkBoltHole();
-      translate([boardWidth - caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, 0])
+      translate([caseWidth - caseThickness - caseMountingHoleDistanceLeftRight, caseDepth - caseThickness - caseMountingHoleDistanceTopBottom, 0])
         countersunkBoltHole();
 
     }
+
+  }
     
     // spacers
     color("#A02020") {
 
+      echo(str("caseMountingHoleDistanceTopBottom: ", caseMountingHoleDistanceTopBottom));
+      echo(str("caseMountingHoleDistanceLeftRight: ", caseMountingHoleDistanceLeftRight));
+
       translate([caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
         spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+      translate([caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
         spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([boardWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
+      translate([caseWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
         spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([boardWidth - caseMountingHoleDistanceLeftRight, boardDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+      translate([caseWidth - caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      // support spacers (no screw hole)
+      translate([connectorSupportSpacerDistanceLeft, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      translate([connectorSupportSpacerDistanceLeft, caseMountingHoleDistanceTopBottom, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      translate([piggySupportSpacerDistanceLeft, caseDepth/2, caseThickness])
+        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      translate([nanoSupportSpacerDistanceLeft, caseDepth*2/3, caseThickness])
         spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
         
     }
-
-  }
-  
 
   // sides
   color("yellow") {
