@@ -2,9 +2,9 @@
 // Print the addon clip with TPU
 
 // ------------ Recess measurements -------------
-width = 90; // shield width
+width = 90 * 0.95; // shield width
 upperLowerDistance = 54; // length of direct path from upper edge to lower edge 
-height = 48; // vertical distance from upper edge to lower edge
+height = 48 * 0.95; // vertical distance from upper edge to lower edge
 edgeWidthTopSide = 5; // width of the edge (sides and top)
 edgeWidthBottom = 12.5; // width of the edge (bottom)
 safeBendDistance = 40; // the minimum distance from the metal before the cables can be shielded
@@ -12,13 +12,18 @@ angle = 60; // the angle at which the angled part bends
 angledPartLength = 33; // the length of the angled part
 
 // --------------- Shield settings ---------------
-wallThickness = 7; // thickness of the shield walls
+wallThickness = 4; // thickness of the shield walls
 depth = cos(angle) * angledPartLength; // the horizontal distance from upper edge to lower edge
 scaleX = (width - wallThickness*2) / width; // the scaling factor in x-direction
 scaleY = (safeBendDistance + depth - wallThickness) / (safeBendDistance +  depth); // the scaling factor in y-direction
 scaleZ = (height - wallThickness) / height; // the scaling factor in z-direction
 lipOffset = 4; // the added length that potrudes behind the edges
 lipThickness = 2; // the thinkness of the lips
+
+// -------------- Print settings -----------------
+
+print = true;
+printBottomLip = false;
 
 module shield() {
   
@@ -37,6 +42,9 @@ module shield() {
         }
 
         shieldBottom();
+
+        translate([0, safeBendDistance + lipThickness * 1.5, height])
+          topLip();
       
       }
 
@@ -76,7 +84,7 @@ module shieldBottom() {
 module bottomLipRail() {
 
   scale([2, 1, 1])
-    #translate([-width*0.25, safeBendDistance + depth - lipOffset/2, cos(angle) * edgeWidthBottom/2])
+    translate([-width*0.25, safeBendDistance + depth - lipOffset/2, cos(angle) * edgeWidthBottom/4])
       rotate([-angle, 0, 0])
         bottomLip();
   
@@ -87,9 +95,36 @@ module bottomLip() {
   union() {
     cube([width, edgeWidthBottom/2, lipThickness]);
     translate([0, 0, -lipThickness*0.25])
-      cube([width, lipOffset/2, lipThickness*1.5]);
+      cube([width, lipOffset/4, lipThickness*1.5]);
   }
   
 }
 
-shield();
+module topLip() {
+
+  cube([width, lipThickness, lipOffset]);
+  
+}
+
+
+if (print) {
+
+  if (printBottomLip) {
+
+    translate([0, lipThickness * 1.5, 0])
+      rotate([90, 0, 0])
+        bottomLip();
+    
+  } else {
+
+    translate([0, height, 0])
+      rotate([90, 0, 0])
+        shield();
+
+  }
+
+} else {
+
+  shield();
+
+}
