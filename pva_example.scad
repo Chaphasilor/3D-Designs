@@ -1,7 +1,7 @@
 sideLengthCube = 15;
 sideLengthCage = 50;
-wallThicknessCube = 2;
 wallThicknessCage = 2;
+pillarThicknessCage = 4.5;
 
 module cage() {
 
@@ -12,27 +12,29 @@ module cage() {
 
     for (i=[0:4]) {
 
-      for (j=[0:(sideLengthCage/wallThicknessCage)-1]) {
+      for (j=[0:(sideLengthCage/pillarThicknessCage)-1]) {
 
         if (i == 0) {
           if (j%2 == 0) {
-            translate([j*wallThicknessCage, 0, 0])
+            translate([j*pillarThicknessCage, 0, 0])
               cagePillar();
           }
         } else if (i == 1) {
           if (j%2 == 0) {
-            translate([0, j*wallThicknessCage, 0])
-              cagePillar();
+            translate([wallThicknessCage, j*pillarThicknessCage, 0])
+              rotate([0, 0, 90])
+                cagePillar();
           }
         } else if (i == 2) {
           if (j%2 == 0) {
-            translate([j*wallThicknessCage, sideLengthCage - wallThicknessCage, 0])
+            translate([j*pillarThicknessCage, sideLengthCage - wallThicknessCage, 0])
               cagePillar();
           }
         } else {
           if (j%2 == 0) {
-            translate([sideLengthCage - wallThicknessCage, j*wallThicknessCage, 0])
-              cagePillar();
+            translate([sideLengthCage, j*pillarThicknessCage, 0])
+              rotate([0, 0, 90])
+                cagePillar();
           }
         }
         
@@ -62,7 +64,7 @@ module cageFrame() {
 
 module cagePillar() {
 
-  cube([wallThicknessCage, wallThicknessCage, sideLengthCage - 2*wallThicknessCage]);
+  cube([pillarThicknessCage, wallThicknessCage, sideLengthCage - 2*wallThicknessCage]);
   
 }
 
