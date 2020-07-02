@@ -34,9 +34,10 @@ caseDepth = boardDepth + 2 * caseDistanceBoard + 2 * caseThickness;
 caseSpacersHeight = groundClearance * 1.5;
 caseSpacersThickness = 1.5;
 caseBottomHeight = max([lemoHeight, powerConnectorHeight, sixteenPinConnectorHeight]) + caseThickness + caseSpacersHeight + caseDistanceConnectors;
-connectorSupportSpacerDistanceLeft = 110 + caseThickness + caseDistanceBoard;
+
+connectorSupportSpacerDistanceLeft = 113 + caseThickness + caseDistanceBoard;
 piggySupportSpacerDistanceLeft = 50 + caseThickness + caseDistanceBoard;
-nanoSupportSpacerDistanceLeft = 144 + caseThickness + caseDistanceBoard;
+nanoSupportSpacerDistanceLeft = 147 + caseThickness + caseDistanceBoard;
 
 caseMountingHoleDistanceLeftRight = caseThickness + caseDistanceBoard + mountingHoleDistanceLeftRight;
 caseMountingHoleDistanceTopBottom = caseThickness + caseDistanceBoard + mountingHoleDistanceTopBottom;
