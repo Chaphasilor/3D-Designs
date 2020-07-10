@@ -34,6 +34,7 @@ caseDepth = boardDepth + 2 * caseDistanceBoard + 2 * caseThickness;
 caseSpacersHeight = groundClearance * 1.5;
 caseSpacersThickness = 1.5;
 caseBottomHeight = max([lemoHeight, powerConnectorHeight, sixteenPinConnectorHeight]) + caseThickness + caseSpacersHeight + caseDistanceConnectors;
+caseTopHeight = caseBottomHeight;
 
 connectorSupportSpacerDistanceLeft = 113 + caseThickness + caseDistanceBoard;
 piggySupportSpacerDistanceLeft = 50 + caseThickness + caseDistanceBoard;
@@ -45,9 +46,14 @@ countersunkBoltHoleDiameterMin = 2.7;
 countersunkBoltHoleDiameterMax = 5.4;
 countersunkBoltHoleHeight = 1.6;
 
+rimThickness = 2;
+rimCornerLength = 10;
+rimHeight = caseTopHeight - caseThickness + 3;
+
 // ------------- Print Settings ----------------
 
 print = true;
+bottom = false; 
 previewBoard = false;
 $fn = 40;
 
@@ -190,31 +196,28 @@ module caseBottom() {
 
   }
     
-    // spacers
-    color("#A02020") {
+  // spacers
+  color("#A02020") {
 
-      echo(str("caseMountingHoleDistanceTopBottom: ", caseMountingHoleDistanceTopBottom));
-      echo(str("caseMountingHoleDistanceLeftRight: ", caseMountingHoleDistanceLeftRight));
-
-      translate([caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([caseWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([caseWidth - caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      // support spacers (no screw hole)
-      translate([connectorSupportSpacerDistanceLeft, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([connectorSupportSpacerDistanceLeft, caseMountingHoleDistanceTopBottom, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([piggySupportSpacerDistanceLeft, caseDepth/2, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-      translate([nanoSupportSpacerDistanceLeft, caseDepth*2/3, caseThickness])
-        spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
-        
-    }
+    translate([caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([caseWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([caseWidth - caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    // support spacers (no screw hole)
+    translate([connectorSupportSpacerDistanceLeft, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([connectorSupportSpacerDistanceLeft, caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([piggySupportSpacerDistanceLeft, caseDepth/2, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([nanoSupportSpacerDistanceLeft, caseDepth*2/3, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      
+  }
 
   // sides
   color("yellow") {
@@ -302,21 +305,117 @@ module connectorSlots() {
   
 }
 
+// Case - Top
+module caseTop() {
+
+  translate([caseThickness, caseThickness, 0]) {
+
+    difference() {
+      // bottom pane 
+      cube([caseWidth - 2 * caseThickness, caseDepth - 2 * caseThickness, caseThickness]);
+
+      // countersunken bolt holes
+      translate([caseMountingHoleDistanceLeftRight - caseThickness, caseMountingHoleDistanceTopBottom - caseThickness, 0])
+        countersunkBoltHole();
+      translate([caseMountingHoleDistanceLeftRight - caseThickness, caseDepth - caseThickness - caseMountingHoleDistanceTopBottom, 0])
+        countersunkBoltHole();
+      translate([caseWidth - caseThickness - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom - caseThickness, 0])
+        countersunkBoltHole();
+      translate([caseWidth - caseThickness - caseMountingHoleDistanceLeftRight, caseDepth - caseThickness - caseMountingHoleDistanceTopBottom, 0])
+        countersunkBoltHole();
+
+    }
+
+  }
+    
+  // spacers
+  color("#A02020") {
+
+    translate([caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([caseWidth - caseMountingHoleDistanceLeftRight, caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+    translate([caseWidth - caseMountingHoleDistanceLeftRight, caseDepth - caseMountingHoleDistanceTopBottom, caseThickness])
+      spacer(mountingHoleDiameter, caseSpacersThickness, caseSpacersHeight);
+      
+  }
+
+  // sides
+  color("yellow") {
+
+    // front
+    cube([caseWidth, caseThickness, caseTopHeight], center=false);
+    //back
+    translate([0, caseDepth - caseThickness, 0])
+      cube([caseWidth, caseThickness, caseTopHeight], center=false);
+    // left  
+    cube([caseThickness, caseDepth, caseTopHeight], center=false);
+    // right
+    translate([caseWidth - caseThickness, 0, 0])
+      cube([caseThickness, caseDepth, caseTopHeight], center=false);
+      
+  }
+
+  // rim
+  color("green") {
+
+    translate([caseThickness, caseThickness, caseThickness]) {
+      cornerRim();
+    }
+
+    translate([caseThickness, caseDepth - caseThickness, caseThickness]) {
+      rotate([0, 0, 270])
+        cornerRim();
+    }
+
+    translate([caseWidth - caseThickness, caseThickness, caseThickness]) {
+      rotate([0, 0, 90])
+        cornerRim();
+    }
+
+    translate([caseWidth - caseThickness, caseDepth - caseThickness, caseThickness]) {
+      rotate([0, 0, 180])
+        cornerRim();
+    }
+    
+  }
+
+}
+
+module cornerRim() {
+
+  cube([rimCornerLength, rimThickness, rimHeight]);
+  cube([rimThickness, rimCornerLength, rimHeight]);
+  
+} 
+
 
 if (print) {
 
-  caseBottom();
+  if (bottom) {
+    caseBottom();
+  } else {
+    caseTop();
+  }
 
 } else {
 
-  if (previewBoard) {
+  if (bottom) {
 
-    caseBottom();
-    translate([caseDistanceBoard + caseThickness, caseDistanceBoard + caseThickness, caseThickness + caseSpacersHeight])
-      board();
+    if (previewBoard) {
+      caseBottom();
+      translate([caseDistanceBoard + caseThickness, caseDistanceBoard + caseThickness, caseThickness + caseSpacersHeight])
+        board();
+    } else {
+      caseBottom();
+    }
     
   } else {
-    caseBottom();
+    translate([0, caseDepth, caseTopHeight])
+      rotate([180, 0,0 ])
+        caseTop();
   }
 
 }
