@@ -3,19 +3,19 @@
 
 /* [General Settings] */
 //	Unit of Measure for all Numeric Entries
-units =						25.4;		//	[25.4:inches,1.0:mm,10.0:cm]
+units =						1;		//	[25.4:inches,1.0:mm,10.0:cm]
 //	Number of Slots Horizontally
-nHoriz =					3;
+nHoriz =					4;
 //	Number of Slots Vertically
-nVert =						2;
+nVert =						1;
 
 /* [Parameters for Hook] */
 //	Where to place hook
-hookPlacement =				1;			//	[0:No Hook,1:Left Side,2:Right Side,3:Back -- REQUIRES SUPPORT]
+hookPlacement =				0;			//	[0:No Hook,1:Left Side,2:Right Side,3:Back -- REQUIRES SUPPORT]
 //	Thickness of Side Panel used for Hanging Print Core Holder
-hookPanelThickness =		0.25;
+hookPanelThickness =		20;
 //	Vertical Overhang of Hook
-hookOverhang =				0.175;
+hookOverhang =				10;
 
 module GoAwayCustomizer ()
 {
@@ -34,12 +34,15 @@ OutsideExtension =		0.25 * Inches;
 ExtensionElevation =	0.635 * Inches;
 ExtensionHeight =		1.268 * Inches;
 
-WallThickness =			0.14 * Inches;
-BackThickness =			0.24 * Inches;
+// WallThickness =			0.14 * Inches;
+WallThickness =			2.5;
+BackThickness =			3;
 TopLip =				0.255 * Inches;
-TopThickness =			0.125 * Inches;
+// TopThickness =			0.125 * Inches;
+TopThickness =			2;
 TopDepth =				1.575 * Inches;
-BottomThickness =		0.185 * Inches;
+// BottomThickness =		0.185 * Inches;
+BottomThickness =		2;
 
 BottomCutoutWidth =		0.25 * Inches;
 BottomCutoutDepth =		0.675 * Inches;
