@@ -208,10 +208,10 @@ module coreHolder (nH, nV)
 	}
 
 	// bottom standoffs
-	translate([3, 1, -3])
-		cube([2, 50, 3], center=false);
-	translate([totalThickness-2-2, 1, -3])
-		cube([2, 50, 3], center=false);
+	translate([2, 0, -3])
+		cube([2, InsideDepth + BackThickness + OutsideExtension, 3], center=false);
+	translate([totalThickness-2-2, 0, -3])
+		cube([2, InsideDepth + BackThickness + OutsideExtension, 3], center=false);
 	
 }
 
