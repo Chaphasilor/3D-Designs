@@ -5,19 +5,26 @@ thicknessUpperTable = 29;
 thicknessLowerTable = 20;
 overshootHeight = 15;
 overshootDepth = 7;
-topPartLength = 80;
+topPartLength = 100;
 topPartHeight = 8;
-thickness = 5;
+thickness = 3;
 holeDiameter = 3;
 hole1Offset = 10;
 hole2Offset = 30;
 
-boardAngle = 45;
-triangleThickness = 5;
-triangleBorderThickness = 8;
+boardAngle = 35;
+triangleThickness = 3;
 triangleSideLengthBoard = 140;
 triangleSideLengthBack = cos(boardAngle)*triangleSideLengthBoard;
 triangleSideLengthBottom = sin(boardAngle)*triangleSideLengthBoard;
+triangleBorderThickness = 12;
+innerTriangleScale = (triangleSideLengthBoard-2*triangleBorderThickness)/triangleSideLengthBoard;
+innerTriangleOffsetBottom = triangleBorderThickness;
+innerTriangleOffsetLeft = triangleBorderThickness/cos(boardAngle);
+
+echo(str("innerTriangleScale: ", innerTriangleScale));
+echo(str("triangleSideLengthBack: ", triangleSideLengthBack));
+echo(str("triangleSideLengthBottom: ", triangleSideLengthBottom));
 
 
 module wallTablePart() {
@@ -46,14 +53,14 @@ module wallTablePart() {
   
 }
 
-module triangle(bottomSide, alpha) {
+module triangle(bottomSide, hyp, alpha) {
 
   difference() {
-    cube([bottomSide, triangleThickness, sin(alpha)*bottomSide/cos(alpha)]);
+    cube([bottomSide, triangleThickness, hyp*cos(alpha)]);
 
-    translate([-(sin(alpha)*(bottomSide/cos(alpha)/2)*sqrt(2)), 0, cos(alpha)*(bottomSide/sin(alpha)/2)*sqrt(2)])
-      rotate([0, 90-alpha, 0])
-        cube([(bottomSide/cos(alpha)/2)*sqrt(2), triangleThickness, bottomSide/cos(alpha)]);
+    translate([-bottomSide, 0, (bottomSide/cos(alpha))*sin(alpha)])
+      rotate([0, alpha, 0])
+        cube([bottomSide/cos(alpha), triangleThickness, hyp]);
   }
 
 }
@@ -62,10 +69,11 @@ module triangleStand() {
 
   difference() {
     // outer triangle
-    triangle(triangleSideLengthBottom, boardAngle);
+    triangle(triangleSideLengthBottom, triangleSideLengthBoard, boardAngle);
     // inner triangle
-    translate([triangleBorderThickness*2, 0, triangleBorderThickness])
-      triangle(triangleSideLengthBottom-triangleBorderThickness*3, boardAngle);
+    translate([innerTriangleOffsetLeft, 0, innerTriangleOffsetBottom])
+      scale([(triangleSideLengthBottom-2*triangleBorderThickness)/triangleSideLengthBottom, 1, (triangleSideLengthBottom-2*triangleBorderThickness)/triangleSideLengthBottom]) 
+        #triangle(triangleSideLengthBottom, triangleSideLengthBoard, boardAngle);
     // screw holes
     translate([triangleSideLengthBottom - hole1Offset, thickness, holeDiameter/2 + (topPartHeight-holeDiameter)/2])
       rotate([90, 0, 0])
@@ -78,6 +86,6 @@ module triangleStand() {
 }
 
 
-// wallTablePart();
+wallTablePart();
 
-triangleStand();
+// triangleStand();
