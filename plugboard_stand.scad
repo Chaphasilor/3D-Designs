@@ -5,16 +5,16 @@ thicknessUpperTable = 29;
 thicknessLowerTable = 20;
 overshootHeight = 15;
 overshootDepth = 7;
-topPartLength = 100;
+topPartLength = 130;
 topPartHeight = 8;
-thickness = 3;
+thickness = 10;
 holeDiameter = 3;
-hole1Offset = 10;
-hole2Offset = 30;
+hole1Offset = 5;
+hole2Offset = 25;
 
 boardAngle = 35;
-triangleThickness = 3;
-triangleSideLengthBoard = 140;
+triangleThickness = 10;
+triangleSideLengthBoard = 150;
 triangleSideLengthBack = cos(boardAngle)*triangleSideLengthBoard;
 triangleSideLengthBottom = sin(boardAngle)*triangleSideLengthBoard;
 triangleBorderThickness = 12;
@@ -73,19 +73,19 @@ module triangleStand() {
     // inner triangle
     translate([innerTriangleOffsetLeft, 0, innerTriangleOffsetBottom])
       scale([(triangleSideLengthBottom-2*triangleBorderThickness)/triangleSideLengthBottom, 1, (triangleSideLengthBottom-2*triangleBorderThickness)/triangleSideLengthBottom]) 
-        #triangle(triangleSideLengthBottom, triangleSideLengthBoard, boardAngle);
+        triangle(triangleSideLengthBottom, triangleSideLengthBoard, boardAngle);
     // screw holes
     translate([triangleSideLengthBottom - hole1Offset, thickness, holeDiameter/2 + (topPartHeight-holeDiameter)/2])
       rotate([90, 0, 0])
-        #cylinder(d=holeDiameter, h=thickness, center=false, $fn=25);
+        cylinder(d=holeDiameter, h=thickness, center=false, $fn=25);
     translate([triangleSideLengthBottom - hole2Offset, thickness, holeDiameter/2 + (topPartHeight-holeDiameter)/2])
       rotate([90, 0, 0])
-        #cylinder(d=holeDiameter, h=thickness, center=false, $fn=25);
+        cylinder(d=holeDiameter, h=thickness, center=false, $fn=25);
   }
 
 }
 
 
-wallTablePart();
+// wallTablePart();
 
-// triangleStand();
+triangleStand();
