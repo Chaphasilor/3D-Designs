@@ -6,15 +6,18 @@ casingThickness = 1.5;
 
 module lower_casing() {
 
-  //TODO translate the connector lip up if the casingThickness increases!
   #cube([casingDepth, connectorWidth + 2*casingRailWallThickness, casingThickness]);
 
-  connector_lip();
+  translate([0, 0, abs(casingThickness - casingRailWallThickness)]) {
 
-  translate([casingRailWallThickness + connectorRimDepth, casingRailWallThickness, casingRailWallThickness])
-    screw_hole();
-  translate([casingRailWallThickness + connectorRimDepth, connectorWidth + casingRailWallThickness - paddingBackSideLarger, casingRailWallThickness])
-    screw_hole();
+    connector_lip();
+
+    translate([casingRailWallThickness + connectorRimDepth, casingRailWallThickness, casingRailWallThickness])
+      screw_hole();
+    translate([casingRailWallThickness + connectorRimDepth, connectorWidth + casingRailWallThickness - paddingBackSideLarger, casingRailWallThickness])
+      screw_hole();
+
+  }
 
 }
 
