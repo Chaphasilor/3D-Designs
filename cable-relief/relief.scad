@@ -1,21 +1,22 @@
-include <./connector.scad>
+include <./config.scad>
 
-casingRailWallThickness = 1.5;
-casingDepth = 40;
-casingThickness = 1.5;
+module lower_relief() {
 
-module lower_casing() {
+  union() {
 
-  #cube([casingDepth, connectorWidth + 2*casingRailWallThickness, casingThickness]);
+    // bottom side
+    cube([casingDepth, connectorWidth + 2*casingRailWallThickness, casingThickness]);
 
-  translate([0, 0, abs(casingThickness - casingRailWallThickness)]) {
+    translate([0, 0, abs(casingThickness - casingRailWallThickness)]) {
 
-    connector_lip();
+      connector_lip();
 
-    translate([casingRailWallThickness + connectorRimDepth, casingRailWallThickness, casingRailWallThickness])
-      screw_hole();
-    translate([casingRailWallThickness + connectorRimDepth, connectorWidth + casingRailWallThickness - paddingBackSideLarger, casingRailWallThickness])
-      screw_hole();
+      translate([casingRailWallThickness + connectorRimDepth, casingRailWallThickness, casingRailWallThickness])
+        screw_hole();
+      translate([casingRailWallThickness + connectorRimDepth, connectorWidth + casingRailWallThickness - paddingBackSideLarger, casingRailWallThickness])
+        screw_hole();
+
+    }
 
   }
 
@@ -33,16 +34,16 @@ module connector_lip() {
 
       // side lips
       translate([0, 0, casingRailWallThickness]) {
-        cube([casingRailWallThickness + connectorRimDepth, 2*casingRailWallThickness, connectorHeight]);
+        cube([casingRailWallThickness + connectorRimDepth + screwHoleDepth, 2*casingRailWallThickness, lipHeightSide]);
       }
       translate([0, connectorWidth, casingRailWallThickness]) {
-        cube([casingRailWallThickness + connectorRimDepth, 2*casingRailWallThickness, connectorHeight]);
+        cube([casingRailWallThickness + connectorRimDepth + screwHoleDepth, 2*casingRailWallThickness, lipHeightSide]);
       }
 
     }
 
     translate([casingRailWallThickness, casingRailWallThickness, casingRailWallThickness])
-      cube([connectorRimDepth, connectorWidth, connectorHeight]);
+      cube([casingRailWallThickness + connectorRimDepth + screwHoleDepth, connectorWidth, connectorHeight]);
     
   }
   
@@ -52,7 +53,7 @@ module screw_hole() {
 
   difference() {
 
-    cube([protrusionDepthBack + contactsDepth, paddingBackSideLarger, connectorHeight]);
+    cube([screwHoleDepth, paddingBackSideLarger, connectorHeight]);
 
     translate([0, casingRailWallThickness + holePaddingSide, casingRailWallThickness + holePaddingBottom])
       rotate([0, 90, 0])
