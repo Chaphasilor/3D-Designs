@@ -87,6 +87,8 @@ lipHeightSide = holePaddingBottom - lipHolePadding;
 // casing/cable
 casingClampOffset = casingWidth/2 - cableDiameter/2;
 casingWallHeight = cableDiameter;
+lidAngle = atan((casingWallHeight - (casingThickness + connectorHeight)) / strippedCableLength);
+lidLength = sqrt(pow(casingWallHeight - (casingThickness + connectorHeight), 2) + pow(strippedCableLength, 2));
 
 casingRadii = [
   [0, 0, 0],
