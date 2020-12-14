@@ -4,7 +4,7 @@
 connectorWidth = 68;
 connectorHeight = 15.5;
 connectorRimDepth = 1.5;
-holeDiameter = 3.3;
+holeDiameter = 3.5;
 holePaddingBottom = 6.45;
 holePaddingSide = 1.45;
 protrusionDepthFront = 6.2;
@@ -34,8 +34,8 @@ screwLipWidth = 2.5; // the added diameter
 // cableDiameter = 22.6;
 cableDiameter = 58/PI;
 strippedCableLength = 55;
-cableLength = 20; // just a reference part of the cable
-squeezeMargin = 2.5;
+cableLength = 28; // just a reference part of the cable
+squeezeMargin = 1.5;
 
 
 
@@ -91,15 +91,21 @@ lipHeightSide = holePaddingBottom - lipHolePadding;
 
 // casing/cable
 casingClampOffset = casingWidth/2 - cableDiameter/2 - casingBottomThickness;
-casingWallHeight = cableDiameter;
+casingWallHeight = cableDiameter + max(casingRailWallThickness, casingBottomThickness) - squeezeMargin;
 
 lidAngle = casingRailWallThickness < casingBottomThickness ?
-  atan((casingWallHeight - squeezeMargin - connectorHeight) / strippedCableLength)
+  atan((cableDiameter - squeezeMargin - connectorHeight) / strippedCableLength)
   :
-  atan((casingWallHeight - squeezeMargin - connectorHeight + (casingBottomThickness - casingRailWallThickness)) / strippedCableLength);
+  atan((cableDiameter - squeezeMargin - connectorHeight + (casingBottomThickness - casingRailWallThickness)) / strippedCableLength);
 
-lidLength = sqrt(pow(casingWallHeight - (casingBottomThickness + connectorHeight), 2) + pow(strippedCableLength, 2));
+lidLength = sqrt(pow(cableDiameter - (casingBottomThickness + connectorHeight), 2) + pow(strippedCableLength, 2));
 casingWallOffset = paddingBackSideLarger + casingRailWallThickness - casingWallThickness;
+
+lidScrewHoleDiameter = 2.8;
+lidScrewHoleDepth = 5;
+lidScrewHolePadding = 1.75;
+lidScrewEarWidth = lidScrewHoleDiameter + lidScrewHolePadding*2;
+lidScrewEarAngle = atan(lidScrewEarWidth / casingWallHeight);
 
 casingRadii = [
   [0, casingWallOffset, 0],
