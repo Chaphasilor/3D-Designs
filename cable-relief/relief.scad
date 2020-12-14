@@ -5,9 +5,9 @@ module lower_relief() {
   union() {
 
     // bottom side
-    cube([casingDepth, connectorWidth + 2*casingRailWallThickness, casingThickness]);
+    cube([casingDepth, connectorWidth + 2*casingRailWallThickness, max(casingRailWallThickness*2, casingBottomThickness)]);
 
-    translate([0, 0, abs(casingThickness - casingRailWallThickness)]) {
+    translate([0, 0, abs(casingBottomThickness - casingRailWallThickness)]) {
 
       connector_lip();
 
