@@ -12,9 +12,9 @@ module lower_relief() {
       connector_lip();
 
       translate([casingRailWallThickness + connectorRimDepth, casingRailWallThickness, casingRailWallThickness])
-        screw_hole();
+        screw_hole("right");
       translate([casingRailWallThickness + connectorRimDepth, connectorWidth + casingRailWallThickness - paddingBackSideLarger, casingRailWallThickness])
-        screw_hole();
+        screw_hole("left");
 
     }
 
@@ -49,13 +49,13 @@ module connector_lip() {
   
 }
 
-module screw_hole() {
+module screw_hole(side) {
 
   difference() {
 
     cube([screwHoleDepth, paddingBackSideLarger, connectorHeight]);
 
-    translate([0, casingRailWallThickness + holePaddingSide, casingRailWallThickness + holePaddingBottom])
+    translate([0, side == "right" ? (casingRailWallThickness + holePaddingSide) : (paddingBackSideLarger - (casingRailWallThickness + holePaddingSide)), casingRailWallThickness + holePaddingBottom])
       rotate([0, 90, 0])
         cylinder(d=holeDiameter, h=protrusionDepthBack + contactsDepth, center = false, $fn = 20);
 

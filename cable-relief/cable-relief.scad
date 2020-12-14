@@ -10,3 +10,6 @@ union() {
     
 }
 // connector();
+
+// translate([0, casingWidth/2, 0])
+//   cube([100, .1, 20]);

@@ -4,9 +4,9 @@
 connectorWidth = 68;
 connectorHeight = 15.5;
 connectorRimDepth = 1.5;
-holeDiameter = 3.2;
-holePaddingBottom = 6.4;
-holePaddingSide = 1.4;
+holeDiameter = 3.3;
+holePaddingBottom = 6.45;
+holePaddingSide = 1.45;
 protrusionDepthFront = 6.2;
 protrusionDepthBack = 4;
 paddingFrontTop = 2.2;
@@ -27,14 +27,14 @@ paddingContactsTopBottom = 4.3;
 casingRailWallThickness = 1.5;
 casingThickness = 1.5;
 lipHolePadding = 1.5;
-screwLipWidth = 1.5; // the added diameter
-screwLipThickness = 1.5; // the thickness of the screw head
+screwLipWidth = 2.5; // the added diameter
 
 // casing/cable
-cableDiameter = 22.6;
+// cableDiameter = 22.6;
+cableDiameter = 58/PI;
 strippedCableLength = 55;
 cableLength = 20; // just a reference part of the cable
-squeezeMargin = 0;
+squeezeMargin = 2.5;
 
 
 
@@ -89,7 +89,7 @@ casingWidth = connectorWidth + 2*casingRailWallThickness;
 lipHeightSide = holePaddingBottom - lipHolePadding;
 
 // casing/cable
-casingClampOffset = casingWidth/2 - cableDiameter/2 - casingRailWallThickness;
+casingClampOffset = casingWidth/2 - cableDiameter/2 - casingThickness;
 casingWallHeight = cableDiameter;
 lidAngle = atan((casingWallHeight - squeezeMargin - connectorHeight) / strippedCableLength);
 lidLength = sqrt(pow(casingWallHeight - (casingThickness + connectorHeight), 2) + pow(strippedCableLength, 2));
@@ -100,31 +100,18 @@ casingRadii = [
   [strippedCableLength*0.2, casingClampOffset*0.35, 5],
   [strippedCableLength*0.3, casingClampOffset*0.5, 100],
   [strippedCableLength*0.7, casingClampOffset*0.9, 100],
-  [strippedCableLength, casingClampOffset, 1.5],
-  [strippedCableLength, casingClampOffset + cableDiameter + casingThickness*2, 1.5],
+  [strippedCableLength, casingClampOffset, 0],
+  [strippedCableLength, casingClampOffset + cableDiameter + casingThickness*2, 0],
   [strippedCableLength*0.7, casingClampOffset + cableDiameter + casingThickness*2 + casingClampOffset*0.1, 100],
   [strippedCableLength*0.3, casingClampOffset + cableDiameter + casingThickness*2 + casingClampOffset*0.5, 100],
   [strippedCableLength*0.2, casingClampOffset + cableDiameter + casingThickness*2 + casingClampOffset*0.65, 5],
   [0, casingWidth - casingWallOffset, 0]
 ];
 
-// casingWallRadii = [
-//   [0, 0, 0],
-//   [strippedCableLength*0.2, casingClampOffset*0.15, 5],
-//   [strippedCableLength*0.3, casingClampOffset*0.5, 100],
-//   [strippedCableLength*0.7, casingClampOffset*0.9, 100],
-//   [strippedCableLength, casingClampOffset, 1.5],
-//   [strippedCableLength, casingThickness + casingClampOffset, 1.5],
-//   [strippedCableLength*0.7, casingThickness + casingClampOffset*0.9, 5],
-//   [strippedCableLength*0.3, casingThickness + casingClampOffset*0.5, 100],
-//   [strippedCableLength*0.2, casingThickness + casingClampOffset*0.15, 100],
-//   [0, casingThickness, 0]
-// ];
-
 casingWallRadii = [
   [0, casingWallOffset, 0],
   [strippedCableLength*0.2, casingClampOffset*0.35, 5],
   [strippedCableLength*0.3, casingClampOffset*0.5, 100],
   [strippedCableLength*0.7, casingClampOffset*0.9, 100],
-  [strippedCableLength, casingClampOffset, 1.5],
+  [strippedCableLength, casingClampOffset, 0],
 ];
