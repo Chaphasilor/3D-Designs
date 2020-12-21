@@ -98,16 +98,6 @@ module cable_channel() {
         translate([0, -cableDiameter/2, 0])
           cube([cableLength, cableDiameter, cableDiameter/2]);
       }
-
-    // screw holes
-    translate([strippedCableLength - cableLength + lidScrewHoleDiameter/2 + lidScrewHolePadding, casingClampOffset + casingWallThickness + cableDiameter/2, cableDiameter - squeezeMargin - lidScrewHoleDepth])
-      rotate([0, -lidAngle, 0])
-      union() {
-        translate([0, cableDiameter/2 + lidScrewHoleDiameter/2 + lidScrewHolePadding, 0])
-          #cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth, center=false, $fn=20);
-        translate([0, -cableDiameter/2 - lidScrewHoleDiameter/2 - lidScrewHolePadding, 0])
-          #cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth, center=false, $fn=20);
-      }
     
   }
 
@@ -139,8 +129,7 @@ module lid_screw_ear() {
     // rotate([-lidScrewEarAngle, 0, 0])
     //   cube([lidScrewEarWidth, lidScrewEarWidth, sqrt(pow(lidScrewEarWidth, 2) + pow(casingWallHeight, 2))]);
 
-    translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth])
-      #cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth, center=false, $fn=20);
+    
 
     translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth - lidScrewEarThickness])
       #cylinder(d=lidScrewHoleDiameter*1.5, h=lidScrewHoleDepth, center=false, $fn=20);

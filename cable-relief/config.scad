@@ -39,8 +39,11 @@ squeezeMargin = 1.5;
 lidScrewHoleDiameter = 2.8;
 lidScrewHoleDepth = 12;
 lidScrewHolePadding = 1.75;
-lidScrewHoleOffset = 3;
+lidScrewHoleOffset = 2;
 lidScrewEarThickness = 3;
+
+// lid
+lidThickness = 2;
 
 
 
