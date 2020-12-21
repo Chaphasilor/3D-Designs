@@ -118,15 +118,33 @@ module lid_screw_ear() {
 
   difference() {
 
-    cube([lidScrewEarWidth, lidScrewEarWidth, casingWallHeight]);
+    // cube([lidScrewEarWidth, lidScrewEarWidth + lidScrewHoleOffset, casingWallHeight]);
 
-    rotate([-lidScrewEarAngle, 0, 0])
-      cube([lidScrewEarWidth, lidScrewEarWidth, sqrt(pow(lidScrewEarWidth, 2) + pow(casingWallHeight, 2))]);
+    rotate([90, 0, 90]) 
+    difference() {
+      
+      linear_extrude(height = lidScrewEarWidth, center = false, convexity = 1, slices = 20, scale = 1.0, $fn = 16) {
+        polygon(points = polyRound(lidScrewEarRadii, 5));
+      }
 
-    translate([lidScrewEarWidth/2, lidScrewEarWidth/2, casingWallHeight - lidScrewHoleDepth])
+      //TODO not working, throws error on render?!
+      // translate([0, 0, lidScrewHoleDiameter*1.5/4])
+      // #linear_extrude(height = lidScrewHoleDiameter*1.5, center = false, convexity = 1, slices = 20, scale = 1.0, $fn = 16) {
+      //   polygon(points = polyRound(beamChain(lidScrewEarInnerRadii, offset1=-1, offset2=5), 5));
+      // }
+
+    }
+
+
+    // rotate([-lidScrewEarAngle, 0, 0])
+    //   cube([lidScrewEarWidth, lidScrewEarWidth, sqrt(pow(lidScrewEarWidth, 2) + pow(casingWallHeight, 2))]);
+
+    translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth])
       #cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth, center=false, $fn=20);
+
+    translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth - lidScrewEarThickness])
+      #cylinder(d=lidScrewHoleDiameter*1.5, h=lidScrewHoleDepth, center=false, $fn=20);
     
   }
-
   
 }

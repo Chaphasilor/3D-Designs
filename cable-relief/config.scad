@@ -1,12 +1,12 @@
 // VARIABLES
 
 // connector
-connectorWidth = 68;
+connectorWidth = 67.5;
 connectorHeight = 15.5;
 connectorRimDepth = 1.5;
 holeDiameter = 3.5;
-holePaddingBottom = 6.45;
-holePaddingSide = 1.45;
+holePaddingBottom = 6.75;
+holePaddingSide = 1.5;
 protrusionDepthFront = 6.2;
 protrusionDepthBack = 4;
 paddingFrontTop = 2.2;
@@ -28,7 +28,7 @@ casingRailWallThickness = 1.5;
 casingBottomThickness = 1.5;
 casingWallThickness = 1.5;
 lipHolePadding = 1.5;
-screwLipWidth = 2.5; // the added diameter
+screwLipWidth = 3; // the added diameter
 
 // casing/cable
 // cableDiameter = 22.6;
@@ -36,7 +36,11 @@ cableDiameter = 58/PI;
 strippedCableLength = 55;
 cableLength = 28; // just a reference part of the cable
 squeezeMargin = 1.5;
-
+lidScrewHoleDiameter = 2.8;
+lidScrewHoleDepth = 12;
+lidScrewHolePadding = 1.75;
+lidScrewHoleOffset = 3;
+lidScrewEarThickness = 3;
 
 
 
@@ -101,9 +105,6 @@ lidAngle = casingRailWallThickness < casingBottomThickness ?
 lidLength = sqrt(pow(cableDiameter - (casingBottomThickness + connectorHeight), 2) + pow(strippedCableLength, 2));
 casingWallOffset = paddingBackSideLarger + casingRailWallThickness - casingWallThickness;
 
-lidScrewHoleDiameter = 2.8;
-lidScrewHoleDepth = 5;
-lidScrewHolePadding = 1.75;
 lidScrewEarWidth = lidScrewHoleDiameter + lidScrewHolePadding*2;
 lidScrewEarAngle = atan(lidScrewEarWidth / casingWallHeight);
 
@@ -126,4 +127,23 @@ casingWallRadii = [
   [strippedCableLength*0.3, casingClampOffset*0.5, 100],
   [strippedCableLength*0.7, casingClampOffset*0.9, 100],
   [strippedCableLength, casingClampOffset, 0],
+];
+
+lidScrewEarRadii = [
+  [0, 0, 0],
+  [0, casingWallHeight, 0],
+  [lidScrewEarWidth + lidScrewHoleOffset, casingWallHeight, 1.5],
+  [lidScrewEarWidth + lidScrewHoleOffset, casingWallHeight - lidScrewEarThickness, 1.5],
+  [(lidScrewEarWidth + lidScrewHoleOffset)*0.6, (casingWallHeight - lidScrewEarThickness)*0.85, 5],
+  [(lidScrewEarWidth + lidScrewHoleOffset)*0.4, (casingWallHeight - lidScrewEarThickness)*0.7, 5],
+  [(lidScrewEarWidth + lidScrewHoleOffset)*0.25, (casingWallHeight - lidScrewEarThickness)*0.5, 10],
+  [casingWallThickness, 0, 2.5]
+];
+
+lidScrewEarInnerRadii = [
+  [lidScrewEarWidth + lidScrewHoleOffset, casingWallHeight - lidScrewEarThickness, 1.5],
+  [(lidScrewEarWidth + lidScrewHoleOffset)*0.5, (casingWallHeight - lidScrewEarThickness)*1, 2],
+  [(lidScrewEarWidth + lidScrewHoleOffset)*0.25, (casingWallHeight - lidScrewEarThickness)*0.95, 2.5],
+  [(lidScrewEarWidth + lidScrewHoleOffset)*0.2, (casingWallHeight - lidScrewEarThickness)*0.75, 10],
+  [casingWallThickness, 0, 2.5]
 ];
