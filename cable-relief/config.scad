@@ -2,7 +2,7 @@
 
 // connector
 connectorWidth = 67.5;
-connectorHeight = 15.5;
+connectorHeight = 16.5;
 connectorRimDepth = 1.5;
 holeDiameter = 3.5;
 holePaddingBottom = 6.75;
@@ -44,6 +44,7 @@ lidScrewEarThickness = 3;
 
 // lid
 lidThickness = 2;
+lidInsetDepth = 1;
 
 
 

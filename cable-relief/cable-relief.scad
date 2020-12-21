@@ -15,7 +15,7 @@ module bottom() {
         
     }
 
-    translate([casingDepth, 0, casingWallHeight - squeezeMargin])
+im    translate([0, 0, casingWallHeight - squeezeMargin])
       rotate([0, -lidAngle, 0])
         hole_puncher();
     
@@ -36,13 +36,34 @@ module top() {
 
 }
 
-color("yellow")
-  bottom();
+print = true;
+top = true;
 
-translate([casingDepth, 0, 25])
-  color("green")
-    top();
+if (print) {
 
+  if (top) {
+
+    translate([0, 0, lidThickness])
+      rotate([180, 0, 0])
+        top();
+    
+  } else {
+
+    bottom();
+    
+  }
+  
+      
+} else {
+
+  translate([0, 0, 19])
+    color("green")
+      top();
+  
+  color("yellow")
+    bottom();
+      
+}
 
 
 // connector();
