@@ -15,7 +15,7 @@ module bottom() {
         
     }
 
-im    translate([0, 0, casingWallHeight - squeezeMargin])
+    #translate([0, 0, casingWallHeight + squeezeMargin])
       rotate([0, -lidAngle, 0])
         hole_puncher();
     

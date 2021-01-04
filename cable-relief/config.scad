@@ -35,16 +35,22 @@ screwLipWidth = 3; // the added diameter
 cableDiameter = 58/PI;
 strippedCableLength = 55;
 cableLength = 28; // just a reference part of the cable
-squeezeMargin = 1.5;
+squeezeMargin = 2;
 lidScrewHoleDiameter = 2.8;
+lidScrewHoleNutDiameter = 5;
 lidScrewHoleDepth = 12;
 lidScrewHolePadding = 1.75;
 lidScrewHoleOffset = 2;
 lidScrewEarThickness = 3;
 
 // lid
-lidThickness = 2;
-lidInsetDepth = 1;
+lidThickness = 3.5;
+lidInsetDepth = 0;
+teethOffset = 0;
+teethLength = 2.5;
+// teethWidth = 10;
+teethWidth = cableDiameter*0.95;
+teethHeight = 2;
 
 
 

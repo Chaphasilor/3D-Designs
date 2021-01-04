@@ -7,8 +7,9 @@ module lower_casing() {
   difference() {
     union() {
 
-      lower_casing_side();
-      translate([0, casingWidth, casingWallHeight + max(casingRailWallThickness, casingBottomThickness) - squeezeMargin])
+      translate([0, 0, casingBottomThickness])
+        lower_casing_side();
+      translate([0, casingWidth, casingWallHeight + max(casingRailWallThickness, casingBottomThickness)])
         rotate([180, 0, 0])
           lower_casing_side();
 
@@ -29,7 +30,7 @@ module lower_casing() {
     translate([0, 0, max(casingRailWallThickness, casingBottomThickness) + connectorHeight])
       rotate([0, -lidAngle, 0])
         translate([-5, 0, 0])
-          cube([lidLength + 10, casingWidth, (casingWallHeight - connectorHeight)]);
+          cube([lidLength + 10, casingWidth, (casingWallHeight - connectorHeight + squeezeMargin*5)]);
 
     // screw lip
     translate([0, 2*casingRailWallThickness + holePaddingSide, abs(casingBottomThickness - casingRailWallThickness) + (holeDiameter+screwLipWidth)/2 + holePaddingBottom])
@@ -132,7 +133,7 @@ module lid_screw_ear() {
     
 
     translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth - lidScrewEarThickness])
-      #cylinder(d=lidScrewHoleDiameter*1.5, h=lidScrewHoleDepth, center=false, $fn=20);
+      #cylinder(d=lidScrewHoleNutDiameter, h=lidScrewHoleDepth, center=false, $fn=20);
     
   }
   
