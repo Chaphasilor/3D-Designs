@@ -31,7 +31,11 @@ module lid() {
         cube([lidScrewEarWidth, lidScrewEarWidth + lidScrewHoleOffset, lidThickness]);
 
   }
-    
+
+
+  translate([0, 0, -paddingFrontTop])
+    cube([casingRailWallThickness, connectorWidth + 2*casingRailWallThickness, paddingFrontTop]);
+
 }
 
 module hole_puncher() {
