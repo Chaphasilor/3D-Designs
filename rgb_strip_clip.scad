@@ -14,14 +14,23 @@ prismTop = stripWidth + wallThickness;
 prismBack = prismTop * sin(angle);
 prismBottom = prismTop * cos(angle);
 finTotalLength = 2*finLength + stripWidth;
+innerPrismScale = min((prismBack - 3*wallThickness)/prismBack, (prismBottom - 3*wallThickness)/prismBottom);
 
 module clip() {
 
-  prism(gapLength, prismBottom, prismBack);
+  difference() {
+
+    prism(gapLength, prismBottom, prismBack);
+
+    #translate([0, (prismBottom - prismBottom*innerPrismScale - wallThickness), wallThickness])
+    scale([1, innerPrismScale, innerPrismScale])
+        prism(gapLength, prismBottom, prismBack);
+
+  }
 
   difference() {
     
-    #rotate([angle, 0, 0]) 
+    rotate([angle, 0, 0]) 
       translate([0, -prismTop, 0])
         cube([gapLength, 2*prismTop, (wallThickness + stripThickness)]);
 
