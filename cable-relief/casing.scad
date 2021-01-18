@@ -16,11 +16,11 @@ module lower_casing() {
       translate([0, 0, casingBottomThickness])
         cable_channel();
 
-      translate([strippedCableLength, casingClampOffset, 0])
+      translate([strippedCableLength, casingClampOffset - lidScrewHolePadding*1.5, 0])
         rotate([0, 0, 180])
           lid_screw_ear();
 
-      translate([strippedCableLength - lidScrewEarWidth, casingWidth - casingClampOffset, 0])
+      translate([strippedCableLength - lidScrewEarWidth, casingWidth - casingClampOffset + lidScrewHolePadding*1.5, 0])
         // rotate([0, 0, 180])
           lid_screw_ear();
 
@@ -133,7 +133,7 @@ module lid_screw_ear() {
     
 
     translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth - lidScrewEarThickness])
-      #cylinder(d=lidScrewHoleNutDiameter, h=lidScrewHoleDepth, center=false, $fn=20);
+      #cylinder(d=lidScrewHoleNutDiameter, h=lidScrewHoleDepth, center=false, $fn=6);
     
   }
   
