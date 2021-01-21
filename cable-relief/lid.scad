@@ -48,13 +48,20 @@ module hole_puncher() {
     translate([strippedCableLength - lidScrewEarWidth/2, casingClampOffset - lidScrewEarWidth/2 - lidScrewHoleOffset - lidScrewHolePadding*1.5, -lidScrewHoleDepth])
       cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth+2.5, center=false, $fn=20);
 
-    // front
+    // middle
     translate([strippedCableLength - cableLength + lidScrewHoleDiameter/2 + lidScrewHolePadding, casingClampOffset + casingWallThickness + cableDiameter/2, -lidScrewHoleDepth]) {
       translate([0, cableDiameter/2 + lidScrewHoleDiameter/2 + lidScrewHolePadding, 0])
         cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth+2.5, center=false, $fn=20);
       translate([0, -cableDiameter/2 - lidScrewHoleDiameter/2 - lidScrewHolePadding, 0])
         cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth+2.5, center=false, $fn=20);
     }
+
+    // front
+    translate([strippedCableLength*0.2, casingClampOffset*0.35 + casingWallThickness/2 + lidScrewHolePadding, -lidScrewHoleDepth]) 
+      cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth+2.5, center=false, $fn=20);
+
+    translate([strippedCableLength*0.2, casingWidth - (casingClampOffset*0.35 + casingWallThickness/2) - lidScrewHolePadding, -lidScrewHoleDepth]) 
+      cylinder(d=lidScrewHoleDiameter, h=lidScrewHoleDepth+2.5, center=false, $fn=20);
     
   }
   

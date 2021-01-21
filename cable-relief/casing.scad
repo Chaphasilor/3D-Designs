@@ -1,4 +1,5 @@
 include <./config.scad>
+include <./lid.scad>
 
 module lower_casing() {
 
@@ -13,8 +14,17 @@ module lower_casing() {
         rotate([180, 0, 0])
           lower_casing_side();
 
+      translate([0, 0, casingBottomThickness]) {
+        front_screw_anchor("right");
+        front_screw_anchor("left");
+      }
+
       translate([0, 0, casingBottomThickness])
         cable_channel();
+
+      translate([strippedCableLength, casingClampOffset + casingWallThickness, casingBottomThickness])
+      rotate([180, 0, 0])
+        teeth();
 
       translate([strippedCableLength, casingClampOffset - lidScrewHolePadding*1.5, 0])
         rotate([0, 0, 180])
@@ -95,7 +105,7 @@ module cable_channel() {
     translate([strippedCableLength - cableLength, casingClampOffset + cableDiameter/2 + casingWallThickness, cableDiameter/2])
       union() {
         rotate([0, 90, 0])
-          #cylinder(d=cableDiameter, h=cableLength, center=false);
+          cylinder(d=cableDiameter, h=cableLength, center=false);
         translate([0, -cableDiameter/2, 0])
           cube([cableLength, cableDiameter, cableDiameter/2]);
       }
@@ -103,6 +113,38 @@ module cable_channel() {
   }
 
   
+}
+
+module front_screw_anchor(position) {
+
+  translate([0, 0, 0])
+    linear_extrude(height=cableDiameter, center=false, convexity=1, slices=20, scale=1.0, $fn = 30) {
+
+      difference() {
+
+        shell2d(casingBottomThickness) {
+
+          polygon(polyRound(casingRadii, 5));
+
+          if (position == "right") {
+            translate([strippedCableLength*0.2, casingClampOffset*0.35 + casingWallThickness, 0])
+              circle(r=frontScrewAnchorRadius);
+          } else {
+            translate([strippedCableLength*0.2, casingWidth - (casingClampOffset*0.35 + casingWallThickness), 0])
+              circle(r=frontScrewAnchorRadius);
+          }
+          
+        }
+        
+        // get rid of the shell
+        shell2d(casingBottomThickness) {
+          polygon(polyRound(casingRadii, 5));
+        }
+
+      }
+
+    }
+
 }
 
 module lid_screw_ear() {
@@ -132,8 +174,9 @@ module lid_screw_ear() {
 
     
 
-    translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth - lidScrewEarThickness])
-      #cylinder(d=lidScrewHoleNutDiameter, h=lidScrewHoleDepth, center=false, $fn=6);
+    translate([lidScrewEarWidth/2, lidScrewEarWidth/2 + lidScrewHoleOffset, casingWallHeight - lidScrewHoleDepth - lidScrewEarThickness + lidScrewEarNutInset])
+      // $fn=6 for hexagonal nuts
+      cylinder(d=lidScrewHoleNutDiameter, h=lidScrewHoleDepth, center=false, $fn=6);
     
   }
   

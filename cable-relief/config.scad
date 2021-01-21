@@ -9,8 +9,8 @@ holePaddingBottom = 6.75;
 holePaddingSide = 1.5;
 protrusionDepthFront = 6.2;
 protrusionDepthBack = 4;
-paddingFrontTop = 2.2;
-paddingFrontBottom = 2.2;
+paddingFrontTop = 1.5;
+paddingFrontBottom = 2;
 paddingBackTop = 0.7;
 paddingBackBottom = 0.8;
 paddingFrontSideSmaller = 8.2;
@@ -34,20 +34,21 @@ screwLipWidth = 3; // the added diameter
 // cableDiameter = 22.6;
 cableDiameter = 58/PI;
 strippedCableLength = 75;
-cableLength = 28; // just a reference part of the cable
-squeezeMargin = 1.85;
+cableLength = 20; // just a reference part of the cable
+squeezeMargin = 1;
 lidScrewHoleDiameter = 2.8;
 lidScrewHoleNutDiameter = 6.5;
 lidScrewHoleDepth = 18;
 lidScrewHolePadding = 2.5;
 lidScrewHoleOffset = 2;
-lidScrewEarThickness = 3;
+lidScrewEarThickness = 4;
+lidScrewEarNutInset = 1;
 
 // lid
 lidThickness = 3.5;
 lidInsetDepth = 0;
 teethOffset = 0;
-teethLength = 2.5;
+teethLength = 4.5;
 // teethWidth = 10;
 teethWidth = cableDiameter*0.95;
 teethHeight = 2;
@@ -106,7 +107,9 @@ lipHeightSide = holePaddingBottom - lipHolePadding;
 // casing/cable
 casingClampOffset = casingWidth/2 - cableDiameter/2 - casingBottomThickness;
 casingWallHeight = cableDiameter + max(casingRailWallThickness, casingBottomThickness) - squeezeMargin;
+frontScrewAnchorRadius = lidScrewHoleDiameter + lidScrewHolePadding;
 
+// lid
 lidAngle = casingRailWallThickness < casingBottomThickness ?
   atan((cableDiameter - squeezeMargin - connectorHeight) / strippedCableLength)
   :
@@ -118,6 +121,7 @@ casingWallOffset = paddingBackSideLarger + casingRailWallThickness - casingWallT
 lidScrewEarWidth = lidScrewHoleDiameter + lidScrewHolePadding*2;
 lidScrewEarAngle = atan(lidScrewEarWidth / casingWallHeight);
 
+// polygons
 casingRadii = [
   [0, casingWallOffset, 0],
   [strippedCableLength*0.2, casingClampOffset*0.35, 5],
@@ -133,7 +137,7 @@ casingRadii = [
 
 casingWallRadii = [
   [0, casingWallOffset, 0],
-  [strippedCableLength*0.2, casingClampOffset*0.35, 5],
+  [strippedCableLength*0.2, casingClampOffset*0.35, 1],
   [strippedCableLength*0.3, casingClampOffset*0.5, 100],
   [strippedCableLength*0.7, casingClampOffset*0.9 - lidScrewHolePadding*1.5, 100],
   [strippedCableLength, casingClampOffset - lidScrewHolePadding*1.5, 0],

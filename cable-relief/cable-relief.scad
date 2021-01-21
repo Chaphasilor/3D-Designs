@@ -37,7 +37,7 @@ module top() {
 }
 
 print = false;
-top = false;
+top = true;
 
 if (print) {
 
@@ -56,7 +56,7 @@ if (print) {
       
 } else {
 
-  translate([0, 0, 19])
+  translate([0, 0, 30])
     color("green")
       top();
   
