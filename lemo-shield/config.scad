@@ -1,16 +1,36 @@
+include <EPL_00_250_NTN.scad>;
 // VARIABLES
 
 // pcb
-pcbLength = 150.0; // x
+pcbLength = 160.0; // x
 pcbWidth = 100; // y
-pcbThickness = 3;
+pcbThickness = 1.6;
 
 // shield
-shieldLength = pcbLength; // TODO add actual measurements
-shieldHeight = 15; // TODO add actual measurements
+shieldMargin = 5;
+shieldLength = pcbWidth - 2 * shieldMargin;
+shieldHeight = 15;
 shieldThickness = 1.5;
 
+shieldMountingHoleDiameter = 2.5;
+shieldMountingPlateWidth = 0.7 * (25.5 - 13.5 - EPL_00_250_NTN_baseSideLength);
+shieldMountingPlateLength = 6.67 + shieldMountingHoleDiameter + 3;
+shieldMountingPlateThickness = 3;
+
 // positions
+
+mountingHolePositions = [
+  [
+    6.67,
+    -19.5,
+    0,
+  ],
+  [
+    6.67,
+    -67.5,
+    0,
+  ],
+];
 
 lemoPositions = [
   [

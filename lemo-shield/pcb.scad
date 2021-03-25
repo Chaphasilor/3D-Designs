@@ -7,7 +7,7 @@ module pcb() {
   difference() {
     
     translate([0, -pcbWidth, 0])
-      cube([pcbLength, pcbWidth, pcbThickness]);
+      color("darkgreen") cube([pcbLength, pcbWidth, pcbThickness]);
 
   }
 
@@ -20,8 +20,14 @@ module pcb() {
             scale(1.1) EPL_00_250_NTN();
     }
 
+    for (holePosition = mountingHolePositions) {
+      translate(holePosition)
+        color("red")
+          sphere(d=3);
+    }
+
     translate(ledPosition)
-    color("green")
+    color("lightgreen")
       scale(1.1) Kingbright_L_1503CB_1GD();
 
   }
