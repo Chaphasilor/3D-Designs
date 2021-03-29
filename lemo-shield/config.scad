@@ -16,6 +16,8 @@ shieldMountingHoleDiameter = 2.5;
 shieldMountingPlateWidth = 0.7 * (25.5 - 13.5 - EPL_00_250_NTN_baseSideLength);
 shieldMountingPlateLength = 6.67 + shieldMountingHoleDiameter + 3;
 shieldMountingPlateThickness = 3;
+shieldMountingPlateRoundedHeight = 0.8*(shieldHeight - shieldMountingPlateThickness);
+shieldMountingPlateRoundedLength = 6;
 
 // positions
 
@@ -71,8 +73,11 @@ ledPosition = [
   0
 ];
 
-// hole punchers
+// radii
 
-// VARIABLES (CALCULATED)
-
-// pcb
+shieldMountingPlateRoundedRadii = [
+  [0, 0, 0],
+  [0, shieldMountingPlateRoundedHeight, 0],
+  [0.2*shieldMountingPlateRoundedLength, 0.2*shieldMountingPlateRoundedHeight, 10],
+  [shieldMountingPlateRoundedLength, 0, 0]
+];

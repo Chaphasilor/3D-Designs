@@ -6,19 +6,24 @@ module shield() {
   translate([0, -(shieldLength + shieldMargin), 0])
     cube([shieldThickness, shieldLength, shieldHeight]);
 
-    #polygon(polyRound([
-      [0, 0, 0],
-      [10,0, 1],
-      [0, 10,0]
-    ],10));
 
     difference() {
 
       // shieldMountingPlates
       for (holePosition = mountingHolePositions) {
-        translate([shieldThickness, holePosition.y - shieldMountingPlateWidth/2, holePosition.z + pcbThickness])
-            color("blue")
+        color("blue")
+          translate([shieldThickness, 0, pcbThickness]) {
+
+            translate([0, holePosition.y - shieldMountingPlateWidth/2, holePosition.z])
               cube([shieldMountingPlateLength, shieldMountingPlateWidth, shieldMountingPlateThickness]);
+
+            translate([0, holePosition.y + shieldMountingPlateWidth/2, shieldMountingPlateThickness])
+              rotate([90, 0, 0])
+                linear_extrude(height = shieldMountingPlateWidth, center = false, convexity = 1, slices = 20, scale = 1.0, $fn = 16) {
+                  polygon(points = polyRound(shieldMountingPlateRoundedRadii, 5));
+                }
+
+          }
       }
 
       hole_puncher();
