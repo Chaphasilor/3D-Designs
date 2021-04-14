@@ -16,8 +16,9 @@ shieldMountingHoleDiameter = 2.5;
 shieldMountingPlateWidth = 0.7 * (25.5 - 13.5 - EPL_00_250_NTN_baseSideLength);
 shieldMountingPlateLength = 6.67 + shieldMountingHoleDiameter + 3;
 shieldMountingPlateThickness = 3;
-shieldMountingPlateRoundedHeight = 0.8*(shieldHeight - shieldMountingPlateThickness);
-shieldMountingPlateRoundedLength = 6;
+shieldMountingPlateRoundedHeight = shieldHeight - shieldMountingPlateThickness - pcbThickness;
+shieldMountingPlateRoundedTopThickness = 1;
+shieldMountingPlateRoundedLength = 5;
 
 // positions
 
@@ -78,6 +79,7 @@ ledPosition = [
 shieldMountingPlateRoundedRadii = [
   [0, 0, 0],
   [0, shieldMountingPlateRoundedHeight, 0],
-  [0.2*shieldMountingPlateRoundedLength, 0.2*shieldMountingPlateRoundedHeight, 10],
+  [shieldMountingPlateRoundedTopThickness, shieldMountingPlateRoundedHeight, 0],
+  [0.3*(shieldMountingPlateRoundedLength + shieldMountingPlateRoundedTopThickness), 0.1*shieldMountingPlateRoundedHeight, 10],
   [shieldMountingPlateRoundedLength, 0, 0]
 ];
