@@ -22,9 +22,9 @@ module lower_casing() {
       translate([0, 0, casingBottomThickness])
         cable_channel();
 
-      translate([strippedCableLength, casingClampOffset + casingWallThickness, casingBottomThickness])
-      rotate([180, 0, 0])
-        teeth();
+      translate([strippedCableLength - teethOffsetBottom, casingClampOffset + casingWallThickness, casingBottomThickness])
+        rotate([180, 0, 0])
+          teeth();
 
       translate([strippedCableLength, casingClampOffset - lidScrewHolePadding*1.5, 0])
         rotate([0, 0, 180])

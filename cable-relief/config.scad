@@ -47,8 +47,9 @@ lidScrewEarNutInset = 1;
 // lid
 lidThickness = 3.5;
 lidInsetDepth = 0;
-teethOffset = 0;
 teethLength = 4.5;
+teethOffsetTop = 0;
+teethOffsetBottom = teethLength/2;
 // teethWidth = 10;
 teethWidth = cableDiameter*0.95;
 teethHeight = 2;

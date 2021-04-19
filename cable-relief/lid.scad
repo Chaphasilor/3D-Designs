@@ -12,7 +12,7 @@ module lid() {
   }
 
   color("orange")
-    translate([casingDepth + strippedCableLength - teethOffset, (casingWidth/2 + teethWidth/2), 0])
+    translate([casingDepth + strippedCableLength - teethOffsetTop, (casingWidth/2 + teethWidth/2), 0])
       teeth();
 
   translate([casingDepth, 0, 0]) {
