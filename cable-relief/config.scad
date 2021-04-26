@@ -1,7 +1,7 @@
 // VARIABLES
 
 // connector
-connectorWidth = 67.5;
+connectorWidth = 68.5;
 connectorHeight = 16.5;
 connectorRimDepth = 1.5;
 holeDiameter = 3.5;
@@ -52,7 +52,7 @@ teethOffsetTop = 0;
 teethOffsetBottom = teethLength/2;
 // teethWidth = 10;
 teethWidth = cableDiameter*0.95;
-teethHeight = 2;
+teethHeight = 1.8;
 
 
 
