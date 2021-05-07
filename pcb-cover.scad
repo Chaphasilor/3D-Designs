@@ -10,11 +10,11 @@ sideBlockWidth = 5;
 sideBlockDepth = depth;
 sideBlockThickness = 5.15;
 
-overhangWidth = 5.8;
+overhangWidth = 6.5;
 overhangDepth = depth;
 overhangThickness = sideBlockThickness;
 // overhangAngle = 56;
-overhangAngle = 50;
+overhangAngle = 52;
 overhangAngledSideWidth = sqrt(overhangThickness^2 + overhangWidth^2);
 
 holeDiameter = 50;
@@ -44,7 +44,12 @@ module pcb_cover() {
   color("green")
   translate([0, 0, thickness]) {
     translate([0, 0, 0])
-      cube([sideBlockWidth, sideBlockDepth, sideBlockThickness]);
+      difference() {
+        cube([sideBlockWidth, sideBlockDepth, sideBlockThickness]);
+        translate([5, 0, wallHeight])
+          rotate([0, -45, 0])
+            #cube([sideBlockWidth, sideBlockDepth, sideBlockThickness]);
+      }
     translate([width - sideBlockWidth, 0, 0])
       cube([sideBlockWidth, sideBlockDepth, sideBlockThickness]);
   }
