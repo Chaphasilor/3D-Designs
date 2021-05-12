@@ -1,23 +1,24 @@
 include <wedge.scad>;
 
-width = 5 + 129 + 5;
+width = 5 + 129 + 5; // actual measurements
 depth = 74;
 thickness = 2;
 wallThickness = 2;
 wallHeight = 3;
 
-sideBlockWidth = 5;
+sideBlockWidth = 3.75; // decreased block width without changing total width
 sideBlockDepth = depth;
-sideBlockThickness = 5.15;
+sideBlockThickness = 5.75;
 
-overhangWidth = 6.5;
+overhangWidth = 8;
 overhangDepth = depth;
 overhangThickness = sideBlockThickness;
-// overhangAngle = 56;
-overhangAngle = 52;
+overhangAngle = 56;
 overhangAngledSideWidth = sqrt(overhangThickness^2 + overhangWidth^2);
 
 holeDiameter = 50;
+
+edgeAngle = -30;
 
 module pcb_cover() {
 
@@ -46,8 +47,8 @@ module pcb_cover() {
     translate([0, 0, 0])
       difference() {
         cube([sideBlockWidth, sideBlockDepth, sideBlockThickness]);
-        translate([5, 0, wallHeight])
-          rotate([0, -45, 0])
+        translate([sideBlockWidth, 0, wallHeight-1])
+          rotate([0, edgeAngle, 0])
             #cube([sideBlockWidth, sideBlockDepth, sideBlockThickness]);
       }
     translate([width - sideBlockWidth, 0, 0])
