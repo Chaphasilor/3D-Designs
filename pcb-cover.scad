@@ -1,6 +1,6 @@
 include <wedge.scad>;
 
-width = 5 + 128 + 5; // modified measurements
+width = 5 + 128.5 + 5; // modified measurements
 depth = 74;
 thickness = 2;
 wallThickness = 2;
