@@ -10,8 +10,6 @@ clearanceTop = 27.2;
 holeDiameter = 3.8;
 
 
-
-
 // VARIABLES (CALCULATED)
 
 // case (general)
