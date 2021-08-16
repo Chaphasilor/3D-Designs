@@ -1,7 +1,11 @@
+$fn = 25;
+
 wallThickness = 3;
 boardWidth = 250;
 boardDepth = 70;
 boardThickness = 2;
+
+boardPlay = 0.5;
 
 clearanceRight = 3;
 clearanceLeft = 1;
@@ -22,7 +26,7 @@ smallHoleMarginZ = 18.5;
 
 // computed
 
-caseWidth = boardWidth + 2.5*wallThickness - (clearanceLeft + clearanceRight);
+caseWidth = boardWidth + 3*wallThickness - (clearanceLeft + clearanceRight);
 caseDepth = boardDepth + wallThickness;
 boardHeightTotal = (clearanceBottom + clearanceTop + boardThickness);
 caseHeight = 4* boardHeightTotal + 2*wallThickness;
@@ -35,33 +39,34 @@ module csa_32ch_rack() {
 
       union() {
 
-        cube([caseWidth, caseDepth, caseHeight]);
+        difference() {
+          cube([caseWidth, caseDepth, caseHeight]);
+
+          translate([wallThickness, 0, wallThickness])
+            cube([caseWidth-3*wallThickness, caseDepth-wallThickness, caseHeight-2*wallThickness]);
+        }
 
         translate([-backLipWidth, caseDepth - wallThickness, 0])
           backLip();
         translate([caseWidth, caseDepth - wallThickness, 0])
           backLip();
-        
-        
+
+        translate([supportPillarOffsetLeft, 0, 0])
+            supportPillar();
+
       }
 
-      translate([wallThickness, 0, wallThickness])
-        cube([caseWidth-2.5*wallThickness, caseDepth-wallThickness, caseHeight-2*wallThickness]);
-
       translate([wallThickness - clearanceLeft, 0, clearanceBottom + boardThickness + wallThickness])
-        board();
+        #board();
       translate([wallThickness - clearanceLeft, 0, clearanceBottom + boardThickness + wallThickness + boardHeightTotal])
-        board();
+        #board();
       translate([wallThickness - clearanceLeft, 0, clearanceBottom + boardThickness + wallThickness + 2*boardHeightTotal])
-        board();
+        #board();
       translate([wallThickness - clearanceLeft, 0, clearanceBottom + boardThickness + wallThickness + 3*boardHeightTotal])
-        board();
+        #board();
 
     }
-    
-    translate([supportPillarOffsetLeft, 0, 0])
-      supportPillar();
-    
+
   }
   
 }
@@ -97,17 +102,18 @@ module backLip() {
 
 module board() {
   
-  difference() {
-    color("red")
-      cube([boardWidth, boardDepth, boardThickness]);
+  translate([-boardPlay, 0, -boardPlay])
+    difference() {
+      color("red")
+        cube([boardPlay+boardWidth+boardPlay, boardDepth, boardPlay+boardThickness+boardPlay]);
 
-    color("blue") {
-      translate([0, 0, boardThickness])
-        cube([boardWidth, boardDepth, clearanceTop]);
-      translate([0, 0, -boardThickness-clearanceBottom])
-        cube([boardWidth, boardDepth, clearanceBottom]);
+      color("blue") {
+        translate([0, 0, boardPlay+boardThickness+boardPlay])
+          cube([boardWidth, boardDepth, clearanceTop]);
+        translate([0, 0, -boardThickness-clearanceBottom])
+          cube([boardWidth, boardDepth, clearanceBottom]);
+      }
     }
-  }
   
 }
 
