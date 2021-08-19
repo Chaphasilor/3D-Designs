@@ -17,6 +17,7 @@ supportPillarThicknessLeft = 3;
 // supportPillarSupportWidthLeft = 13;
 supportPillarSupportWidthLeft = 0;
 supportPillarSupportOffsetTopLeft = 13;
+supportPillarStabilizerWidth = 8;
 
 backLipWidth = 20;
 
@@ -75,6 +76,12 @@ module supportPillar() {
 
   cube([supportPillarThicknessLeft, caseDepth, caseHeight]);
 
+  translate([-(supportPillarStabilizerWidth-supportPillarThicknessLeft)/2, 0, boardHeightTotal])
+    cube([supportPillarStabilizerWidth, caseDepth, supportPillarThicknessLeft]);
+  translate([-(supportPillarStabilizerWidth-supportPillarThicknessLeft)/2, 0, 2*boardHeightTotal])
+    cube([supportPillarStabilizerWidth, caseDepth, supportPillarThicknessLeft]);
+  translate([-(supportPillarStabilizerWidth-supportPillarThicknessLeft)/2, 0, 3*boardHeightTotal])
+    cube([supportPillarStabilizerWidth, caseDepth, supportPillarThicknessLeft]);
   // translate([0, 0, 0])
   //   cube([supportPillarSupportWidthLeft, caseDepth, supportPillarThicknessLeft])
   
