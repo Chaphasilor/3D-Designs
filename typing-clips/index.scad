@@ -17,7 +17,7 @@ clipRoundedness = 5; // [0:25]
 
 // vibration motor
 
-vibrationMotorDiameter = 10; // [2:0.1:25]
+vibrationMotorDiameter = 10.5; // [2:0.1:25]
 vibrationMotorThickness = 2.5; // [1:0.1:7]
 vibrationMotorCableWidth = 3; // [0.5:0.1:7]
 
@@ -54,8 +54,9 @@ module engineer() {
           vibrationMotorHolder();
     }
     
+    //TODO fix vibration motor offset not being applied correctly
     #translate([0, 0, clipMaxHeight])
-      vibrationMotorCableHolePuncher(clipMaxHeight);
+      vibrationMotorCableHolePuncher(clipMaxHeight/2);
   }
 
 }
@@ -73,11 +74,10 @@ module print() {
       }
       
       translate([0, 0, clipMaxHeight])
-        vibrationMotorCableHolePuncher(clipMaxHeight);
+        vibrationMotorCableHolePuncher(clipMaxHeight/2);
     }
 
 }
-
 
 if (mode == "print") {
   print();

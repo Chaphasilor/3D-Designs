@@ -1,0 +1,47 @@
+{
+    "parameterSets": {
+        "index finger (right)": {
+            "$fn": "30",
+            "clipRoundedness": "5",
+            "clipThickness": "1.2",
+            "fingerNailLength": "13",
+            "fingerThicknessLeftRight": "14.5",
+            "fingerThicknessTopBottom": "10",
+            "mode": "print",
+            "vibrationMotorCableWidth": "3",
+            "vibrationMotorDiameter": "10.5",
+            "vibrationMotorHolderFingerOffset": "-0.7",
+            "vibrationMotorHolderWallThickness": "0.6",
+            "vibrationMotorThickness": "2.5"
+        },
+        "middle finger (right)": {
+            "$fn": "30",
+            "clipRoundedness": "5",
+            "clipThickness": "1.2",
+            "fingerNailLength": "13",
+            "fingerThicknessLeftRight": "16",
+            "fingerThicknessTopBottom": "11.5",
+            "mode": "print",
+            "vibrationMotorCableWidth": "3",
+            "vibrationMotorDiameter": "10.5",
+            "vibrationMotorHolderFingerOffset": "-0.7",
+            "vibrationMotorHolderWallThickness": "0.6",
+            "vibrationMotorThickness": "2.5"
+        },
+        "pinkie finger (right)": {
+            "$fn": "30",
+            "clipRoundedness": "5",
+            "clipThickness": "1.2",
+            "fingerNailLength": "13",
+            "fingerThicknessLeftRight": "13.7",
+            "fingerThicknessTopBottom": "9.7",
+            "mode": "print",
+            "vibrationMotorCableWidth": "3",
+            "vibrationMotorDiameter": "10.5",
+            "vibrationMotorHolderFingerOffset": "-0.9",
+            "vibrationMotorHolderWallThickness": "0.6",
+            "vibrationMotorThickness": "2.5"
+        }
+    },
+    "fileFormatVersion": "1"
+}

@@ -6,8 +6,8 @@ clipMaxHeight = fingerThicknessTopBottom *2/3;
 
 clipRadii = [
   [
-    -1,
-    fingerThicknessLeftRight *1/2 *2/3,
+    -2,
+    fingerThicknessLeftRight *1/2 *3/4,
     clipRoundedness
   ],
   [
