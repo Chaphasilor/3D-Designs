@@ -56,13 +56,9 @@ module engineer() {
           vibrationMotorHolder();
     }
 
-    union() {
-      #clipInnerHolePuncher();
-      
-      #translate([0, 0, clipMaxHeight])
-        vibrationMotorCableHolePuncher(clipMaxHeight/2);
-
-    }
+    #clipInnerHolePuncher();
+    #translate([0, 0, clipMaxHeight])
+      vibrationMotorCableHolePuncher(clipMaxHeight/2);
   }
 
 }
@@ -79,6 +75,7 @@ module print() {
             vibrationMotorHolder();
       }
       
+      clipInnerHolePuncher();
       translate([0, 0, clipMaxHeight])
         vibrationMotorCableHolePuncher(clipMaxHeight/2);
     }
