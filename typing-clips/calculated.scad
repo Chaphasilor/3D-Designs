@@ -21,7 +21,7 @@ clipRadii = [
     clipRoundedness
   ],
   [
-    clipMaxHeight-0000.1,
+    clipMaxHeight*9/10,
     fingerThicknessLeftRight* 1/3,
     clipRoundedness
   ],
@@ -31,6 +31,7 @@ clipRadii = [
     clipRoundedness
   ],
 ];
+clipNegtiveScale = 1 - (clipThickness/2)/clipMaxHeight;
 
 // vibration motor
 vibrationMotorHolderCutoutHeight = vibrationMotorThickness + vibrationMotorHolderFingerOffset;

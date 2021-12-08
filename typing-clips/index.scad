@@ -12,7 +12,7 @@ fingerThicknessLeftRight = 14.5; // [5:0.1:25]
 fingerThicknessTopBottom = 10; // [5:0.1:25]
 fingerNailLength = 13; // [7:0.5:25]
 
-clipThickness = 0.6; // [0.1:0.1:5]
+clipThickness = 1; // [0.1:0.1:5]
 clipRoundedness = 5; // [0:25]
 
 // vibration motor
@@ -53,9 +53,14 @@ module engineer() {
         translate([0, 0, clipMaxHeight])
           vibrationMotorHolder();
     }
-    
-    #translate([0, 0, clipMaxHeight])
-      vibrationMotorCableHolePuncher(clipMaxHeight/2);
+
+    union() {
+      #clipInnerHolePuncher();
+      
+      #translate([0, 0, clipMaxHeight])
+        vibrationMotorCableHolePuncher(clipMaxHeight/2);
+
+    }
   }
 
 }

@@ -1,8 +1,8 @@
 
 module vibrationMotorHolder() {
 
-  translate([0, -vibrationMotorHolderTotalDepth/2, vibrationMotorHolderTotalHeight/2])
-    cylinder(d=vibrationMotorHolderTotalWidth,h=vibrationMotorHolderTotalHeight, center=true);
+  translate([0, -vibrationMotorHolderTotalDepth/2, vibrationMotorHolderTotalHeight/2 - clipThickness/2])
+    cylinder(d=vibrationMotorHolderTotalWidth,h=vibrationMotorHolderTotalHeight + clipThickness, center=true);
   
 }
 
