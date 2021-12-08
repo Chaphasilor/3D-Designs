@@ -9,13 +9,12 @@ module vibrationMotorHolder() {
 
 module vibrationMotorCableHolePuncher(punchHeight) {
 
-  translate([0, -vibrationMotorHolderTotalDepth/2, vibrationMotorHolderTotalHeight/2])
-  translate([0, 0, -(vibrationMotorHolderCutoutHeight/2 + punchHeight/2)]) {
+  translate([0, -vibrationMotorHolderTotalDepth/2, -punchHeight]) {
 
-      cylinder(d=vibrationMotorDiameter, h=vibrationMotorHolderCutoutHeight + punchHeight, center=true);
+      cylinder(d=vibrationMotorDiameter, h=(vibrationMotorHolderCutoutHeight + punchHeight), center=false);
 
-      translate([0, vibrationMotorHolderTotalDepth/2 - vibrationMotorDiameter/4, 0])
-        cube([vibrationMotorCableWidth, vibrationMotorDiameter/2 * 1.5, vibrationMotorHolderCutoutHeight + punchHeight], center=true);
+      translate([-vibrationMotorCableWidth/2, 0 , 0])
+        cube([vibrationMotorCableWidth, vibrationMotorDiameter/2 * 1.5, vibrationMotorHolderCutoutHeight + punchHeight], center=false);
 
     }
   

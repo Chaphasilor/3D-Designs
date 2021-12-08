@@ -22,7 +22,7 @@ vibrationMotorThickness = 2.5; // [1:0.1:7]
 vibrationMotorCableWidth = 3; // [0.5:0.1:7]
 
 vibrationMotorHolderWallThickness = 0.6; // [0.1:0.1:5]
-vibrationMotorHolderFingerOffset = -0.7; // [-2.5:0.1:2.5]
+vibrationMotorHolderFingerOffset = -0.7; // [-2.5:0.1:0]
 
 // -----------------------
 
@@ -54,7 +54,6 @@ module engineer() {
           vibrationMotorHolder();
     }
     
-    //TODO fix vibration motor offset not being applied correctly
     #translate([0, 0, clipMaxHeight])
       vibrationMotorCableHolePuncher(clipMaxHeight/2);
   }
