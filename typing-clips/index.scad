@@ -14,6 +14,8 @@ fingerNailLength = 13; // [7:0.5:25]
 
 clipThickness = 1; // [0.1:0.1:5]
 clipRoundedness = 5; // [0:25]
+clipScaleX = 0.75; // [0:0.05:1]
+clipScaleY = 0.75; // [0:0.05:1]
 
 // vibration motor
 
