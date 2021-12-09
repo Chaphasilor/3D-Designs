@@ -1,8 +1,10 @@
 {
     "parameterSets": {
         "index finger (right)": {
-            "$fn": "30",
+            "$fn": "60",
             "clipRoundedness": "5",
+            "clipScaleX": "0.85",
+            "clipScaleY": "0.7",
             "clipThickness": "1.2",
             "fingerNailLength": "13",
             "fingerThicknessLeftRight": "14.5",
@@ -10,13 +12,31 @@
             "mode": "print",
             "vibrationMotorCableWidth": "3",
             "vibrationMotorDiameter": "10.5",
-            "vibrationMotorHolderFingerOffset": "-0.7",
+            "vibrationMotorHolderFingerOffset": "-0.2",
+            "vibrationMotorHolderWallThickness": "0.6",
+            "vibrationMotorThickness": "2.5"
+        },
+        "pinkie finger (right)": {
+            "$fn": "60",
+            "clipRoundedness": "5",
+            "clipScaleX": "0.85",
+            "clipScaleY": "0.7",
+            "clipThickness": "1",
+            "fingerNailLength": "13",
+            "fingerThicknessLeftRight": "13.7",
+            "fingerThicknessTopBottom": "9.7",
+            "mode": "print",
+            "vibrationMotorCableWidth": "3",
+            "vibrationMotorDiameter": "10.5",
+            "vibrationMotorHolderFingerOffset": "-0.2",
             "vibrationMotorHolderWallThickness": "0.6",
             "vibrationMotorThickness": "2.5"
         },
         "middle finger (right)": {
-            "$fn": "30",
+            "$fn": "60",
             "clipRoundedness": "5",
+            "clipScaleX": "0.85",
+            "clipScaleY": "0.7",
             "clipThickness": "1.2",
             "fingerNailLength": "13",
             "fingerThicknessLeftRight": "16",
@@ -24,21 +44,7 @@
             "mode": "print",
             "vibrationMotorCableWidth": "3",
             "vibrationMotorDiameter": "10.5",
-            "vibrationMotorHolderFingerOffset": "-0.7",
-            "vibrationMotorHolderWallThickness": "0.6",
-            "vibrationMotorThickness": "2.5"
-        },
-        "pinkie finger (right)": {
-            "$fn": "30",
-            "clipRoundedness": "5",
-            "clipThickness": "1.2",
-            "fingerNailLength": "13",
-            "fingerThicknessLeftRight": "13.7",
-            "fingerThicknessTopBottom": "9.7",
-            "mode": "print",
-            "vibrationMotorCableWidth": "3",
-            "vibrationMotorDiameter": "10.5",
-            "vibrationMotorHolderFingerOffset": "-0.9",
+            "vibrationMotorHolderFingerOffset": "-0.2",
             "vibrationMotorHolderWallThickness": "0.6",
             "vibrationMotorThickness": "2.5"
         }
