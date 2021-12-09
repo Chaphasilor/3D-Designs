@@ -1,0 +1,16 @@
+{
+    "parameterSets": {
+        "design default values": {
+            "basePlateDepth": "50",
+            "basePlateThickness": "5",
+            "holeDiameter": "8",
+            "holePositionX": "7",
+            "holePositionsY": "[37.5, 50, 82, 94, 125.5]",
+            "mountDepth": "6",
+            "mountHeight": "135",
+            "sideWallDepth": "35",
+            "sideWallThickness": "3"
+        }
+    },
+    "fileFormatVersion": "1"
+}
