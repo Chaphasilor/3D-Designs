@@ -40,3 +40,11 @@ module clipInnerHolePuncher() {
       }
   
 }
+
+module clipOuterHolePuncher() {
+
+  translate([0, -(fingerNailLength + clipMaxHeight), 0])
+    rotate([0, 90, 0])
+    cylinder(r=clipMaxHeight*1.5, h=fingerThicknessLeftRight + sensorWidth + sensorHolderThickness + clipThickness*2, center=true);
+  
+}
