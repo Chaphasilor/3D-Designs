@@ -17,6 +17,12 @@ clipRoundedness = 5; // [0:25]
 clipScaleX = 0.75; // [0:0.05:1]
 clipScaleY = 0.75; // [0:0.05:1]
 
+// sensor
+
+sensorWidth = 18.4; // [10:0.1:30]
+sensorThickness = 0.75; // [0:0.05:5]
+sensorHolderThickness = 1; // [0:0.1:5]
+
 // vibration motor
 
 vibrationMotorDiameter = 10.5; // [2:0.1:25]
@@ -30,6 +36,7 @@ vibrationMotorHolderFingerOffset = -0.7; // [-2.5:0.1:0]
 
 include <calculated.scad>;
 include <clip.scad>;
+include <sensor-holder.scad>;
 include <vibration-motor-holder.scad>;
 
 module pointGuide(points) {
@@ -54,6 +61,7 @@ module engineer() {
       color("orange")
         translate([0, 0, clipMaxHeight])
           vibrationMotorHolder();
+      sensorHolder();
     }
 
     #clipInnerHolePuncher();
@@ -73,6 +81,7 @@ module print() {
         color("orange")
           translate([0, 0, clipMaxHeight])
             vibrationMotorHolder();
+        sensorHolder();
       }
       
       clipInnerHolePuncher();
