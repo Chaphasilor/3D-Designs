@@ -28,16 +28,21 @@ vibrationMotorHolderFingerOffset = -0.7; // [-2.5:0.1:0]
 
 // tactile domes
 
-tactileDomeHolderWallThickness = 2; // [0:0.1:10]
-tactileDomeHolderWallHeight = 4; // [0:0.1:10]
+tactileDomesPart = "holder"; // [holder, traces]
+
+tactileDomeHolderWallThickness = 1; // [0:0.1:10]
+tactileDomeHolderWallHeight = 2; // [0:0.1:10]
+tactileDomeHolderWallInsetX = 0; // [0:0.1:10]
+tactileDomeHolderWallInsetY = 2.2; // [0:0.1:10]
 
 tactileDomeInnerContactDiameter = 5.08; // [0:0.01:20]
 tactileDomeKeepOutDiameter = 11.43; // [0:0.01:20]
-tactileDomeOuterContactDiameter = 13.97; // [0:0.01:20]
+tactileDomeOuterContactDiameter = 12.4; // [0:0.01:20]
 
 tactileDomeTraceDistance = 5; // [0:0.5:20]
-tactileDomeLayerOffset = 3; // [3:15]
 tactileDomeLayerHeight = 0.4; // [0.01:0.01:2]
+tactileDomeLayerOffset = 3; // [3:15]
+tactileDomeBottomLayers = 2; // [0:15]
 
 // -----------------------
 
@@ -61,8 +66,11 @@ echo("vibrationMotorHolderTotalWidth: ", vibrationMotorHolderTotalWidth);
 
 module engineer() {
 
-  // tactileDomeTraces(tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance, tactileDomeLayerHeight, tactileDomeLayerOffset);
-  tactileDomeHolder(tactileDomeHolderWallThickness, tactileDomeHolderWallHeight, tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance, tactileDomeLayerHeight, tactileDomeLayerOffset);
+  if (tactileDomesPart == "holder") {
+    tactileDomeHolder(tactileDomeHolderWallThickness, tactileDomeHolderWallHeight, tactileDomeHolderWallInsetX, tactileDomeHolderWallInsetY, tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance, tactileDomeLayerHeight, tactileDomeBottomLayers, tactileDomeLayerOffset);
+  } else {
+    tactileDomeTraces(tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance + tactileDomeHolderWallThickness, tactileDomeLayerHeight, tactileDomeBottomLayers, tactileDomeLayerOffset);
+  }
 
   // difference() {
   //   union() {
