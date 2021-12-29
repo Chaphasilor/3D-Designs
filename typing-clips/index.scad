@@ -3,7 +3,7 @@ include <Round-Anything/polyround.scad>;
 // ------- CONFIG --------
 
 $fn = 30;
-mode = "engineer"; // [engineer, print]
+mode = "engineer"; // [engineer, print, domeHolder]
 
 // clip
 
@@ -32,12 +32,31 @@ vibrationMotorCableWidth = 3; // [0.5:0.1:7]
 vibrationMotorHolderWallThickness = 0.6; // [0.1:0.1:5]
 vibrationMotorHolderFingerOffset = -0.7; // [-2.5:0.1:0]
 
+// tactile domes
+
+tactileDomesPart = "holder"; // [holder, traces]
+
+tactileDomeHolderWallThickness = 1; // [0:0.1:10]
+tactileDomeHolderWallHeight = 2; // [0:0.1:10]
+tactileDomeHolderWallInsetX = 0; // [0:0.1:10]
+tactileDomeHolderWallInsetY = 1; // [0:0.1:10]
+
+tactileDomeInnerContactDiameter = 5.08; // [0:0.01:20]
+tactileDomeKeepOutDiameter = 11.43; // [0:0.01:20]
+tactileDomeOuterContactDiameter = 12.4; // [0:0.01:20]
+
+tactileDomeTraceDistance = 5; // [0:0.5:20]
+tactileDomeLayerHeight = 0.4; // [0.01:0.01:2]
+tactileDomeLayerOffset = 3; // [3:15]
+tactileDomeBottomLayers = 2; // [0:15]
+
 // -----------------------
 
 include <calculated.scad>;
 include <clip.scad>;
 include <sensor-holder.scad>;
 include <vibration-motor-holder.scad>;
+include <tactile-domes.scad>;
 
 module pointGuide(points) {
 
@@ -50,9 +69,17 @@ module pointGuide(points) {
 
 }
 
-echo("vibrationMotorHolderTotalWidth: ", vibrationMotorHolderTotalWidth);
+module domeHolder() {
 
-module engineer() {
+  if (tactileDomesPart == "holder") {
+    tactileDomeHolder(tactileDomeHolderWallThickness, tactileDomeHolderWallHeight, tactileDomeHolderWallInsetX, tactileDomeHolderWallInsetY, tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance, tactileDomeLayerHeight, tactileDomeBottomLayers, tactileDomeLayerOffset);
+  } else {
+    tactileDomeTraces(tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance + tactileDomeHolderWallThickness, tactileDomeLayerHeight, tactileDomeBottomLayers, tactileDomeLayerOffset);
+  }
+
+}
+
+module engineer() {  
 
   difference() {
     union() {
@@ -95,6 +122,8 @@ module print() {
 
 if (mode == "print") {
   print();
+} else if (mode == "domeHolder") {
+  domeHolder();
 } else {
   engineer();
 }

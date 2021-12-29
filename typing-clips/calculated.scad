@@ -83,3 +83,6 @@ vibrationMotorHolderTotalHeight = vibrationMotorHolderCutoutHeight + vibrationMo
 vibrationMotorHolderTotalWidth = vibrationMotorDiameter + 2*vibrationMotorHolderWallThickness;
 vibrationMotorHolderTotalDepth = vibrationMotorDiameter + 2*vibrationMotorHolderWallThickness;
 
+// tactile domes
+
+tactileDomeOuterContactThickness = (tactileDomeOuterContactDiameter - tactileDomeKeepOutDiameter)/2;

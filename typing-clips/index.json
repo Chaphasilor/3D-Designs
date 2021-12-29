@@ -75,6 +75,30 @@
             "vibrationMotorHolderFingerOffset": "-0.2",
             "vibrationMotorHolderWallThickness": "0.6",
             "vibrationMotorThickness": "2.5"
+        },
+        "design default values": {
+            "$fn": "30",
+            "clipRoundedness": "5",
+            "clipScaleX": "0.75",
+            "clipScaleY": "0.75",
+            "clipThickness": "1",
+            "fingerNailLength": "13",
+            "fingerThicknessLeftRight": "14.5",
+            "fingerThicknessTopBottom": "10",
+            "mode": "engineer",
+            "tactileDomeHolderWallHeight": "2",
+            "tactileDomeHolderWallThickness": "1",
+            "tactileDomeInnerContactDiameter": "5.08",
+            "tactileDomeKeepOutDiameter": "11.43",
+            "tactileDomeLayerHeight": "0.15",
+            "tactileDomeLayerOffset": "3",
+            "tactileDomeOuterContactDiameter": "15",
+            "tactileDomeTraceDistance": "5",
+            "vibrationMotorCableWidth": "3",
+            "vibrationMotorDiameter": "10.5",
+            "vibrationMotorHolderFingerOffset": "-0.7",
+            "vibrationMotorHolderWallThickness": "0.6",
+            "vibrationMotorThickness": "2.5"
         }
     },
     "fileFormatVersion": "1"
