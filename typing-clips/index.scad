@@ -33,7 +33,7 @@ tactileDomesPart = "holder"; // [holder, traces]
 tactileDomeHolderWallThickness = 1; // [0:0.1:10]
 tactileDomeHolderWallHeight = 2; // [0:0.1:10]
 tactileDomeHolderWallInsetX = 0; // [0:0.1:10]
-tactileDomeHolderWallInsetY = 2.2; // [0:0.1:10]
+tactileDomeHolderWallInsetY = 1; // [0:0.1:10]
 
 tactileDomeInnerContactDiameter = 5.08; // [0:0.01:20]
 tactileDomeKeepOutDiameter = 11.43; // [0:0.01:20]
@@ -62,9 +62,7 @@ module pointGuide(points) {
 
 }
 
-echo("vibrationMotorHolderTotalWidth: ", vibrationMotorHolderTotalWidth);
-
-module engineer() {
+module domeHolder() {
 
   if (tactileDomesPart == "holder") {
     tactileDomeHolder(tactileDomeHolderWallThickness, tactileDomeHolderWallHeight, tactileDomeHolderWallInsetX, tactileDomeHolderWallInsetY, tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance, tactileDomeLayerHeight, tactileDomeBottomLayers, tactileDomeLayerOffset);
@@ -72,20 +70,24 @@ module engineer() {
     tactileDomeTraces(tactileDomeOuterContactDiameter, tactileDomeOuterContactThickness, tactileDomeInnerContactDiameter, tactileDomeTraceDistance + tactileDomeHolderWallThickness, tactileDomeLayerHeight, tactileDomeBottomLayers, tactileDomeLayerOffset);
   }
 
-  // difference() {
-  //   union() {
-  //     color("olive")
-  //       clip();
-  //     color("orange")
-  //       translate([0, 0, clipMaxHeight])
-  //         vibrationMotorHolder();
-  //   }
+}
 
-  //   #clipInnerHolePuncher();
-  //   clipOuterHolePuncher();
-  //   #translate([0, 0, clipMaxHeight])
-  //     vibrationMotorCableHolePuncher(clipMaxHeight/2);
-  // }
+module engineer() {  
+
+  difference() {
+    union() {
+      color("olive")
+        clip();
+      color("orange")
+        translate([0, 0, clipMaxHeight])
+          vibrationMotorHolder();
+    }
+
+    #clipInnerHolePuncher();
+    clipOuterHolePuncher();
+    #translate([0, 0, clipMaxHeight])
+      vibrationMotorCableHolePuncher(clipMaxHeight/2);
+  }
 
 }
 
@@ -111,6 +113,8 @@ module print() {
 
 if (mode == "print") {
   print();
+} else if (mode == "domeHolder") {
+  domeHolder();
 } else {
   engineer();
 }

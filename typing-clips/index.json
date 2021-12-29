@@ -64,7 +64,7 @@
             "tactileDomeKeepOutDiameter": "11.43",
             "tactileDomeLayerHeight": "0.15",
             "tactileDomeLayerOffset": "3",
-            "tactileDomeOuterContactDiameter": "13.97",
+            "tactileDomeOuterContactDiameter": "15",
             "tactileDomeTraceDistance": "5",
             "vibrationMotorCableWidth": "3",
             "vibrationMotorDiameter": "10.5",
