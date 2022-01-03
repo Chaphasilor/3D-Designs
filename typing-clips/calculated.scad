@@ -36,43 +36,33 @@ clipNegtiveScale = 1 - (clipThickness/2)/clipMaxHeight;
 sensorRadii = [
   [
     -sensorThickness-2.5,
-    sensorWidth/2-2,
+    -2 + sensorHolderZOffset,
     clipRoundedness
   ],
   [
     -sensorThickness-2.5,
-    sensorWidth/2,
+    0 + sensorHolderZOffset,
     clipRoundedness
   ],
   [
     -sensorThickness/2-2.5,
-    sensorWidth/2-0.00001,
+    -0.00001 + sensorHolderZOffset,
     clipRoundedness
   ],
   [
     0-2.5,
-    sensorWidth/2,
+    0 + sensorHolderZOffset,
     clipRoundedness
   ],
   [
     0.00001-2.5,
-    sensorWidth/2-2,
+    -2 + sensorHolderZOffset,
     clipRoundedness
   ],
   [
     0,
-    fingerThicknessLeftRight/2,
-    0
-  ],
-  [
-    clipMaxHeight*0.6,
-    fingerThicknessLeftRight*1/3,
-    0
-  ],
-  [
-    clipMaxHeight*0.8,
     0,
-    clipRoundedness
+    0
   ],
 ];
 

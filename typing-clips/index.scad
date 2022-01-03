@@ -22,6 +22,7 @@ clipScaleY = 0.75; // [0:0.05:1]
 sensorWidth = 18.4; // [10:0.1:30]
 sensorThickness = 0.75; // [0:0.05:5]
 sensorHolderThickness = 1; // [0:0.1:5]
+sensorHolderZOffset = 5; // [0:0.1:10]
 
 // vibration motor
 
@@ -88,7 +89,6 @@ module engineer() {
       color("orange")
         translate([0, 0, clipMaxHeight])
           vibrationMotorHolder();
-      sensorHolder();
     }
 
     #clipInnerHolePuncher();
@@ -96,6 +96,7 @@ module engineer() {
     #translate([0, 0, clipMaxHeight])
       vibrationMotorCableHolePuncher(clipMaxHeight/2);
   }
+  sensorHolder();
 
 }
 
