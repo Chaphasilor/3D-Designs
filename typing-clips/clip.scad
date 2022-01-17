@@ -18,6 +18,36 @@ module clip() {
         ));
       }
     }
+  clipFins();
+
+}
+
+module clipFins() {
+
+  // clipFinWallThickness
+  // clipFinInsetWidth
+  // clipFinInsetHeight
+  // clipFinInsetDepth
+  
+  clipFinLength = clipFinInsetWidth + clipFinWallThickness;
+  clipFinHeight = clipFinInsetHeight + 2*clipFinWallThickness;
+  clipFinDepth = clipFinWallThickness + clipFinInsetDepth;
+  
+  module fin() {
+
+    translate([fingerThicknessLeftRight/2, 0, 0])
+      difference() {
+        cube([clipFinDepth, clipFinLength, clipFinHeight]);
+
+        translate([clipFinWallThickness, 0, clipFinWallThickness])
+          cube([clipFinInsetDepth, clipFinInsetWidth, clipFinInsetHeight]);
+      }
+
+  }
+  
+  fin();
+  mirror([1, 0, 0]) fin();
+  
 }
 
 module clipInnerHolePuncher() {

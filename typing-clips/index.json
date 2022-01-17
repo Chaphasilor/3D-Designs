@@ -1,24 +1,5 @@
 {
     "parameterSets": {
-        "design default values": {
-            "$fn": "30",
-            "sensorHolderThickness": "0.6",
-            "sensorThickness": "1",
-            "sensorWidth": "18.4",
-            "clipRoundedness": "5",
-            "clipScaleX": "0.85",
-            "clipScaleY": "0.7",
-            "clipThickness": "1.2",
-            "fingerNailLength": "13",
-            "fingerThicknessLeftRight": "14.5",
-            "fingerThicknessTopBottom": "11.5",
-            "mode": "engineer",
-            "vibrationMotorCableWidth": "3",
-            "vibrationMotorDiameter": "10.5",
-            "vibrationMotorHolderFingerOffset": "-0.2",
-            "vibrationMotorHolderWallThickness": "0.6",
-            "vibrationMotorThickness": "2.5"
-        },
         "index finger (right)": {
             "$fn": "30",
             "sensorHolderThickness": "0.6",
@@ -73,30 +54,6 @@
             "vibrationMotorCableWidth": "3",
             "vibrationMotorDiameter": "10.5",
             "vibrationMotorHolderFingerOffset": "-0.2",
-            "vibrationMotorHolderWallThickness": "0.6",
-            "vibrationMotorThickness": "2.5"
-        },
-        "design default values": {
-            "$fn": "30",
-            "clipRoundedness": "5",
-            "clipScaleX": "0.75",
-            "clipScaleY": "0.75",
-            "clipThickness": "1",
-            "fingerNailLength": "13",
-            "fingerThicknessLeftRight": "14.5",
-            "fingerThicknessTopBottom": "10",
-            "mode": "engineer",
-            "tactileDomeHolderWallHeight": "2",
-            "tactileDomeHolderWallThickness": "1",
-            "tactileDomeInnerContactDiameter": "5.08",
-            "tactileDomeKeepOutDiameter": "11.43",
-            "tactileDomeLayerHeight": "0.15",
-            "tactileDomeLayerOffset": "3",
-            "tactileDomeOuterContactDiameter": "15",
-            "tactileDomeTraceDistance": "5",
-            "vibrationMotorCableWidth": "3",
-            "vibrationMotorDiameter": "10.5",
-            "vibrationMotorHolderFingerOffset": "-0.7",
             "vibrationMotorHolderWallThickness": "0.6",
             "vibrationMotorThickness": "2.5"
         }

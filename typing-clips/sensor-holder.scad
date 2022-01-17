@@ -17,6 +17,4 @@ module sensorHolder() {
       }
     }
 
-  //TODO move hook farther up 
-  
 }

@@ -17,6 +17,11 @@ clipRoundedness = 5; // [0:25]
 clipScaleX = 0.75; // [0:0.05:1]
 clipScaleY = 0.75; // [0:0.05:1]
 
+clipFinWallThickness = 1; // [0.1:0.1:5]
+clipFinInsetWidth = 10; // [0:0.5:15]
+clipFinInsetHeight = 5; // [0:0.5:10]
+clipFinInsetDepth = 1; // [0:0.1:8]
+
 // sensor
 
 sensorWidth = 18.4; // [10:0.1:30]
@@ -96,7 +101,7 @@ module engineer() {
     #translate([0, 0, clipMaxHeight])
       vibrationMotorCableHolePuncher(clipMaxHeight/2);
   }
-  sensorHolder();
+  // sensorHolder();
 
 }
 
@@ -110,7 +115,7 @@ module print() {
         color("orange")
           translate([0, 0, clipMaxHeight])
             vibrationMotorHolder();
-        sensorHolder();
+        // sensorHolder();
       }
       
       clipInnerHolePuncher();

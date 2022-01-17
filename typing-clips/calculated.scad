@@ -31,7 +31,7 @@ clipRadii = [
     clipRoundedness
   ],
 ];
-clipNegtiveScale = 1 - (clipThickness/2)/clipMaxHeight;
+clipNegativeScale = 1 - (clipThickness/2)/clipMaxHeight;
 
 sensorRadii = [
   [
