@@ -1,4 +1,5 @@
 include <Round-Anything/polyround.scad>;
+use <Round-Anything/unionRoundMask.scad>;
 
 // ------- CONFIG --------
 
@@ -11,6 +12,7 @@ mode = "engineer"; // [engineer, print, domeHolder]
 fingerThicknessLeftRight = 14.5; // [5:0.1:25]
 fingerThicknessTopBottom = 10; // [5:0.1:25]
 fingerNailLength = 13; // [7:0.5:25]
+fingerRotation = 0; // [-60:60]
 
 clipThickness = 1; // [0.1:0.1:5]
 clipRoundedness = 5; // [0:25]
@@ -18,9 +20,11 @@ clipScaleX = 0.75; // [0:0.05:1]
 clipScaleY = 0.75; // [0:0.05:1]
 
 clipFinWallThickness = 1; // [0.1:0.1:5]
-clipFinInsetWidth = 10; // [0:0.5:15]
-clipFinInsetHeight = 5; // [0:0.5:10]
+clipFinInsetWidth = 9; // [0:0.5:15]
+clipFinInsetHeight = 5.5; // [0:0.5:10]
 clipFinInsetDepth = 1; // [0:0.1:8]
+clipFinDistanceOffset = 0; // [-5:0.1:5]
+clipFinOffset = 0; // [-10:0.1:10]
 
 // sensor
 
@@ -87,6 +91,7 @@ module domeHolder() {
 
 module engineer() {  
 
+  rotate([0, -fingerRotation, 0])
   difference() {
     union() {
       color("olive")
@@ -98,6 +103,7 @@ module engineer() {
 
     #clipInnerHolePuncher();
     clipOuterHolePuncher();
+    clipChannelHolePuncher();
     #translate([0, 0, clipMaxHeight])
       vibrationMotorCableHolePuncher(clipMaxHeight/2);
   }
@@ -107,11 +113,12 @@ module engineer() {
 
 module print() {
 
+  rotate([0, 0, fingerRotation])
   rotate([270, 0, 0])
     difference() {
       union() {
         color("olive")
-          clip();
+          clip(true);
         color("orange")
           translate([0, 0, clipMaxHeight])
             vibrationMotorHolder();
@@ -120,6 +127,7 @@ module print() {
       
       clipInnerHolePuncher();
       clipOuterHolePuncher();
+      clipChannelHolePuncher();
       translate([0, 0, clipMaxHeight])
         vibrationMotorCableHolePuncher(clipMaxHeight/2);
     }
