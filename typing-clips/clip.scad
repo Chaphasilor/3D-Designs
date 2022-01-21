@@ -23,7 +23,7 @@ module clip(roundedJoin=false) {
 
   module finPart() {
     rotate([0, fingerRotation, 0])
-      translate([-clipFinOffset, 0, 0])
+      translate([-clipFinOffsetX, 0, clipFinOffsetZ])
         clipFins();
   }
 
@@ -34,7 +34,7 @@ module clip(roundedJoin=false) {
         finPart();
 
         rotate([0, fingerRotation, 0])
-          translate([-clipFinOffset, 0, 0])
+          translate([-clipFinOffsetX, 0, clipFinOffsetZ])
             clipFinHolePuncher();
       }
     }
@@ -44,7 +44,7 @@ module clip(roundedJoin=false) {
       finPart();
 
       rotate([0, fingerRotation, 0])
-        translate([-clipFinOffset, 0, 0])
+        translate([-clipFinOffsetX, 0, clipFinOffsetZ])
           clipFinHolePuncher();
     }
   }
@@ -80,9 +80,10 @@ module clipFinHolePuncher() {
   clipFinLength = clipFinInsetWidth + clipFinWallThickness;
   clipFinHeight = clipFinInsetHeight + 2*clipFinWallThickness;
   clipFinDepth = clipFinWallThickness + clipFinInsetDepth;
+  clipFinDistance = fingerThicknessLeftRight + clipFinDistanceOffset;
 
   module puncher() {
-    translate([fingerThicknessLeftRight/2, 0, 0])
+    translate([clipFinDistance/2, 0, 0])
       translate([clipFinWallThickness, -2, clipFinWallThickness])
         cube([clipFinInsetDepth, clipFinInsetWidth + 2, clipFinInsetHeight]);
   }
@@ -143,9 +144,9 @@ module clipOuterHolePuncher() {
 }
 
 module clipChannelHolePuncher() {
-#
+
   rotate([0, fingerRotation, 0])
-  translate([0, -fingerNailLength/2, -fingerThicknessLeftRight/2])
+  translate([clipOuterHolePuncherOffsetX, -fingerNailLength/2, -fingerThicknessLeftRight/2])
     rotate([90, 0, 0])
     cylinder(d=fingerThicknessLeftRight, h=fingerNailLength, center=true);
   
