@@ -118,7 +118,7 @@ module print() {
     difference() {
       union() {
         color("olive")
-          clip(true);
+          clip(false);
         color("orange")
           translate([0, 0, clipMaxHeight])
             vibrationMotorHolder();
