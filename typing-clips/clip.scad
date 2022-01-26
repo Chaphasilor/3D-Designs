@@ -28,34 +28,37 @@ module clip(roundedJoin=false) {
         clipFins();
   }
 
-  module punchedClipFins() {
-    difference() {
-      finPart();
-
+  module positionedFinPunchers() {
       rotate([0, fingerRotation, 0])
         translate([-clipFinOffsetX, 0, clipFinOffsetZ])
           clipFinHolePuncher();
-    }
   }
 
   union() {
     if (roundedJoin) {
 
-        // left hull
-        hull() {
-            left_half(x=-5) back_half(y=-1)
-              clipPart();
-            left_half() front_half(y=1)
-              punchedClipFins();
+      difference() {
+
+        union() {
+          // left hull
+          hull() {
+              left_half(x=-5) back_half(y=-1)
+                clipPart();
+              left_half() front_half(y=1)
+                finPart();
+          }
+
+          // right hull
+          hull() {
+              right_half(x=5) back_half(y=-1)
+                clipPart();
+              right_half() front_half(y=1)
+                finPart();
+          }
         }
 
-        // right hull
-        hull() {
-            right_half(x=5) back_half(y=-1)
-              clipPart();
-            right_half() front_half(y=1)
-              punchedClipFins();
-        }
+        positionedFinPunchers();
+      }
 
     }
 
