@@ -99,14 +99,14 @@ module engineer() {
   difference() {
     union() {
       color("olive")
-        clip();
+        clip(true);
       color("orange")
         translate([0, 0, clipMaxHeight])
           vibrationMotorHolder();
     }
 
     #clipInnerHolePuncher();
-    // clipOuterHolePuncher();
+    clipOuterHolePuncher();
     #clipChannelHolePuncher();
     #translate([0, 0, clipMaxHeight])
       vibrationMotorCableHolePuncher(clipMaxHeight/2);
@@ -126,11 +126,10 @@ module print() {
         color("orange")
           translate([0, 0, clipMaxHeight])
             vibrationMotorHolder();
-        // sensorHolder();
       }
       
       clipInnerHolePuncher();
-      // clipOuterHolePuncher();
+      clipOuterHolePuncher();
       clipChannelHolePuncher();
       translate([0, 0, clipMaxHeight])
         vibrationMotorCableHolePuncher(clipMaxHeight/2);

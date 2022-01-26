@@ -1,3 +1,4 @@
+include <BOSL2/std.scad>
 
 module clip(roundedJoin=false) {
 
@@ -27,18 +28,37 @@ module clip(roundedJoin=false) {
         clipFins();
   }
 
-  if (roundedJoin) {
-    unionRoundMask(r=2) {
-      clipPart();
-      difference() {
-        finPart();
+  module punchedClipFins() {
+    difference() {
+      finPart();
 
-        rotate([0, fingerRotation, 0])
-          translate([-clipFinOffsetX, 0, clipFinOffsetZ])
-            clipFinHolePuncher();
-      }
+      rotate([0, fingerRotation, 0])
+        translate([-clipFinOffsetX, 0, clipFinOffsetZ])
+          clipFinHolePuncher();
     }
-  } else {
+  }
+
+  union() {
+    if (roundedJoin) {
+
+        // left hull
+        hull() {
+            left_half(x=-5) back_half(y=-1)
+              clipPart();
+            left_half() front_half(y=1)
+              punchedClipFins();
+        }
+
+        // right hull
+        hull() {
+            right_half(x=5) back_half(y=-1)
+              clipPart();
+            right_half() front_half(y=1)
+              punchedClipFins();
+        }
+
+    }
+
     clipPart();
     difference() {
       finPart();
@@ -72,7 +92,7 @@ module clipFins() {
   
   fin();
   mirror([1, 0, 0]) fin();
-  
+
 }
 
 module clipFinHolePuncher() {
@@ -99,6 +119,7 @@ module clipInnerHolePuncher() {
 
     // front part (scaled to fit)
     translate([+(clipMaxHeight+clipThickness), 0, 0])
+      hull()
       linear_extrude(fingerNailLength, scale=[clipScaleX, clipScaleY]) {
         translate([-(clipMaxHeight+clipThickness), 0, 0])
         polygon(polyRound(
@@ -108,7 +129,7 @@ module clipInnerHolePuncher() {
               0, 
               [0,1]
             ),
-            clipThickness*2,
+            clipThickness,
             0
           )
         ));
@@ -116,6 +137,7 @@ module clipInnerHolePuncher() {
 
     // extended back part (not scaled)
     translate([+(clipMaxHeight+clipThickness), 0, -fingerNailLength])
+      hull()
       linear_extrude(fingerNailLength, scale=[1, 1]) {
         translate([-(clipMaxHeight+clipThickness), 0, 0])
         polygon(polyRound(
@@ -125,7 +147,7 @@ module clipInnerHolePuncher() {
               0, 
               [0,1]
             ),
-            clipThickness*2,
+            clipThickness,
             0
           )
         ));
@@ -136,8 +158,9 @@ module clipInnerHolePuncher() {
 
 module clipOuterHolePuncher() {
 
-  translate([0, -(fingerNailLength + clipMaxHeight), -clipMaxHeight*0.6])
-    rotate([0, 0, 10])
+  translate([0, -(fingerNailLength + clipMaxHeight), 0])
+    rotate([0, fingerRotation, 0])
+    translate([0, 0, -clipMaxHeight/2])
     rotate([0, 90, 0])
     cylinder(r=clipMaxHeight*2, h=fingerThicknessLeftRight + sensorWidth + sensorHolderThickness + clipThickness*2, center=true);
   
@@ -148,6 +171,6 @@ module clipChannelHolePuncher() {
   rotate([0, fingerRotation, 0])
   translate([clipOuterHolePuncherOffsetX, -fingerNailLength/2, -fingerThicknessLeftRight/2])
     rotate([90, 0, 0])
-    cylinder(d=fingerThicknessLeftRight, h=fingerNailLength, center=true);
+    cylinder(d=fingerThicknessLeftRight, h=fingerNailLength*1.5, center=true);
   
 }
