@@ -19,7 +19,7 @@ clipRoundedness = 5; // [0:25]
 clipScaleX = 0.75; // [0:0.05:1]
 clipScaleY = 0.75; // [0:0.05:1]
 
-clipFinWallThickness = 1; // [0.1:0.1:5]
+clipFinWallThickness = 0.8; // [0.1:0.1:5]
 clipFinInsetWidth = 9; // [0:0.5:15]
 clipFinInsetHeight = 5.5; // [0:0.5:10]
 clipFinInsetDepth = 1; // [0:0.1:8]
