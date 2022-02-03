@@ -3,6 +3,9 @@ include <./relief.scad>;
 include <./casing.scad>;
 include <./lid.scad>;
 
+print = false;
+top = false;
+
 module bottom() {
 
   difference() {
@@ -35,9 +38,6 @@ module top() {
   }
 
 }
-
-print = false;
-top = false;
 
 if (print) {
 

@@ -3,7 +3,7 @@
 // connector
 connectorWidth = 68.5;
 connectorHeight = 16.5;
-connectorRimDepth = 1.5;
+connectorRimDepth = 1.75;
 holeDiameter = 3.5;
 holePaddingBottom = 6.75;
 holePaddingSide = 1.5;
