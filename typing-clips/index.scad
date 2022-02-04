@@ -28,6 +28,7 @@ clipFinOffsetX = 0; // [-10:0.1:10]
 clipFinOffsetZ = 0; // [-10:0.1:10]
 
 clipOuterHolePuncherOffsetX = 0; // [-20:0.1:20]
+clipOuterHolePuncherOffsetZ = 0; // [-20:0.1:20]
 
 
 // sensor

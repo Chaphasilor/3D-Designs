@@ -163,7 +163,7 @@ module clipOuterHolePuncher() {
 module clipChannelHolePuncher() {
 
   rotate([0, fingerRotation, 0])
-  translate([clipOuterHolePuncherOffsetX, -fingerNailLength/2, -fingerThicknessLeftRight/2])
+  translate([clipOuterHolePuncherOffsetX, -fingerNailLength/2, -fingerThicknessLeftRight/2 + clipOuterHolePuncherOffsetZ])
     rotate([90, 0, 0])
     cylinder(d=fingerThicknessLeftRight, h=fingerNailLength*1.5, center=true);
   
