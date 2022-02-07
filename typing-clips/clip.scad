@@ -99,7 +99,7 @@ module clipFinHolePuncher() {
   module puncher() {
     translate([clipFinDistance/2, 0, 0])
       translate([clipFinWallThickness, -2, clipFinWallThickness])
-        cube([clipFinInsetDepth, clipFinInsetWidth + 2, clipFinInsetHeight]);
+        cube([clipFinInsetDepth*5, clipFinInsetWidth + 2, clipFinInsetHeight]);
   }
 
   puncher();
@@ -150,20 +150,21 @@ module clipInnerHolePuncher() {
   
 }
 
-module clipOuterHolePuncher() {
+// module clipOuterHolePuncher() {
 
-  translate([0, -(fingerNailLength + clipMaxHeight), 0])
-    rotate([0, fingerRotation, 0])
-    translate([0, 0, -clipMaxHeight/2])
-    rotate([0, 90, 0])
-    cylinder(r=clipMaxHeight*2, h=fingerThicknessLeftRight + sensorWidth + sensorHolderThickness + clipThickness*2, center=true);
+//   echo("hi mom");
+//   translate([clipOuterHolePuncherOffsetX, -(fingerNailLength + clipMaxHeight), clipOuterHolePuncherOffsetZ])
+//     rotate([0, fingerRotation, 0])
+//     translate([0, 0, -clipMaxHeight/2])
+//     rotate([0, 90, 0])
+//     cylinder(r=clipMaxHeight*2, h=fingerThicknessLeftRight + sensorWidth + sensorHolderThickness + clipThickness*2, center=true);
   
-}
+// }
 
 module clipChannelHolePuncher() {
 
   rotate([0, fingerRotation, 0])
-  translate([clipOuterHolePuncherOffsetX, -fingerNailLength/2, -fingerThicknessLeftRight/2 + clipOuterHolePuncherOffsetZ])
+  translate([clipChannelHolePuncherOffsetX, -fingerNailLength/2, -fingerThicknessLeftRight/2 + clipChannelHolePuncherOffsetZ])
     rotate([90, 0, 0])
     cylinder(d=fingerThicknessLeftRight, h=fingerNailLength*1.5, center=true);
   
@@ -171,7 +172,8 @@ module clipChannelHolePuncher() {
 
 module clipOuterHolePuncher() {
 
-  translate([0, -(fingerNailLength + clipMaxHeight), 0])
+  translate([0, clipOuterHolePuncherOffsetY-(fingerNailLength + clipMaxHeight), clipOuterHolePuncherOffsetZ])
+rotate([0, fingerRotation, 0])
     rotate([0, 90, 0])
     cylinder(r=clipMaxHeight*1.5, h=fingerThicknessLeftRight + sensorWidth + sensorHolderThickness + clipThickness*2, center=true);
   

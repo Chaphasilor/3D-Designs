@@ -27,8 +27,10 @@ clipFinDistanceOffset = 0; // [-5:0.1:5]
 clipFinOffsetX = 0; // [-10:0.1:10]
 clipFinOffsetZ = 0; // [-10:0.1:10]
 
-clipOuterHolePuncherOffsetX = 0; // [-20:0.1:20]
+clipOuterHolePuncherOffsetY = 0; // [-20:0.1:20]
 clipOuterHolePuncherOffsetZ = 0; // [-20:0.1:20]
+clipChannelHolePuncherOffsetX = 0; // [-20:0.1:20]
+clipChannelHolePuncherOffsetZ = 0; // [-20:0.1:20]
 
 
 // sensor
@@ -107,7 +109,7 @@ module engineer() {
     }
 
     #clipInnerHolePuncher();
-    clipOuterHolePuncher();
+    #clipOuterHolePuncher();
     #clipChannelHolePuncher();
     #translate([0, 0, clipMaxHeight])
       vibrationMotorCableHolePuncher(clipMaxHeight/2);
