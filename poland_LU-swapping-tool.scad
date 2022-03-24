@@ -4,7 +4,7 @@ tool = "left"; // [left, right]
 
 layerHeight = 0.2; // [0.05:0.05:5]
 
-baseClearanceBottom = 9.6; // [0:0.05:15]
+baseClearanceBottom = 10; // [0:0.05:15]
 
 toolHeight = baseClearanceBottom;
 toolDepth = 5; // [0:0.1:50]
@@ -18,7 +18,11 @@ rightToolGripOffsetLeft = rightToolWidth/2 - toolGripWidth/2;
 
 maxSegmentDepth = 30; // [1:150]
 segmentFoldAngle = 60; // [5:160]
-hingeLayers = 2; // [1:10]
+hingeSpacing = 0.25; // [0:0.05:10]
+hingeLayers = 1; // [1:10]
+
+textSize = 10;
+textInsetDepth = 1;
 
 module main() {
 
@@ -27,7 +31,7 @@ module main() {
   } else if (tool == "right") {
     rightTool();
   }
-  
+    
 }
 
 module leftTool() {
@@ -35,7 +39,11 @@ module leftTool() {
   back(toolGripDepth)
     head(leftToolWidth);
   right(leftToolGripOffsetLeft)
-    grip();
+    difference() {
+      grip();
+      
+      textHolePuncher("L");
+    }
   
 }
 
@@ -44,8 +52,18 @@ module rightTool() {
   back(toolGripDepth)
     head(rightToolWidth);
   right(rightToolGripOffsetLeft)
-    grip();
-  
+    difference() {
+      grip();
+      
+      textHolePuncher("R");
+    }
+
+}
+
+module textHolePuncher(text) {
+  up(toolGripHeight - textInsetDepth) right(toolGripWidth/2)
+      back(toolGripDepth - (maxSegmentDepth-getWedgeTopWidth(segmentFoldAngle))/2)
+        text3d(text, h=textInsetDepth, size=textSize, anchor=str(BOTTOM+CENTER));
 }
 
 module head(width) {
@@ -87,12 +105,12 @@ module grip() {
 
 }
 
-function getWedgeTopWidth(angle) = 2* toolGripHeight * tan(angle/2);
+function getWedgeTopWidth(angle) = 2* toolGripHeight * tan(angle/2) + hingeSpacing;
 
-module wedge(angle=60) {
+module wedge(angle=60, spacing=0) {
 
   topWidth = getWedgeTopWidth(angle);
-  prismoid(size1=[toolGripWidth, 0], size2=[toolGripWidth, topWidth], h=toolGripHeight);
+  prismoid(size1=[toolGripWidth, hingeSpacing], size2=[toolGripWidth, topWidth], h=toolGripHeight);
 
 }
 
