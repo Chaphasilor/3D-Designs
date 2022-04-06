@@ -1,6 +1,6 @@
 include <BOSL2/std.scad>
 
-pcbWidth = 40;
+pcbWidth = 40.5;
 pcbDepth = 60;
 pcbHeight = 1.6;
 pcbClearanceBottom = 3;
@@ -9,7 +9,7 @@ pcbMountInset = 1;
 pcbMountInsetChamfer = 1;
 
 velcroWidth = 15;
-velcroHeight = 1.5;
+velcroHeight = 1.25;
 velcroMountDepth = 7;
 velcroMountExpansionFactor = 1.3;
 velcroMountPaddingX = 5;
@@ -26,7 +26,7 @@ module main() {
   difference() {
     frame();
 
-    holePuncherPCB();
+    #holePuncherPCB();
   }
 
   right(velcroMountPaddingX) back(velcroMountPaddingY)
