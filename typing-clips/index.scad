@@ -10,13 +10,18 @@ mode = "engineer"; // [engineer, print, domeHolder]
 
 // measured at the beginning of the finger nail
 fingerThicknessLeftRight = 14.5; // [5:0.1:25]
+// measured at the beginning of the finger nail
 fingerThicknessTopBottom = 10; // [5:0.1:25]
 fingerNailLength = 13; // [7:0.5:25]
+// to accommodate finger adduction and abduction for pressing 
 fingerRotation = 0; // [-60:60]
 
+// the wall thickness of the clip
 clipThickness = 1; // [0.1:0.1:5]
 clipRoundedness = 5; // [0:25]
+// for creating a more natural, conical shape
 clipScaleX = 0.75; // [0:0.05:1]
+// for creating a more natural, conical shape
 clipScaleY = 0.75; // [0:0.05:1]
 
 clipFinWallThickness = 0.8; // [0.1:0.1:5]
@@ -33,14 +38,14 @@ clipChannelHolePuncherOffsetX = 0; // [-20:0.1:20]
 clipChannelHolePuncherOffsetZ = 0; // [-20:0.1:20]
 
 
-// sensor
+// sensor - not currently used
 
 sensorWidth = 18.4; // [10:0.1:30]
 sensorThickness = 0.75; // [0:0.05:5]
 sensorHolderThickness = 1; // [0:0.1:5]
 sensorHolderZOffset = 5; // [0:0.1:10]
 
-// vibration motor
+// vibration motor (LRA)
 
 vibrationMotorDiameter = 10.5; // [2:0.1:25]
 vibrationMotorThickness = 2.5; // [1:0.1:7]
@@ -49,7 +54,7 @@ vibrationMotorCableWidth = 3; // [0.5:0.1:7]
 vibrationMotorHolderWallThickness = 0.6; // [0.1:0.1:5]
 vibrationMotorHolderFingerOffset = -0.7; // [-2.5:0.1:0]
 
-// tactile domes
+// tactile domes - not currently used
 
 tactileDomesPart = "holder"; // [holder, traces]
 
