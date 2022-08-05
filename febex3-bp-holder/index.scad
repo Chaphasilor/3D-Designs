@@ -185,14 +185,18 @@ module backplaneFrameBottom() {
     union() {
       difference() {
         // cuboid([backplaneFrameBottomOuterWidth, backplaneFrameBottomOuterDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
-        zrot(90)
-          sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
+        union() {
+          zrot(90)
+            sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
+          right(bpFrameRimThicknessAdjusted) back(bpFrameRimThicknessAdjusted)
+            cuboid([backplaneFrameBottomCutoutWidth + 2*bpPadding, backplaneFrameBottomCutoutDepth + 2*bpPadding, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
+        }
 
-        #up(backplaneFrameBottomInnerOffsetBottom)
+        up(backplaneFrameBottomInnerOffsetBottom)
         right(bpFrameRimThicknessAdjusted) back(bpFrameRimThicknessAdjusted)
           cuboid([backplaneFrameBottomInnerWidth, backplaneFrameBottomInnerDepth, bpHeight], anchor=BOTTOM+FRONT+LEFT);
 
-        #right(bpFrameRimThicknessAdjusted + bpPadding) back(bpFrameRimThicknessAdjusted + bpPadding)
+        right(bpFrameRimThicknessAdjusted + bpPadding) back(bpFrameRimThicknessAdjusted + bpPadding)
           cuboid([backplaneFrameBottomCutoutWidth, backplaneFrameBottomCutoutDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
 
       }
@@ -226,7 +230,7 @@ module backplaneFrameHoles(height) {
 
     difference() {
       right(offset[0]) back(offset[1])
-        cuboid([screwFillerSize, screwFillerSize, height], anchor=BOTTOM+CENTER);
+        cylinder(d=screwFillerSize, h=height, anchor=BOTTOM+CENTER);
 
       backplaneFrameHolePuncher(height);
     }
