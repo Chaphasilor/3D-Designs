@@ -11,10 +11,11 @@ bpFrameRimThicknessAdjusted = bpFrameRimThickness + screwOffsetDistance;
 backplaneFrameBottomThickness = bpHeight + max(wallThickness, bpClearanceBottom);
 backplaneFrameBottomOuterWidth = bpWidth + 2 * bpFrameRimThicknessAdjusted;
 backplaneFrameBottomOuterDepth = bpDepth + 2 * bpFrameRimThicknessAdjusted;
+backplaneFrameBottomInnerOffsetBottom = backplaneFrameBottomThickness - bpHeight;
 backplaneFrameBottomInnerWidth = bpWidth;
 backplaneFrameBottomInnerDepth = bpDepth;
-backplaneFrameBottomCutoutWidth = bpWidth - 2 * bpFrameRimThicknessAdjusted;
-backplaneFrameBottomCutoutDepth = bpDepth - 2 * bpFrameRimThicknessAdjusted;
+backplaneFrameBottomCutoutWidth = bpWidth - 2 * bpPadding;
+backplaneFrameBottomCutoutDepth = bpDepth - 2 * bpPadding;
 
 maxFrameRimBpPadding = max(bpFrameRimThicknessAdjusted, bpPadding);
 screwOffsets = [

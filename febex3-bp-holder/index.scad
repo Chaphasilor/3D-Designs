@@ -14,7 +14,7 @@ bpDepth = 128.5; // [60:1:250]
 // thickness of the backplane (Z)
 bpHeight = 1.6; // [1:0.1:10]
 // maximum edge padding of the backplane where no parts are placed
-bpPadding = 3; // [0:0.1:20]
+bpPadding = 2; // [0:0.1:20]
 // minimum space required below the backplane for connectors, etc.
 bpClearanceBottom = 10; // [0:0.1:50]
 
@@ -66,6 +66,10 @@ stiltHeight = 50; // [1:1:100]
 
 // thickness of most walls
 wallThickness = 2; // [2:0.1:10]
+
+bpBottomCutouts = [
+  [[0, 11, 0], [17, 27.5, -8]],
+];
 
 // ------- CHECKS --------
 
@@ -178,22 +182,33 @@ module backplaneFrameTop() {
 module backplaneFrameBottom() {
 
   difference() {
-    // cuboid([backplaneFrameBottomOuterWidth, backplaneFrameBottomOuterDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
-    zrot(90)
-      sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
+    union() {
+      difference() {
+        // cuboid([backplaneFrameBottomOuterWidth, backplaneFrameBottomOuterDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
+        zrot(90)
+          sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
 
-    up(wallThickness)
-    right(bpFrameRimThicknessAdjusted) back(bpFrameRimThicknessAdjusted)
-      cuboid([backplaneFrameBottomInnerWidth, backplaneFrameBottomInnerDepth, bpHeight], anchor=BOTTOM+FRONT+LEFT);
+        #up(backplaneFrameBottomInnerOffsetBottom)
+        right(bpFrameRimThicknessAdjusted) back(bpFrameRimThicknessAdjusted)
+          cuboid([backplaneFrameBottomInnerWidth, backplaneFrameBottomInnerDepth, bpHeight], anchor=BOTTOM+FRONT+LEFT);
 
-    right(2*bpFrameRimThicknessAdjusted) back(2*bpFrameRimThicknessAdjusted)
-      cuboid([backplaneFrameBottomCutoutWidth, backplaneFrameBottomCutoutDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
+        #right(bpFrameRimThicknessAdjusted + bpPadding) back(bpFrameRimThicknessAdjusted + bpPadding)
+          cuboid([backplaneFrameBottomCutoutWidth, backplaneFrameBottomCutoutDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
 
+      }
+      backplaneFrameHoles(height=backplaneFrameBottomThickness);
+    }
+
+    up(backplaneFrameBottomInnerOffsetBottom)
+    right(bpFrameRimThicknessAdjusted)
+    back(bpFrameRimThicknessAdjusted)
+    #for (cutout=bpBottomCutouts) {
+      cuboid(p1=cutout[0], p2=cutout[1], anchor=TOP+FRONT+LEFT);
+    }
   }
-  
-  backplaneFrameHoles(height=backplaneFrameBottomThickness);
-  
+    
 }
+
 module backplaneFrameHolePuncher(height) {
 
   module screw() {cylinder(d=bpFrameScrewDiameter, h=height);}
