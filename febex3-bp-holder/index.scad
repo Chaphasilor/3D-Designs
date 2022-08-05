@@ -2,6 +2,7 @@
 
 $fn = 30;
 mode = "engineer"; // [engineer, print]
+parts = "all"; // [all, bottom, top]
 
 // everything is designed in a cartesian coordinate system, where X goes to the right (width), Y goes to the back (depth), and Z goes to the top (height)
 // depending on the orientation of parts, different terminology may be used
@@ -44,7 +45,8 @@ insertedPcbThickness = 1.8; // [0:0.1:7.5]
 // width of the guiding rails (X)
 railWidth = 10; // [0:0.1:10]
 // depth of the guiding rails (Y)
-railDepth = 7; // [0:0.1:20]
+railDepth = 5; // [0:0.1:20]
+railDepthExpansionFactor = 0.3; // [0:0.1:3]
 // height of the guiding rails (Z)
 railHeight = 85; // [0:1:100]
 // how deep the slot should be recessed into the rail
@@ -81,19 +83,44 @@ include <helpers.scad>
 
 module layout_exploded() {
 
-  up(20 - 1.6)
-  right(backplaneFrameTopCutoutOffsetLeft - bpPadding)
-  back(backplaneFrameTopCutoutOffsetLeft - bpPadding*0)
-    dummyBackplane();
+  upDistance = 40;
+  module dummyBackplaneAligned() {
+    right(backplaneFrameTopCutoutOffsetLeft - bpPadding)
+    back(backplaneFrameTopCutoutOffsetLeft - bpPadding*0)
+      dummyBackplane();
+  }
 
-  up(20)
-    topPart();
+  if (parts == "all" || parts == "top") {    
 
-  bottomPart();
+    if (parts == "all") {
+      up(upDistance - 1.6)
+        dummyBackplaneAligned();
+      up(upDistance)
+        topPart();
+    } else {
+      down(1.6)
+        dummyBackplaneAligned();
+      topPart();
+    }
+  }
+
+  if (parts == "all" || parts == "bottom") {
+    bottomPart();
+  }
 
 }
 
 module layout_print() {
+
+  if (parts == "top") {
+    topPart();
+  } else if (parts == "bottom") {
+    bottomPart();
+  } else if (parts == "all") {
+    topPart();
+    right(backplaneFrameTopOuterWidth + 10)
+      bottomPart();
+  }
 
 }
 
@@ -129,13 +156,10 @@ module bottomPart() {
 module backplaneFrameTop() {
 
   difference() {
-    cuboid([backplaneFrameTopOuterWidth, backplaneFrameTopOuterDepth, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
+    // cuboid([backplaneFrameTopOuterWidth, backplaneFrameTopOuterDepth, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
+    zrot(90)
+      sparse_wall(h=backplaneFrameTopOuterDepth, l=backplaneFrameTopOuterWidth, thick=backplaneFrameTopThickness, strut=5, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
 
-    // cut out sparse wall
-    back(backplaneFrameTopCutoutOffsetFrontAdjusted/2)
-      backplaneFrameTopSparseHolePuncher();
-    back(backplaneFrameTopCutoutOffsetBack)
-      backplaneFrameTopSparseHolePuncher();
 
     right(backplaneFrameTopCutoutOffsetLeft)
     back(backplaneFrameTopCutoutOffsetFrontAdjusted)
@@ -143,6 +167,12 @@ module backplaneFrameTop() {
 
     #backplaneFrameHolePuncher(height=backplaneFrameTopThickness);
   }
+
+  // add solid region below rails
+  back(backplaneFrameTopCutoutOffsetFrontAdjusted/2)
+    backplaneFrameTopSolidRegion();
+  back(backplaneFrameTopCutoutOffsetBack)
+    backplaneFrameTopSolidRegion();
   
 }
 module backplaneFrameBottom() {
@@ -150,7 +180,7 @@ module backplaneFrameBottom() {
   difference() {
     // cuboid([backplaneFrameBottomOuterWidth, backplaneFrameBottomOuterDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
     zrot(90)
-    sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
+      sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
 
     up(wallThickness)
     right(bpFrameRimThicknessAdjusted) back(bpFrameRimThicknessAdjusted)
@@ -189,13 +219,9 @@ module backplaneFrameHoles(height) {
   }
   
 }
-module backplaneFrameTopSparseHolePuncher() {
+module backplaneFrameTopSolidRegion() {
   right(backplaneFrameTopCutoutOffsetLeft)
-    difference() {
-      cuboid([backplaneFrameTopCutoutWidth, backplaneFrameTopCutoutOffsetFrontAdjusted/2, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
-      zrot(90)
-        sparse_wall(h=backplaneFrameTopCutoutOffsetFrontAdjusted/2, l=backplaneFrameTopCutoutWidth, thick=backplaneFrameTopThickness, strut=1.5, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
-    }
+    cuboid([backplaneFrameTopCutoutWidth, backplaneFrameTopCutoutOffsetFrontAdjusted/2, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
 }
 
 module rails() {
@@ -213,17 +239,53 @@ module railSide(position) {
 
   echo(str("Variable = ", position));
 
+  module frameOuter() {
+    prismoid(size1=[railWidth, railDepthBottom], size2=[railWidth, railDepth], h=railHeight, shift=railShift, anchor=BOTTOM+FRONT+LEFT);
+  }
+  module frameInner() {
+    up(railFrameInnerOffset)
+    back(railFrameInnerOffset)
+    prismoid(size1=[railWidth, railDepthBottom-railFrameInnerDifferenceBottom], size2=[railWidth, railDepth-railFrameInnerDifferenceTop], h=railHeight-railFrameInnerDifferenceHeight, shift=railShift, anchor=BOTTOM+FRONT+LEFT);
+  }
+  module railWedge() {
+    union() {
+      difference() {
+        frameOuter();
+        frameInner();
+      }
+      difference() {
+        frameOuter();
+        difference() {
+          frameOuter();
+          sparse_wall(h=railHeight, l=railDepthBottom, thick=railWidth, strut=3, orient=UP, anchor=BOTTOM+FRONT+LEFT);
+        }
+      }
+
+    }
+  }
+
   module railsUnpositioned() {
-    back(railEdgeOffsetFront)
+    back(railEdgeOffsetFront) 
+    difference() {
+      union() {
+        back(railDepthBottom - railDepth)
+        left(railWallOffsetLeft)
+        zrot(90)
+          sparse_wall(h=railHeight, l=railWallWidth, thick=railDepth, strut=3, orient=UP, anchor=BOTTOM+BACK+LEFT);
+        
+        for (i=[0:railCount]) {
+          right(i* connectorDistance - railRelativeOffset)
+            railWedge();
+        }
+
+      }
+
       for (i=[0:railCount]) {
         right(i* connectorDistance - railRelativeOffset)
-          difference() {
-            cuboid([railWidth, railDepth, railHeight], anchor=BOTTOM+FRONT+LEFT);
-            
-            right(railSlotOffsetLeft) back(railSlotOffsetFront)
-            prismoid(size1=[railSlotOutsideThickness, railHeight], size2=[railSlotInsideThickness, railHeight], h=railSlotDepth, shift=[0, 0], anchor=BOTTOM+FRONT+RIGHT, orient=FRONT);
-          }
+          right(railSlotOffsetLeft) back(railSlotOffsetFront)
+          prismoid(size1=[railSlotOutsideThickness, railHeight], size2=[railSlotInsideThickness, railHeight], h=railSlotDepth, shift=[0, 0], anchor=BOTTOM+FRONT+RIGHT, orient=FRONT);
       }
+    }
   }
 
   if (position == "top") {
