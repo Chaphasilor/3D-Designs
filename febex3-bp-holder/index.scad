@@ -14,11 +14,14 @@ bpDepth = 128.5; // [60:1:250]
 bpHeight = 1.6; // [1:0.1:10]
 // maximum edge padding of the backplane where no parts are placed
 bpPadding = 3; // [0:0.1:20]
+// minimum space required below the backplane for connectors, etc.
+bpClearanceBottom = 10; // [0:0.1:50]
 
 // thickness rim/padding around the backplane (X, Y)
-bpFrameRimThickness = 10; // [1:0.1:10]
+bpFrameRimThickness = 5; // [1:0.1:10]
 // screwhole diameter
-bpFrameScrewDiameter = 3; // [1:0.1:10]
+bpFrameScrewDiameter = 4; // [1:0.1:10]
+bpFrameScrewPadding = 5; // [1:0.1:10]
 
 // outer width of the whole connector (if the connector slots are vertical)
 connectorWidth = 9; // [1:0.1:15]
@@ -43,23 +46,24 @@ railWidth = 10; // [0:0.1:10]
 // depth of the guiding rails (Y)
 railDepth = 7; // [0:0.1:20]
 // height of the guiding rails (Z)
-railHeight = 50; // [0:1:100]
+railHeight = 85; // [0:1:100]
 // how deep the slot should be recessed into the rail
 railSlotDepth = 2; // [0:0.1:10]
 // how thick the slot should be at its widest point
 railSlotExpansionFactor = 1.5; // [1:0.1:2]
-//TODO slot thickness, wedge
 
 
 // add stilts?
 stilts = true; // [true, false]
 // stilt thickness in X and Y direction
-stiltWidth = 5; // [1:1:50]
+stiltWidth = 7.5; // [1:1:50]
+stiltWidthExpansionFactor = 0.5; // [0.1:0.1:3]
+stiltTiltAngle = 3; // [0:0.1:30]
 // stilt height (Z)
-stiltHeight = 30; // [1:1:100]
+stiltHeight = 50; // [1:1:100]
 
 // thickness of most walls
-wallThickness = 5; // [2:0.1:10]
+wallThickness = 2; // [2:0.1:10]
 
 // ------- CHECKS --------
 
@@ -83,7 +87,8 @@ module layout_exploded() {
     dummyBackplane();
 
   up(20)
-    topPart();  
+    topPart();
+
   bottomPart();
 
 }
@@ -104,9 +109,14 @@ module topPart() {
   up()
     backplaneFrameTop();
   // rails
-  up(backplaneFrameTopThickness)
-  right(railOffsetLeft)
-    rails();
+  up(backplaneFrameTopThickness) {
+    right(railOffsetLeft)
+      rails();
+
+    if (stilts) {
+      stilts();
+    }
+  }
 
 }
 
@@ -124,44 +134,60 @@ module backplaneFrameTop() {
     // cut out sparse wall
     back(backplaneFrameTopCutoutOffsetFrontAdjusted/2)
       backplaneFrameTopSparseHolePuncher();
-    //TODO calculate the correct position
-    back(backplaneFrameTopOuterDepth - backplaneFrameTopCutoutOffsetFrontAdjusted)
+    back(backplaneFrameTopCutoutOffsetBack)
       backplaneFrameTopSparseHolePuncher();
 
     right(backplaneFrameTopCutoutOffsetLeft)
     back(backplaneFrameTopCutoutOffsetFrontAdjusted)
       cuboid([backplaneFrameTopCutoutWidth, backplaneFrameTopCutoutDepthAdjusted, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
 
-    #backplaneFrameTopHolePuncher();
+    #backplaneFrameHolePuncher(height=backplaneFrameTopThickness);
   }
   
 }
 module backplaneFrameBottom() {
 
   difference() {
-    cuboid([backplaneFrameBottomOuterWidth, backplaneFrameBottomOuterDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
+    // cuboid([backplaneFrameBottomOuterWidth, backplaneFrameBottomOuterDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
+    zrot(90)
+    sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
 
     up(wallThickness)
-    right(bpFrameRimThickness) back(bpFrameRimThickness)
+    right(bpFrameRimThicknessAdjusted) back(bpFrameRimThicknessAdjusted)
       cuboid([backplaneFrameBottomInnerWidth, backplaneFrameBottomInnerDepth, bpHeight], anchor=BOTTOM+FRONT+LEFT);
 
-    right(2*bpFrameRimThickness) back(2*bpFrameRimThickness)
+    right(2*bpFrameRimThicknessAdjusted) back(2*bpFrameRimThicknessAdjusted)
       cuboid([backplaneFrameBottomCutoutWidth, backplaneFrameBottomCutoutDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
 
-    #backplaneFrameBottomHolePuncher();
+  }
+  
+  backplaneFrameHoles(height=backplaneFrameBottomThickness);
+  
+}
+module backplaneFrameHolePuncher(height) {
+
+  module screw() {cylinder(d=bpFrameScrewDiameter, h=height);}
+
+  for (offset=screwOffsets) {
+    right(offset[0]) back(offset[1])
+      screw();
   }
   
 }
-module backplaneFrameBottomHolePuncher() {
-  module screw() {cylinder(d=bpFrameScrewDiameter, h=backplaneFrameBottomThickness);}
-  right(bpFrameRimThickness/2) back(bpFrameRimThickness/2)
-    screw();
-  right(backplaneFrameBottomOuterWidth - bpFrameRimThickness/2) back(bpFrameRimThickness/2)
-    screw();
-  right(bpFrameRimThickness/2) back(backplaneFrameBottomOuterDepth - bpFrameRimThickness/2)
-    screw();
-  right(backplaneFrameBottomOuterWidth - bpFrameRimThickness/2) back(backplaneFrameBottomOuterDepth - bpFrameRimThickness/2)
-    screw();
+module backplaneFrameHoles(height) {
+
+  screwFillerSize = bpFrameScrewDiameter + 2*bpFrameScrewPadding;
+  for (offset=screwOffsets) {
+
+    difference() {
+      right(offset[0]) back(offset[1])
+        cuboid([screwFillerSize, screwFillerSize, height], anchor=BOTTOM+CENTER);
+
+      backplaneFrameHolePuncher(height);
+    }
+
+  }
+  
 }
 module backplaneFrameTopSparseHolePuncher() {
   right(backplaneFrameTopCutoutOffsetLeft)
@@ -170,17 +196,6 @@ module backplaneFrameTopSparseHolePuncher() {
       zrot(90)
         sparse_wall(h=backplaneFrameTopCutoutOffsetFrontAdjusted/2, l=backplaneFrameTopCutoutWidth, thick=backplaneFrameTopThickness, strut=1.5, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
     }
-}
-module backplaneFrameTopHolePuncher() {
-  module screw() {cylinder(d=bpFrameScrewDiameter, h=backplaneFrameTopThickness);}
-  right(bpFrameRimThickness/2) back(bpFrameRimThickness/2)
-    screw();
-  right(backplaneFrameBottomOuterWidth - bpFrameRimThickness/2) back(bpFrameRimThickness/2)
-    screw();
-  right(bpFrameRimThickness/2) back(backplaneFrameBottomOuterDepth - bpFrameRimThickness/2)
-    screw();
-  right(backplaneFrameBottomOuterWidth - bpFrameRimThickness/2) back(backplaneFrameBottomOuterDepth - bpFrameRimThickness/2)
-    screw();
 }
 
 module rails() {
@@ -219,4 +234,20 @@ module railSide(position) {
       railsUnpositioned();
   }
 
+}
+
+module stilts() {
+
+    prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=stiltHeight, shift=stiltShiftTop, anchor=BOTTOM+FRONT+LEFT);
+
+  xflip(x=stiltsXFlipLocation)
+    prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=stiltHeight, shift=stiltShiftTop, anchor=BOTTOM+FRONT+LEFT);
+
+  xflip(x=stiltsXFlipLocation)
+  yflip(y=stiltsYFlipLocation)
+    prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=stiltHeight, shift=stiltShiftTop, anchor=BOTTOM+FRONT+LEFT);
+
+  yflip(y=stiltsYFlipLocation)
+    prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=stiltHeight, shift=stiltShiftTop, anchor=BOTTOM+FRONT+LEFT);
+  
 }
