@@ -8,7 +8,7 @@ stiltWidthTop = stiltWidth * stiltWidthExpansionFactor;
 screwOffsetDistance = stiltWidth + bpFrameScrewPadding;
 bpFrameRimThicknessAdjusted = bpFrameRimThickness + screwOffsetDistance;
 
-backplaneFrameBottomThickness = bpHeight + max(wallThickness, bpClearanceBottom);
+backplaneFrameBottomThickness = bpHeight + wallThickness;
 backplaneFrameBottomOuterWidth = bpWidth + 2 * bpFrameRimThicknessAdjusted;
 backplaneFrameBottomOuterDepth = bpDepth + 2 * bpFrameRimThicknessAdjusted;
 backplaneFrameBottomInnerOffsetBottom = backplaneFrameBottomThickness - bpHeight;
@@ -24,6 +24,12 @@ screwOffsets = [
   [screwOffsetDistance, backplaneFrameBottomOuterDepth - screwOffsetDistance],
   [backplaneFrameBottomOuterWidth - screwOffsetDistance, backplaneFrameBottomOuterDepth - screwOffsetDistance],
 ];
+// feet
+feetDiameter = bpFrameScrewDiameter + 2*bpFrameScrewPadding;
+feetHeight = bpClearanceBottom + backplaneFrameBottomThickness - wallThickness;
+feetOffsetTop = feetHeight - backplaneFrameBottomThickness;
+
+screwHoleHeightBottom = backplaneFrameBottomThickness + feetHeight;
 
 backplaneFrameTopThickness = wallThickness;
 backplaneFrameTopOuterWidth = bpWidth + 2 * maxFrameRimBpPadding;

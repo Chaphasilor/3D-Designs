@@ -12,7 +12,7 @@ bpWidth = 64; // [10:1:250]
 // "height" of the backplane (if the connector slots are vertical) (Y)
 bpDepth = 128.5; // [60:1:250]
 // thickness of the backplane (Z)
-bpHeight = 1.6; // [1:0.1:10]
+bpHeight = 1.6; // [0.4:0.1:10]
 // maximum edge padding of the backplane where no parts are placed
 bpPadding = 2; // [0:0.1:20]
 // minimum space required below the backplane for connectors, etc.
@@ -60,16 +60,12 @@ stilts = true; // [true, false]
 // stilt thickness in X and Y direction
 stiltWidth = 7.5; // [1:1:50]
 stiltWidthExpansionFactor = 0.5; // [0.1:0.1:3]
-stiltTiltAngle = 3; // [0:0.1:30]
+stiltTiltAngle = 2; // [0:0.1:30]
 // stilt height (Z)
 stiltHeight = 50; // [1:1:100]
 
 // thickness of most walls
-wallThickness = 2; // [2:0.1:10]
-
-bpBottomCutouts = [
-  [[0, 11, 0], [17, 27.5, -8]],
-];
+wallThickness = 2; // [0.4:0.1:10]
 
 // ------- CHECKS --------
 
@@ -84,6 +80,10 @@ include <BOSL2/std.scad>
 include <BOSL2/walls.scad>
 include <calculated.scad>
 include <helpers.scad>
+
+bpBottomCutouts = [
+  [[-bpFrameRimThicknessAdjusted, 11, 0], [17, 27.5, -8]],
+];
 
 module layout_exploded() {
 
@@ -153,6 +153,7 @@ module topPart() {
 
 module bottomPart() {
 
+  up(feetOffsetTop)
   backplaneFrameBottom();
   
 }
@@ -201,7 +202,7 @@ module backplaneFrameBottom() {
           cuboid([backplaneFrameBottomCutoutWidth, backplaneFrameBottomCutoutDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
 
       }
-      backplaneFrameHoles(height=backplaneFrameBottomThickness);
+      feet();
     }
 
     up(backplaneFrameBottomInnerOffsetBottom)
@@ -332,5 +333,22 @@ module stilts() {
 
   yflip(y=stiltsYFlipLocation)
     prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=stiltHeight, shift=stiltShiftTop, anchor=BOTTOM+FRONT+LEFT);
+  
+}
+
+module feet() {
+  
+  down(feetOffsetTop)
+  difference() {
+    for (offset=screwOffsets) {
+
+      right(offset[0]) back(offset[1])
+        cylinder(d=feetDiameter, h=feetHeight, anchor=BOTTOM+CENTER);
+
+    }
+
+    backplaneFrameHolePuncher(feetHeight);
+
+  }
   
 }
