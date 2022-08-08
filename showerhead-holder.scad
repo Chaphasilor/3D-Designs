@@ -6,6 +6,7 @@ plateThickness = 1.6;
 pinDiameter = 9.5;
 pinLength = 15;
 pinMargin = 8.5;
+pinAngle = 10;
 
 include <Round-Anything/polyround.scad>;
 use <Round-Anything/unionRoundMask.scad>;
@@ -38,8 +39,8 @@ module main() {
         [0,-16,0],
         [0,5,0.1],
         [4.5,-5,7],
-        [pinMargin,0,0.2],
-        [pinMargin+pinDiameter,0,0.2],
+        [pinMargin-1,-1.75,0.2],
+        [pinMargin+pinDiameter-2,-3.25,0.2],
         [10,-10,10]
       ];
       // !
@@ -50,11 +51,14 @@ module main() {
         polygon(polyRound(radiiPoints,30));
     }
     
-    pin(pinLength+3);
+    xrot(pinAngle, cp=[0,pinDiameter/2,pinMargin+plateThickness])
+      pin(pinLength+3);
     hull() {
-      front_half(y=pinLength/2-5)
-        pin(pinLength);
-      back_half(y=-1)
+      xrot(pinAngle, cp=[0,pinDiameter/2,pinMargin+plateThickness])
+        front_half(y=pinLength/2-5)
+          pin(pinLength);
+      front_half(y=-(pinLength/2-3))
+      back_half(y=-6)
       top_half(z=6)
         connector();
     }
