@@ -169,9 +169,10 @@ module backplaneFrameTop() {
     back(backplaneFrameTopCutoutOffsetFrontAdjusted)
       cuboid([backplaneFrameTopCutoutWidth, backplaneFrameTopCutoutDepthAdjusted, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
 
-    #backplaneFrameHolePuncher(height=backplaneFrameTopThickness);
   }
 
+  backplaneFrameHoles(height=backplaneFrameTopThickness);
+  
   // add solid region below rails
   back(backplaneFrameTopCutoutOffsetFrontAdjusted/2)
     backplaneFrameTopSolidRegion();
@@ -226,14 +227,15 @@ module backplaneFrameHolePuncher(height) {
 module backplaneFrameHoles(height) {
 
   screwFillerSize = bpFrameScrewDiameter + 2*bpFrameScrewPadding;
-  for (offset=screwOffsets) {
+  difference() {
+    for (offset=screwOffsets) {
 
-    difference() {
       right(offset[0]) back(offset[1])
         cylinder(d=screwFillerSize, h=height, anchor=BOTTOM+CENTER);
 
-      backplaneFrameHolePuncher(height);
     }
+
+    backplaneFrameHolePuncher(height);
 
   }
   
