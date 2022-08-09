@@ -51,7 +51,7 @@ stiltsYFlipLocation = backplaneFrameTopOuterDepth / 2;
 
 // rails
 connectorDistance = connectorWidth + connectorGap;
-connectorRailWidthDifference = railWidth - connectorWidth;
+connectorRailWidthDifference = railWidth - (connectorWidth - connectorLeftWallThickness/2);
 railDepthBottom = railDepth * (1/railDepthExpansionFactor); 
 railFrameInnerDifference = 6;
 railFrameInnerDifferenceBottom = min(railDepthBottom/2, railDepthBottom - railFrameInnerDifference);;
@@ -66,14 +66,15 @@ railShift = [
 railCount = floor((bpWidth - connectorLeftOffset - bpPadding) / connectorDistance); // only one time `bpPadding` because the left padding is included with the connector offset
 railRelativeOffset = connectorRailWidthDifference/2;
 railOffsetLeft = backplaneFrameTopCutoutOffsetLeft - bpPadding + connectorLeftOffset;
-railEdgeOffsetFront = backplaneFrameTopCutoutOffsetFront - railDepthBottom + railSlotDepth;
-railsYFlipLocation = railEdgeOffsetFront + railDepthBottom - railSlotDepth;
+railEdgeOffsetFront = insertedPcbOffsetFront + bpFrameRimThicknessAdjusted+bpPadding + railSlotDepth - railSlotClearance - railDepthBottom;
+railsYFlipLocation = railEdgeOffsetFront + railDepthBottom - (railSlotDepth - railSlotClearance);
+railsDistance = insertedPcbDepth + 0*railSlotClearance;
 railTotalOffsetFront = insertedPcbOffsetFront - railSlotDepth/2;
 railSlotInsideThickness = insertedPcbThickness;
-railTotalOffsetBack = (bpDepth - insertedPcbDepth - insertedPcbOffsetFront) - railSlotDepth/2;
+railTotalOffsetBack = (bpDepth - railsDistance - insertedPcbOffsetFront) - railSlotDepth/2;
 railSlotOutsideThickness = insertedPcbThickness * railSlotExpansionFactor;
 railSlotShift = (railSlotOutsideThickness - railSlotInsideThickness) / 2;
-railSlotOffsetLeft = railSlotOutsideThickness/2 + railWidth/2;
+railSlotOffsetLeft = connectorLeftWallThickness - (railSlotOutsideThickness - railSlotInsideThickness)/2;
 railSlotOffsetFront = railDepthBottom;
 
 railWallWidth = connectorDistance * railCount + railWidth;
@@ -81,4 +82,5 @@ railWallOffsetLeft = (railWidth - connectorWidth) / 2;
 
 backplaneFrameTopCutoutDepthAdjusted = backplaneFrameTopCutoutDepth - railTotalOffsetFront - railTotalOffsetBack;
 backplaneFrameTopCutoutOffsetFrontAdjusted = backplaneFrameTopCutoutOffsetFront + railTotalOffsetFront + railSlotDepth;
-backplaneFrameTopCutoutOffsetBack = backplaneFrameTopOuterDepth - backplaneFrameTopCutoutOffsetFront/2 - railTotalOffsetFront/2 - railTotalOffsetBack + railSlotDepth;
+// backplaneFrameTopCutoutOffsetBack = backplaneFrameTopOuterDepth - backplaneFrameTopCutoutOffsetFront/2 - railTotalOffsetFront/2 - railTotalOffsetBack + railSlotDepth;
+backplaneFrameTopCutoutOffsetBack = backplaneFrameTopOuterDepth - backplaneFrameTopCutoutOffsetFrontAdjusted/2;

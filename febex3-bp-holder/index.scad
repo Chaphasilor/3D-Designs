@@ -25,15 +25,17 @@ bpFrameScrewDiameter = 4; // [1:0.1:10]
 bpFrameScrewPadding = 5; // [1:0.1:10]
 
 // outer width of the whole connector (if the connector slots are vertical)
-connectorWidth = 9; // [1:0.1:15]
+connectorWidth = 8.8; // [1:0.1:15]
 // outer height of the whole connector (if the connector slots are vertical)
 connectorDepth = 56; // [10:0.1:100]
+// thickness of the left (non-slanted) connector wall
+connectorLeftWallThickness = 3.15; // [0.1:0.1:10]
 // distance between left edge of the backplane and the left edge of the left-most connector
-connectorLeftOffset = 6.4; // [0:0.1:50]
+connectorLeftOffset = 8; // [0:0.1:50]
 // distance between bottom edge of the backplane and the bottom edge of the connectors
 connectorBottomOffset = 0; // [0:0.1:50]
 // distance between right edge of a connector and the left edge of the next connector
-connectorGap = 11.15; // [0.5:0.1:20]
+connectorGap = 11.5; // [0.5:0.1:20]
 
 // the depth of the PCBs that are inserted into the connector slots / backplane (Y)
 insertedPcbDepth = 100; // [10:250]
@@ -50,7 +52,8 @@ railDepthExpansionFactor = 0.3; // [0:0.1:3]
 // height of the guiding rails (Z)
 railHeight = 85; // [0:1:100]
 // how deep the slot should be recessed into the rail
-railSlotDepth = 2; // [0:0.1:10]
+railSlotDepth = 2.5; // [0:0.1:10]
+railSlotClearance = 0.5; // [0:0.05:5]
 // how thick the slot should be at its widest point
 railSlotExpansionFactor = 1.5; // [1:0.1:2]
 
@@ -65,7 +68,7 @@ stiltTiltAngle = 2; // [0:0.1:30]
 stiltHeight = 50; // [1:1:100]
 
 // thickness of most walls
-wallThickness = 2; // [0.4:0.1:10]
+wallThickness = 3; // [0.4:0.1:10]
 
 // ------- CHECKS --------
 
@@ -136,17 +139,22 @@ if (mode == "engineer") {
 
 module topPart() {
 
-  // backplane frame
-  up()
-    backplaneFrameTop();
-  // rails
-  up(backplaneFrameTopThickness) {
-    right(railOffsetLeft)
-      rails();
+  difference() {
+    union() {
+      // backplane frame
+      up()
+        backplaneFrameTop();
+      // rails
+      up(backplaneFrameTopThickness) {
+        rails();
 
-    if (stilts) {
-      stilts();
+        if (stilts) {
+          stilts();
+        }
+      }
     }
+
+    #backplaneFrameHolePuncher(height=backplaneFrameTopThickness);
   }
 
 }
@@ -162,8 +170,16 @@ module backplaneFrameTop() {
 
   difference() {
     // cuboid([backplaneFrameTopOuterWidth, backplaneFrameTopOuterDepth, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
-    zrot(90)
-      sparse_wall(h=backplaneFrameTopOuterDepth, l=backplaneFrameTopOuterWidth, thick=backplaneFrameTopThickness, strut=5, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
+    union() {
+      zrot(90)
+        sparse_wall(h=backplaneFrameTopOuterDepth, l=backplaneFrameTopOuterWidth, thick=backplaneFrameTopThickness, strut=5, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
+      
+      right(backplaneFrameTopCutoutOffsetLeft)
+      back(backplaneFrameTopCutoutOffsetFrontAdjusted)
+      fwd(wallThickness)
+      left(wallThickness)
+        cuboid([backplaneFrameTopCutoutWidth+2*wallThickness, backplaneFrameTopCutoutDepthAdjusted+2*wallThickness, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
+    }
 
 
     right(backplaneFrameTopCutoutOffsetLeft)
@@ -171,15 +187,8 @@ module backplaneFrameTop() {
       cuboid([backplaneFrameTopCutoutWidth, backplaneFrameTopCutoutDepthAdjusted, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
 
   }
+  backplaneFrameHoleAreas(height=backplaneFrameTopThickness);
 
-  backplaneFrameHoles(height=backplaneFrameTopThickness);
-  
-  // add solid region below rails
-  back(backplaneFrameTopCutoutOffsetFrontAdjusted/2)
-    backplaneFrameTopSolidRegion();
-  back(backplaneFrameTopCutoutOffsetBack)
-    backplaneFrameTopSolidRegion();
-  
 }
 module backplaneFrameBottom() {
 
@@ -225,16 +234,19 @@ module backplaneFrameHolePuncher(height) {
   }
   
 }
-module backplaneFrameHoles(height) {
-
+module backplaneFrameHoleAreas(height) {
   screwFillerSize = bpFrameScrewDiameter + 2*bpFrameScrewPadding;
-  difference() {
-    for (offset=screwOffsets) {
+  for (offset=screwOffsets) {
 
       right(offset[0]) back(offset[1])
         cylinder(d=screwFillerSize, h=height, anchor=BOTTOM+CENTER);
 
     }
+}
+module backplaneFrameHoles(height) {
+
+  difference() {
+    backplaneFrameHoleAreas(height);
 
     backplaneFrameHolePuncher(height);
 
@@ -242,13 +254,13 @@ module backplaneFrameHoles(height) {
   
 }
 module backplaneFrameTopSolidRegion() {
-  right(backplaneFrameTopCutoutOffsetLeft)
-    cuboid([backplaneFrameTopCutoutWidth, backplaneFrameTopCutoutOffsetFrontAdjusted/2, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
+  // right(backplaneFrameTopCutoutOffsetLeft)
+    cuboid([backplaneFrameTopOuterWidth, railDepthBottom, backplaneFrameTopThickness], anchor=BOTTOM+FRONT+LEFT);
 }
 
 module rails() {
 
-  back(railTotalOffsetFront)
+  // back(railTotalOffsetFront)
   color("yellow") {
     
     railSide("top");
@@ -287,33 +299,41 @@ module railSide(position) {
   }
 
   module railsUnpositioned() {
-    back(railEdgeOffsetFront) 
-    difference() {
-      union() {
-        back(railDepthBottom - railDepth)
-        left(railWallOffsetLeft)
-        zrot(90)
-          sparse_wall(h=railHeight, l=railWallWidth, thick=railDepth, strut=3, orient=UP, anchor=BOTTOM+BACK+LEFT);
-        
-        for (i=[0:railCount]) {
-          right(i* connectorDistance - railRelativeOffset)
-            railWedge();
+    back(railEdgeOffsetFront)
+    union() {
+      right(railOffsetLeft)
+      difference() {
+        union() {
+          back(railDepthBottom - railDepth)
+          left(railWallOffsetLeft)
+          zrot(90)
+            sparse_wall(h=railHeight, l=railWallWidth, thick=railDepth, strut=3, orient=UP, anchor=BOTTOM+BACK+LEFT);
+          
+          for (i=[0:railCount]) {
+            right(i* connectorDistance)
+              railWedge();
+          }
+
         }
 
+        #for (i=[0:railCount]) {
+          right(i* connectorDistance)
+            right(railSlotOffsetLeft) back(railSlotOffsetFront)
+            prismoid(size1=[railSlotOutsideThickness, railHeight], size2=[railSlotInsideThickness, railHeight], h=railSlotDepth, shift=[0, 0], anchor=BOTTOM+FRONT+LEFT, orient=FRONT);
+        }
       }
-
-      for (i=[0:railCount]) {
-        right(i* connectorDistance - railRelativeOffset)
-          right(railSlotOffsetLeft) back(railSlotOffsetFront)
-          prismoid(size1=[railSlotOutsideThickness, railHeight], size2=[railSlotInsideThickness, railHeight], h=railSlotDepth, shift=[0, 0], anchor=BOTTOM+FRONT+RIGHT, orient=FRONT);
-      }
+      
+      // add solid region below rails
+      down(backplaneFrameTopThickness)
+      backplaneFrameTopSolidRegion();
     }
+
   }
 
   if (position == "top") {
     railsUnpositioned();
   } else if (position == "bottom") {
-    back(insertedPcbDepth)
+    back(railsDistance)
     yflip(y=railsYFlipLocation)
       railsUnpositioned();
   }
