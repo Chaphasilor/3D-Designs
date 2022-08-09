@@ -22,6 +22,8 @@ bpClearanceBottom = 10; // [0:0.1:50]
 bpFrameRimThickness = 5; // [1:0.1:10]
 // screwhole diameter
 bpFrameScrewDiameter = 4; // [1:0.1:10]
+bpFrameScrewHeadDiameter = 6.75; // [1:0.1:10]
+bpFrameScrewHeadHeight = 3.5; // [1:0.1:10]
 bpFrameScrewPadding = 5; // [1:0.1:10]
 
 // outer width of the whole connector (if the connector slots are vertical)
@@ -224,13 +226,18 @@ module backplaneFrameBottom() {
     
 }
 
-module backplaneFrameHolePuncher(height) {
+module backplaneFrameHolePuncher(height, screwHeads=false) {
 
   module screw() {cylinder(d=bpFrameScrewDiameter, h=height);}
+  module screwHead() {cylinder(d=bpFrameScrewHeadDiameter, h=bpFrameScrewHeadHeight);}
 
   for (offset=screwOffsets) {
-    right(offset[0]) back(offset[1])
+    right(offset[0]) back(offset[1]) {
       screw();
+      if (screwHeads) {
+        screwHead();
+      }
+    }
   }
   
 }
@@ -367,7 +374,7 @@ module feet() {
 
     }
 
-    backplaneFrameHolePuncher(feetHeight);
+    backplaneFrameHolePuncher(feetHeight, screwHeads=true);
 
   }
   
