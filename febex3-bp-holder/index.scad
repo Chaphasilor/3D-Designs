@@ -201,8 +201,8 @@ module backplaneFrameBottom() {
         union() {
           zrot(90)
             sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
-          right(bpFrameRimThicknessAdjusted) back(bpFrameRimThicknessAdjusted)
-            cuboid([backplaneFrameBottomCutoutWidth + 2*bpPadding, backplaneFrameBottomCutoutDepth + 2*bpPadding, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
+          #right(bpFrameRimThicknessAdjusted - wallThickness) back(bpFrameRimThicknessAdjusted - wallThickness)
+            cuboid([backplaneFrameBottomCutoutWidth + 2*bpPadding + 2*wallThickness, backplaneFrameBottomCutoutDepth + 2*bpPadding + 2*wallThickness, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
         }
 
         up(backplaneFrameBottomInnerOffsetBottom)
