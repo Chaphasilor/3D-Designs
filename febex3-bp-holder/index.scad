@@ -33,7 +33,7 @@ connectorDepth = 56; // [10:0.1:100]
 // thickness of the left (non-slanted) connector wall
 connectorLeftWallThickness = 3.15; // [0.1:0.1:10]
 // distance between left edge of the backplane and the left edge of the left-most connector
-connectorLeftOffset = 8; // [0:0.1:50]
+connectorLeftOffset = 9.2; // [0:0.1:50]
 // distance between bottom edge of the backplane and the bottom edge of the connectors
 connectorBottomOffset = 0; // [0:0.1:50]
 // distance between right edge of a connector and the left edge of the next connector
@@ -42,7 +42,7 @@ connectorGap = 11.5; // [0.5:0.1:20]
 // the depth of the PCBs that are inserted into the connector slots / backplane (Y)
 insertedPcbDepth = 100; // [10:250]
 // the front offset for the PCBs that are inserted into the connector slots / backplane (Y)
-insertedPcbOffsetFront = 15; // [0:0.1:100]
+insertedPcbOffsetFront = 12.2; // [0:0.1:100]
 // thickness of the PCBs that are inserted into the connector slots = width of the connector slot inside the connector
 insertedPcbThickness = 1.8; // [0:0.1:7.5]
 
