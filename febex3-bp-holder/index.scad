@@ -12,7 +12,7 @@ bpWidth = 64; // [10:1:250]
 // "height" of the backplane (if the connector slots are vertical) (Y)
 bpDepth = 128.5; // [60:1:250]
 // thickness of the backplane (Z)
-bpHeight = 1.6; // [0.4:0.1:10]
+bpHeight = 2; // [0.4:0.1:10]
 // maximum edge padding of the backplane where no parts are placed
 bpPadding = 2; // [0:0.1:20]
 // minimum space required below the backplane for connectors, etc.
@@ -40,7 +40,7 @@ connectorBottomOffset = 0; // [0:0.1:50]
 connectorGap = 11.5; // [0.5:0.1:20]
 
 // the depth of the PCBs that are inserted into the connector slots / backplane (Y)
-insertedPcbDepth = 100; // [10:250]
+insertedPcbDepth = 99.5; // [10:250]
 // the front offset for the PCBs that are inserted into the connector slots / backplane (Y)
 insertedPcbOffsetFront = 12.2; // [0:0.1:100]
 // thickness of the PCBs that are inserted into the connector slots = width of the connector slot inside the connector
@@ -67,7 +67,7 @@ stiltWidth = 7.5; // [1:1:50]
 stiltWidthExpansionFactor = 0.5; // [0.1:0.1:3]
 stiltTiltAngle = 2; // [0:0.1:30]
 // stilt height (Z)
-stiltHeight = 50; // [1:1:100]
+stiltHeight = 80; // [1:1:100]
 
 // thickness of most walls
 wallThickness = 3; // [0.4:0.1:10]

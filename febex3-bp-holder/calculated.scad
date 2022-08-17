@@ -21,6 +21,8 @@ maxFrameRimBpPadding = max(bpFrameRimThicknessAdjusted, bpPadding);
 screwOffsets = [
   [screwOffsetDistance, screwOffsetDistance],
   [backplaneFrameBottomOuterWidth - screwOffsetDistance, screwOffsetDistance],
+  [screwOffsetDistance, backplaneFrameBottomOuterDepth/2],
+  [backplaneFrameBottomOuterWidth - screwOffsetDistance, backplaneFrameBottomOuterDepth/2],
   [screwOffsetDistance, backplaneFrameBottomOuterDepth - screwOffsetDistance],
   [backplaneFrameBottomOuterWidth - screwOffsetDistance, backplaneFrameBottomOuterDepth - screwOffsetDistance],
 ];
