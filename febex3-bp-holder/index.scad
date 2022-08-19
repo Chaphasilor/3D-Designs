@@ -2,7 +2,7 @@
 
 $fn = 30;
 mode = "engineer"; // [engineer, print]
-parts = "all"; // [all, bottom, top]
+parts = "all"; // [all, bottom, top, support]
 
 // everything is designed in a cartesian coordinate system, where X goes to the right (width), Y goes to the back (depth), and Z goes to the top (height)
 // depending on the orientation of parts, different terminology may be used
@@ -59,7 +59,6 @@ railSlotClearance = 0.5; // [0:0.05:5]
 // how thick the slot should be at its widest point
 railSlotExpansionFactor = 1.5; // [1:0.1:2]
 
-
 // add stilts?
 stilts = true; // [true, false]
 // stilt thickness in X and Y direction
@@ -68,6 +67,11 @@ stiltWidthExpansionFactor = 0.5; // [0.1:0.1:3]
 stiltTiltAngle = 2; // [0:0.1:30]
 // stilt height (Z)
 stiltHeight = 80; // [1:1:100]
+
+// support clearance (Z)
+supportClearance = 34.5; // [0:0.1:50]
+// support depth (Y)
+supportDepth = 15; // [0:1:50]
 
 // thickness of most walls
 wallThickness = 3; // [0.4:0.1:10]
@@ -117,6 +121,15 @@ module layout_exploded() {
     bottomPart();
   }
 
+  if (parts == "all" || parts == "support") {
+    if (parts == "all") {
+      right(1.5*backplaneFrameBottomOuterWidth)
+      supportPart();
+    } else {
+      supportPart();
+    }
+  }
+
 }
 
 module layout_print() {
@@ -125,6 +138,8 @@ module layout_print() {
     topPart();
   } else if (parts == "bottom") {
     bottomPart();
+  } else if (parts == "support") {
+    supportPart();
   } else if (parts == "all") {
     topPart();
     right(backplaneFrameTopOuterWidth + 10)
@@ -165,6 +180,57 @@ module bottomPart() {
 
   up(feetOffsetTop)
   backplaneFrameBottom();
+  
+}
+
+module supportPart() {
+  
+  basePlateThickness = railSlotDepth + wallThickness;
+  basePlateWidth = railCount * connectorDistance + railSlotOutsideThickness + 2*wallThickness;
+  supportClearanceAdjusted = supportClearance  - (basePlateThickness - railSlotDepth);
+
+  feetAngle = 45;
+  feetShiftHyp = supportClearanceAdjusted / cos(feetAngle);
+  feetShift = feetShiftHyp * sin(feetAngle);
+  feetShiftAmount = (stiltWidth - stiltWidthTop) / 2 - feetShift;
+  
+  module supportBasePlate() {
+    linear_extrude(height=basePlateThickness) {
+      rect([basePlateWidth, supportDepth], anchor=FRONT+LEFT);
+    }
+  }
+  module slotPuncher() {
+    right(wallThickness + railSlotOutsideThickness/2)
+    for (i = [0:railCount]) {
+      translate([i * connectorDistance, 0, 0])
+        up(basePlateThickness - railSlotDepth/2)
+        xrot(-90)
+        linear_extrude(height=supportDepth) {
+          #trapezoid(h=railSlotDepth, w1=railSlotOutsideThickness, w2=railSlotInsideThickness);
+        }
+    }
+  }
+  module supportFeet() {
+    up(supportClearanceAdjusted)
+    zflip() {
+      prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=supportClearanceAdjusted, shift=[feetShiftAmount/sqrt(2), feetShiftAmount/sqrt(2)], anchor=BOTTOM+FRONT+LEFT);
+
+      right(basePlateWidth/2 - stiltWidth/2)
+      back(supportDepth - stiltWidth)
+      prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=supportClearanceAdjusted, shift=[0, -feetShiftAmount], anchor=BOTTOM+FRONT+LEFT);
+
+      right(basePlateWidth - stiltWidth)
+      prismoid(size1=[stiltWidth,stiltWidth], size2=[stiltWidthTop,stiltWidthTop], h=supportClearanceAdjusted, shift=[-feetShiftAmount/sqrt(2), feetShiftAmount/sqrt(2)], anchor=BOTTOM+FRONT+LEFT);
+    }
+  }
+
+  up(supportClearanceAdjusted)
+    difference() {
+      supportBasePlate();
+      
+      slotPuncher();
+    }
+  supportFeet();
   
 }
 
@@ -363,6 +429,12 @@ module stilts() {
   
 }
 
+module foot(outerDiameter, innerDiameter) {
+
+  cylinder(d=outerDiameter, h=innerDiameter, anchor=BOTTOM+CENTER);
+  
+}
+
 module feet() {
   
   down(feetOffsetTop)
@@ -370,7 +442,7 @@ module feet() {
     for (offset=screwOffsets) {
 
       right(offset[0]) back(offset[1])
-        cylinder(d=feetDiameter, h=feetHeight, anchor=BOTTOM+CENTER);
+      foot(feetDiameter, feetHeight);
 
     }
 

@@ -43,10 +43,10 @@ backplaneFrameTopCutoutOffsetFront = (backplaneFrameTopOuterDepth - backplaneFra
 
 // stilts 2
 stiltShiftHyp = stiltHeight / cos(stiltTiltAngle);
-tiltShift = stiltShiftHyp * sin(stiltTiltAngle);
+stiltShift = stiltShiftHyp * sin(stiltTiltAngle);
 stiltShiftTop = [
-  -(stiltWidth - stiltWidthTop) / 2 - tiltShift,
-  -(stiltWidth - stiltWidthTop) / 2 - tiltShift
+  -(stiltWidth - stiltWidthTop) / 2 - stiltShift,
+  -(stiltWidth - stiltWidthTop) / 2 - stiltShift
 ];
 stiltsXFlipLocation = backplaneFrameTopOuterWidth / 2;
 stiltsYFlipLocation = backplaneFrameTopOuterDepth / 2;
