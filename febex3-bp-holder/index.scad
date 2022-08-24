@@ -91,7 +91,7 @@ include <calculated.scad>
 include <helpers.scad>
 
 bpBottomCutouts = [
-  [[-bpFrameRimThicknessAdjusted, 11, 0], [17, 27.5, -8]],
+  // [[-bpFrameRimThicknessAdjusted, 11, 0], [17, 27.5, -8]],
 ];
 
 module layout_exploded() {
@@ -267,8 +267,9 @@ module backplaneFrameBottom() {
         union() {
           zrot(90)
             sparse_wall(h=backplaneFrameBottomOuterDepth, l=backplaneFrameBottomOuterWidth, thick=backplaneFrameBottomThickness, strut=4, maxang=75, orient=RIGHT, anchor=RIGHT+BACK+BOTTOM);
-          #right(bpFrameRimThicknessAdjusted - wallThickness) back(bpFrameRimThicknessAdjusted - wallThickness)
+          right(bpFrameRimThicknessAdjusted - wallThickness) back(bpFrameRimThicknessAdjusted - wallThickness)
             cuboid([backplaneFrameBottomCutoutWidth + 2*bpPadding + 2*wallThickness, backplaneFrameBottomCutoutDepth + 2*bpPadding + 2*wallThickness, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
+          feet();
         }
 
         up(backplaneFrameBottomInnerOffsetBottom)
@@ -278,8 +279,9 @@ module backplaneFrameBottom() {
         right(bpFrameRimThicknessAdjusted + bpPadding) back(bpFrameRimThicknessAdjusted + bpPadding)
           cuboid([backplaneFrameBottomCutoutWidth, backplaneFrameBottomCutoutDepth, backplaneFrameBottomThickness], anchor=BOTTOM+FRONT+LEFT);
 
+        #backplaneFrameHolePuncher(feetHeight, screwHeads=true);
+
       }
-      feet();
     }
 
     up(backplaneFrameBottomInnerOffsetBottom)
@@ -446,7 +448,7 @@ module feet() {
 
     }
 
-    backplaneFrameHolePuncher(feetHeight, screwHeads=true);
+    #backplaneFrameHolePuncher(feetHeight, screwHeads=true);
 
   }
   
