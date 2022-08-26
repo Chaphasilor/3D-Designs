@@ -2,11 +2,12 @@ $fn = 60;
 
 plateWidth = 50;
 plateHeight = 90;
-plateThickness = 1.6;
-pinDiameter = 9.5;
-pinLength = 15;
+plateThickness = 3.2;
+pinDiameter = 10;
+pinBottomStopDiameter = 14;
+pinLength = 20;
 pinMargin = 8.5;
-pinAngle = 10;
+pinAngle = -3;
 
 include <Round-Anything/polyround.scad>;
 use <Round-Anything/unionRoundMask.scad>;
@@ -28,8 +29,12 @@ module main() {
 
     module pin(length) {
       up(pinMargin)
-      up(plateThickness)
-        cyl(d1=pinDiameter, d2=pinDiameter*0.9, h=length, chamfer2=2, anchor=BOTTOM+BACK, orient=BACK);
+      up(plateThickness) {
+        cyl(d1=pinDiameter, d2=pinDiameter*0.95, h=length, chamfer2=2, anchor=BOTTOM+BACK, orient=BACK);
+        // bottom stop
+        down((pinBottomStopDiameter-pinDiameter)/2)
+        cyl(d=pinBottomStopDiameter, h=2, chamfer2=0.5, anchor=BOTTOM+BACK, orient=BACK);
+      }
     }
     
     module connector() {
@@ -39,8 +44,8 @@ module main() {
         [0,-16,0],
         [0,5,0.1],
         [4.5,-5,7],
-        [pinMargin-1,-1.75,0.2],
-        [pinMargin+pinDiameter-2,-3.25,0.2],
+        [pinMargin,-1.75,0.2],
+        [pinMargin+pinDiameter-1,-1.75,0.2],
         [10,-10,10]
       ];
       // !
@@ -53,27 +58,29 @@ module main() {
     
     xrot(pinAngle, cp=[0,pinDiameter/2,pinMargin+plateThickness])
       pin(pinLength+3);
+      
     hull() {
       xrot(pinAngle, cp=[0,pinDiameter/2,pinMargin+plateThickness])
-        front_half(y=pinLength/2-5)
+        front_half(y=1)
           pin(pinLength);
-      front_half(y=-(pinLength/2-3))
-      back_half(y=-6)
-      top_half(z=6)
+  
+      back_half(y=-3)
+      top_half(z=pinMargin+plateThickness)
         connector();
     }
     connector();
     
     bottom_half(z=plateThickness)
     down(plateThickness)
-    back(6)
-    scale([2.5, 1.5, 1])
+    xscale(2.5, cp=[0, 0, 0])
+    yscale(2.5, cp=[0, -pinLength/2, 0])
+    zscale(1, cp=[0, 0, 0])
     bounding_box()
       connector();
 
   }
 
-  fwd(plateWidth/2)
+  // fwd(plateWidth/2)
     pinAttached();
   
 }
