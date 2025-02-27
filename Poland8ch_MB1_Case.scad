@@ -23,6 +23,8 @@ lemoRow3DistanceRight = 40.5;
 powerConnectorSmallDistanceRight = 22;
 powerConnectorLargeDistanceBottom = 10;
 sixteenPinConnectorDistanceRight = 57.5;
+switchCenterDistanceTop = 40;
+switchCenterDistanceLeft = 115;
 
 // ------------------ Case --------------------- 
 
@@ -50,9 +52,12 @@ rimThickness = 2;
 rimCornerLength = 10;
 rimHeight = caseTopHeight - caseThickness + 3;
 
+switchHoleWidth = 15;
+switchHoleHeight = switchHoleWidth;
+
 // ------------- Print Settings ----------------
 
-print = true;
+print = false;
 bottom = false; 
 previewBoard = false;
 $fn = 40;
@@ -311,7 +316,7 @@ module caseTop() {
   translate([caseThickness, caseThickness, 0]) {
 
     difference() {
-      // bottom pane 
+      // top pane 
       cube([caseWidth - 2 * caseThickness, caseDepth - 2 * caseThickness, caseThickness]);
 
       // countersunken bolt holes
@@ -323,6 +328,10 @@ module caseTop() {
         countersunkBoltHole();
       translate([caseWidth - caseThickness - caseMountingHoleDistanceLeftRight, caseDepth - caseThickness - caseMountingHoleDistanceTopBottom, 0])
         countersunkBoltHole();
+
+      // switch hole
+      #translate([switchCenterDistanceLeft - switchHoleWidth/2, switchCenterDistanceTop - switchHoleHeight/2, 0])
+        cube([switchHoleWidth, switchHoleHeight, caseThickness]);
 
     }
 
