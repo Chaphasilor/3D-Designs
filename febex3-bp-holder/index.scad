@@ -1,7 +1,7 @@
 // ------- CONFIG --------
 
 $fn = 30;
-mode = "engineer"; // [engineer, print]
+mode = "engineer"; // [engineer, print, assembled]
 parts = "all"; // [all, bottom, top, support]
 
 // everything is designed in a cartesian coordinate system, where X goes to the right (width), Y goes to the back (depth), and Z goes to the top (height)
@@ -111,9 +111,12 @@ module layout_exploded() {
       up(upDistance)
         topPart();
     } else {
-      down(1.6)
-        dummyBackplaneAligned();
-      topPart();
+      left(backplaneFrameBottomOuterWidth/2)
+      fwd(backplaneFrameBottomOuterDepth/2) {
+        down(1.6)
+          dummyBackplaneAligned();
+        topPart();
+      }
     }
   }
 
@@ -148,10 +151,54 @@ module layout_print() {
 
 }
 
+module layout_assembled() {
+
+  // upDistance = 13;
+  upDistance = backplaneFrameBottomThickness + feetOffsetTop;
+  module dummyBackplaneAligned() {
+    right(backplaneFrameTopCutoutOffsetLeft - bpPadding)
+    back(backplaneFrameTopCutoutOffsetLeft - bpPadding*0)
+      dummyBackplane();
+  }
+
+  if (parts == "all" || parts == "top") {    
+
+    if (parts == "all") {
+      up(upDistance - 1.6)
+        dummyBackplaneAligned();
+      up(upDistance)
+        topPart();
+    } else {
+      left(backplaneFrameBottomOuterWidth/2)
+      fwd(backplaneFrameBottomOuterDepth/2) {
+        down(1.6)
+          dummyBackplaneAligned();
+        topPart();
+      }
+    }
+  }
+
+  if (parts == "all" || parts == "bottom") {
+    bottomPart();
+  }
+
+  // if (parts == "all" || parts == "support") {
+  //   if (parts == "all") {
+  //     right(1.5*backplaneFrameBottomOuterWidth)
+  //     supportPart();
+  //   } else {
+  //     supportPart();
+  //   }
+  // }
+  
+}
+
 if (mode == "engineer") {
   layout_exploded();
 } else if (mode == "print") {
   layout_print();
+} else if (mode == "assembled") {
+  layout_assembled();
 }
 
 module topPart() {
