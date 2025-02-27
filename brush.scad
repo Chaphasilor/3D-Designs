@@ -5,33 +5,38 @@ upperHeight = 23 + wallThickness;
 lowerHeight = 12.5 + wallThickness;
 topPartOffset = 10;
 heightDifference = upperHeight - lowerHeight;
-backInnerLength = 31; // without the sides
+backInnerLength = 32; // width, without the sides
 backOuterLength = backInnerLength + 2*wallThickness;
 hingeOffset = 5;
 hingeLength = backOuterLength - (2 * hingeOffset);
 femaleHingeInnerRadius = 2;
 femaleHingeOuterRadius = 4;
 hingeHeight = 7;
-maleHingeRadius = femaleHingeInnerRadius * 0.9;
-handleLength = 20;
+maleHingeRadius = femaleHingeInnerRadius * 0.8;
+maleHingeSpacing = 2;
+handleLength = 23;
 handleThickness = 1.5;
 
 print = true;
-$fn = 25;
+printBottom = false;
+$fn = 75;
 
 debug = false; // toggles stacked view/debugging
-debugHinges = false; // toggles only showing hinges
 debugBottom = false;
-debugBottomHinge = false;
-debugTopHinge = false;
+debugHinges = true; // toggles only showing hinges
+debugFemaleHinge = false;
+debugMaleHinge = true;
+offsetParts = true;
 
 // render() {
 
 // bottom part
-if (!debug || debugBottom || debugHinges) {
-  if ((!debug || !debugBottom) && !debugHinges) {
+if (!debug || (debug && (debugBottom || debugHinges))) {
+  if ((!debug || !debugBottom) || (debug && !debugHinges)) {
     if (print) {
-      translate([0, 0, length]) rotate([0, 90, 0]) bottomPart();
+      if (printBottom) {
+        bottomPart();
+      }
     } else {
       bottomPart();
     }
@@ -41,13 +46,18 @@ if (!debug || debugBottom || debugHinges) {
 }
 
 // top part
-if (!debug || !debugBottom || debugHinges) {
-  if ((!debug || debugBottom) && !debugHinges) {
+if (!debug || (debug && (!debugBottom || debugHinges))) {
+  if ((!debug || debugBottom) || (debug && !debugHinges)) {
     if (print) {
-      translate([-length*1.5, upperHeight*2, 0]) rotate([90, 0, 0]) topPart();
+      if (!printBottom) {
+        translate([-length*1, upperHeight*2, upperHeight+lowerHeight]) rotate([180, 0, 0]) topPart();
+      }
     } else {
-      translate([0, 0, 1])
+      if (!debug && offsetParts) {
+        translate([0, 0, 1]) topPart();
+      } else {
         topPart();
+      }
     }
   } else {
     topPart();
@@ -58,7 +68,7 @@ if (!debug || !debugBottom || debugHinges) {
 // ----- MODULES ------
 
 module bottomPart() {
-  if (debugHinges || debugBottomHinge) {
+  if (debug && (debugHinges || debugFemaleHinge)) {
     translate([0, 0, -7]) femaleHinge();
   } else {
     union() {
@@ -69,7 +79,7 @@ module bottomPart() {
 }
 
 module topPart() {
-  if (debug && (debugHinges || debugTopHinge)) {
+  if (debug && (debugHinges || debugMaleHinge)) {
     maleHinge();
   } else {
     union() {
@@ -80,7 +90,7 @@ module topPart() {
 }
 
 module femaleHinge() {
-  if (!debug || debugBottomHinge) {
+  if (!debug || debugFemaleHinge) {
       translate([-2, 0, 0]);
   }
   difference() {
@@ -98,25 +108,30 @@ module femaleHinge() {
 module maleHinge() {
   union() {
     // main part
-    translate([0, hingeOffset, 0]) rotate([270, 0, 0]) cylinder(r=maleHingeRadius, h=hingeLength, center=false);
+    translate([0, hingeOffset-maleHingeSpacing, 0]) rotate([270, 0, 0]) cylinder(r=maleHingeRadius, h=hingeLength+2*maleHingeSpacing, center=false);
 
-    // right handle 
-    translate([0, hingeOffset-handleThickness, 0]) hull() {
-      rotate([270, 0, 0]) cylinder(r=maleHingeRadius*0.8, h=2, center=false);
-      translate([-handleLength, 0, 0]) cube(handleThickness, center=false);
-    }
-    
-    // left handle
-    translate([0, hingeOffset+hingeLength, 0]) hull() {
-      rotate([270, 0, 0]) cylinder(r=maleHingeRadius*0.8, h=2, center=false);
-      translate([-handleLength, 0, 0]) cube(handleThickness, center=false);
-    }
+    difference() {
+      union() {
+        // right handle 
+        translate([0, hingeOffset-handleThickness-maleHingeSpacing, 0]) hull() {
+          rotate([270, 0, 0]) cylinder(r=maleHingeRadius*0.8, h=handleThickness, center=false);
+          translate([-handleLength, 0, handleThickness*0.5]) cube([handleThickness, handleThickness, handleThickness*0.5], center=false);
+        }
+        
+        // left handle
+        translate([0, hingeOffset+hingeLength+maleHingeSpacing, 0]) hull() {
+          rotate([270, 0, 0]) cylinder(r=maleHingeRadius*0.8, h=handleThickness, center=false);
+          translate([-handleLength, 0, handleThickness*0.5]) cube([handleThickness, handleThickness, handleThickness*0.5], center=false);
+        }
 
+        // connector
+        translate([-handleLength-3, hingeOffset-maleHingeSpacing-handleThickness, -handleThickness]) cube([handleLength-(femaleHingeOuterRadius+1), hingeLength+2*handleThickness+2*maleHingeSpacing, 2*handleThickness+0.5]);
+      }
+
+      translate([0, 0, -(maleHingeRadius*0.8+5)]) rotate([0, -acos((maleHingeRadius*0.8 + (maleHingeRadius*0.8-handleThickness*0.4))/(handleLength-2*maleHingeSpacing)), 0]) cube([5, hingeLength+hingeOffset*2, 30]);
+    }
     // support bar
-    translate([-(femaleHingeOuterRadius+1), (hingeLength/2)+hingeOffset, 0]) cube([handleThickness, hingeLength, handleThickness], center=true);
-
-    // connector
-    translate([-handleLength, hingeOffset, 0]) cube([10, hingeLength, handleThickness+1]);
+    // translate([-(femaleHingeOuterRadius+1), (hingeLength/2)+hingeOffset, 0]) cube([handleThickness, hingeLength, handleThickness], center=true);
     
   }
 }
@@ -137,7 +152,7 @@ module topMain() {
 }
 
 module bottomMain() {
-  if (!debug || !debugBottomHinge) {
+  if (!debug || !debugFemaleHinge) {
     if (!debug || !debugBottom) {
       translate([0, 0, 0]);
     }
